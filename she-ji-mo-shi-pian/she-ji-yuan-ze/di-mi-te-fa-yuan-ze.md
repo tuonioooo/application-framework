@@ -10,9 +10,5 @@ _**24种设计模式介绍与6大设计原则.pdf**_   链接: [https://pan.baid
 
 ## 来源历史
 
-1987年秋天由美国Northeastern University的Ian Holland提出，被UML的创始者之一
-
-[Booch](https://baike.baidu.com/item/Booch/6573414)
-
-等普及。后来，因为在经典著作《 The Pragmatic Programmer》而广为人知。
+1987年秋天由美国Northeastern University的Ian Holland提出，被UML的创始者之一[Booch](https://baike.baidu.com/item/Booch/6573414)等普及。后来，因为在经典著作《 The Pragmatic Programmer》而广为人知。
 
