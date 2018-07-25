@@ -7,7 +7,7 @@
     * [里氏替换原则](she-ji-mo-shi-pian/she-ji-yuan-ze/li-shi-ti-huan-yuan-ze.md)
     * [依赖倒置原则](she-ji-mo-shi-pian/she-ji-yuan-ze/yi-lai-dao-zhi-yuan-ze.md)
     * [接口隔离原则](she-ji-mo-shi-pian/she-ji-yuan-ze/jie-kou-ge-li-yuan-ze.md)
-    * 迪米特发原则
+    * [迪米特发原则](she-ji-mo-shi-pian/she-ji-yuan-ze/di-mi-te-fa-yuan-ze.md)
     * 开闭原则
   * [代理模式](she-ji-mo-shi-pian/dai-li-mo-shi.md)
   * [工厂模式](she-ji-mo-shi-pian/gong-chang-mo-shi.md)
