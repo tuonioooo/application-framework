@@ -6,7 +6,7 @@
     * [单一职责原则](she-ji-mo-shi-pian/she-ji-yuan-ze/dan-yi-zhi-ze-yuan-ze.md)
     * [里氏替换原则](she-ji-mo-shi-pian/she-ji-yuan-ze/li-shi-ti-huan-yuan-ze.md)
     * [依赖倒置原则](she-ji-mo-shi-pian/she-ji-yuan-ze/yi-lai-dao-zhi-yuan-ze.md)
-    * 接口隔离原则
+    * [接口隔离原则](she-ji-mo-shi-pian/she-ji-yuan-ze/jie-kou-ge-li-yuan-ze.md)
     * 迪米特发原则
     * 开闭原则
   * [代理模式](she-ji-mo-shi-pian/dai-li-mo-shi.md)
