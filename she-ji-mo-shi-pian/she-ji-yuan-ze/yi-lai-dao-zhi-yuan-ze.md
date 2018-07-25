@@ -155,11 +155,81 @@ bcar.Stop();
 
 看图 2中这个简单的类图。这儿有一个“AutoSystem”类，它包含一个“ICar”接口。这个“AutoSystem”类根本不依赖于“FordCar”和“HondaCar”。所以，依赖关系被“倒置”了：“AutoSystem”模块依赖于抽象，那些具体的汽车操作也依赖于相同的抽象。
 
-于是可以添加ICar
+于是可以添加ICar：
 
-
-
-
+```
+public interface ICar
+{
+void Run();
+void Turn();
+void Stop();
+}
+public class BmwCar:ICar
+{
+public void Run()
+{
+Console.WriteLine("宝马开始启动了");
+}
+public void Turn()
+{
+Console.WriteLine("宝马开始转弯了");
+}
+public void Stop()
+{
+Console.WriteLine("宝马开始停车了");
+}
+}
+public class FordCar:ICar
+{
+publicvoidRun()
+{
+Console.WriteLine("福特开始启动了");
+}
+public void Turn()
+{
+Console.WriteLine("福特开始转弯了");
+}
+public void Stop()
+{
+Console.WriteLine("福特开始停车了");
+}
+}
+public class HondaCar:ICar
+{
+publicvoidRun()
+{
+Console.WriteLine("本田开始启动了");
+}
+public void Turn()
+{
+Console.WriteLine("本田开始转弯了");
+}
+public void Stop()
+{
+Console.WriteLine("本田开始停车了");
+}
+}
+public class AutoSystem
+{
+private ICar icar;
+public AutoSystem(ICar icar)
+{
+this.icar=icar;
+}
+private void RunCar()
+{
+icar.Run();
+}
+private void TurnCar()
+{
+icar.Turn();
+}
+private void StopCar()
+{
+icar.Stop();
+}
+}
+```
 
 
 
