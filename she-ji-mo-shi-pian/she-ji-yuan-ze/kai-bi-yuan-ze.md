@@ -52,7 +52,7 @@ _**24种设计模式介绍与6大设计原则.pdf**_   链接: [https://pan.baid
 
 ## 好处
 
-如果一个软件系统符合开闭原则的，那么从[软件工程](https://baike.baidu.com/item/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B)的角度来看，它至少具有这样的好处：
+如果一个软件系统符合开闭原则的，那么从[软件工程](https://baike.baidu.com/item/软件工程)的角度来看，它至少具有这样的好处：
 
 可复用性好。
 
@@ -61,6 +61,10 @@ _**24种设计模式介绍与6大设计原则.pdf**_   链接: [https://pan.baid
 可维护性好。
 
 > 由于对于已有的软件系统的组件，特别是它的抽象底层不去修改，因此，我们不用担心软件系统中原有组件的稳定性，这就使变化中的软件系统有一定的稳定性和延续性。
+
+## 相互关系
+
+开闭原则具有理想主义的色彩，它是[面向对象设计](https://baike.baidu.com/item/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1)的终极目标。因此，针对开闭原则的实现方法，一直都有面向对象设计的大师费尽心机，研究开闭原则的实现方式。后面要提到的[里氏替换原则](https://baike.baidu.com/item/%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%99)（LSP）、[依赖倒转原则](https://baike.baidu.com/item/%E4%BE%9D%E8%B5%96%E5%80%92%E8%BD%AC%E5%8E%9F%E5%88%99)（DIP）、[接口隔离原则](https://baike.baidu.com/item/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99)（ISP）以及[抽象类](https://baike.baidu.com/item/%E6%8A%BD%E8%B1%A1%E7%B1%BB)（Abstract Class）、[接口](https://baike.baidu.com/item/%E6%8E%A5%E5%8F%A3)\(Interface\)等等，都可以看作是开闭原则的实现方法。
 
 
 
