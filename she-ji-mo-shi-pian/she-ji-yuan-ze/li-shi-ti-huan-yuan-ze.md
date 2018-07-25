@@ -66,51 +66,33 @@ LSP并没有提供解决这个问题的方案，而只是提出了这么一个�
 
 继承并且覆盖超类方法的时候，子类中的方法的可见性必须等于或者大于超类中的方法的可见性，子类中的方法所抛出的受检异常只能是超类中对应方法所抛出的受检异常的子类。
 
+```
 public class SuperClass{
-
-public void methodA\(\) throws Exception{}
-
+public void methodA() throws Exception{}
 }
-
 public class SubClassA extends SuperClass{
-
 //this overriding is illegal.
-
-private void methodA\(\) throws IOException{}
-
+private void methodA() throws IOException{}
 }
-
 public class SubClassB extends SuperClass{
-
 //this overriding is OK.
-
-public void methodA\(\) throws FileNotFoundException{}
-
+public void methodA() throws FileNotFoundException{}
 }
-
-从Java5开始，子类中的方法的返回值也可以是对应的超类方法的返回值的子类。这叫做“[协变](https://baike.baidu.com/item/协变)”\(Covariant\)
-
+从Java5开始，子类中的方法的返回值也可以是对应的超类方法的返回值的子类。这叫做“
+协变
+”(Covariant)
 public class SuperClass {
-
-public Number caculate\(\){
-
+public Number caculate(){
 return null;
-
 }
-
 }
-
 public class SubClass extends SuperClass{
-
 //only compiles in Java 5 or later.
-
-public Integer caculate\(\){
-
+public Integer caculate(){
 return null;
-
 }
-
 }
+```
 
 可以看出，以上这些特性都非常好地遵循了LSP。但是DbC呢？很遗憾，主流的面向对象语言（不论是动态语言还是静态语言）还没有加入对DbC的支持。但是随着AOP概念的产生，相信不久DbC也将成为OO语言的一个重要特性之一。
 
