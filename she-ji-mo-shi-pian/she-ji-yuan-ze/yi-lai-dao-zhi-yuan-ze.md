@@ -95,3 +95,61 @@ public class AutoSystem{
 
 背景2：公司的业务做大了，同时成为了通用、三菱、大众的金牌合作伙伴，于是公司要求该自动驾驶系统也能够安装在这3种公司生产的汽车上。于是我们不得不变动AutoSystem：
 
+```
+public class AutoSystem{
+public enum CarType{
+Ford,Honda,Bmw
+};
+HondaCar hcar=new HondaCar();
+FordCarf car=new FordCar();
+BmwCar bcar=new BmwCar();
+private CarType type;
+public AutoSystem(CarTypetype){
+this.type=type;
+}
+private void RunCar(){
+if(type==CarType.Ford){
+fcar.Run();
+}
+else if(type==CarType.Honda){
+hcar.Run();
+}
+else if(type==CarType.Bmw){
+bcar.Run();
+}
+}
+private void TurnCar(){
+if(type==CarType.Ford){
+fcar.Turn();
+}
+else if(type==CarType.Honda){
+hcar.Turn();
+}
+else if(type==CarType.Bmw){
+bcar.Turn();
+}
+}
+private void StopCar(){
+if(type==CarType.Ford){
+fcar.Stop();
+}
+else if(type==CarType.Honda){
+hcar.Stop();
+}
+else if(type==CarType.Bmw){
+bcar.Stop();
+}
+}
+}
+```
+
+分析：这会给系统增加新的相互依赖。随着时间的推移，越来越多的车种必须加入到AutoSystem中，这个“AutoSystem”模块将会被if/else语句弄得很乱，而且依赖于很多的低层模块，只要低层模块发生变动，AutoSystem就必须跟着变动，
+
+它最终将变得僵化、脆弱。
+
+导致上面所述问题的一个原因是，含有高层策略的模块，如AutoSystem模块，依赖于它所控制的低层的具体细节的模块（如HondaCar\(\)和FordCar\(\)）。如果我们能够找到一种方法使AutoSystem
+
+[模块独立](https://baike.baidu.com/item/%E6%A8%A1%E5%9D%97%E7%8B%AC%E7%AB%8B)
+
+于它所控制的具体细节，那么我们就可以自由地复用它了。我们就可以用这个模块来生成其它的程序，使得系统能够用在需要的汽车上。OOD给我们提供了一种机制来实现这种“依赖倒置”。
+
