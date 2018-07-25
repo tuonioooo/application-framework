@@ -12,5 +12,6 @@
   * [代理模式](she-ji-mo-shi-pian/dai-li-mo-shi.md)
   * [工厂模式](she-ji-mo-shi-pian/gong-chang-mo-shi.md)
   * [策略模式](she-ji-mo-shi-pian/ce-lve-mo-shi.md)
+  * [等等..设计模式](she-ji-mo-shi-pian/qi-ta-xian-guan-de-she-ji-mo-shi.md)
   * 常用设计模式在开源软件的应用
 
