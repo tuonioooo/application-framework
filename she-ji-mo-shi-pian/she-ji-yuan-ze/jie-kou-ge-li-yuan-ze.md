@@ -10,7 +10,7 @@ _**24种设计模式介绍与6大设计原则.pdf**_   链接: [https://pan.baid
 
 ## 简介
 
-**一、ISP简介（ISP--Interface Segregation Principle）：**
+**ISP简介（ISP--Interface Segregation Principle）：**
 
 使用多个专门的接口比使用单一的总接口要好。
 
@@ -42,15 +42,15 @@ _**24种设计模式介绍与6大设计原则.pdf**_   链接: [https://pan.baid
 
 结构如下:
 
-[![](https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D220/sign=512742bdd7ca7bcb797bc02d8e096b3f/5882b2b7d0a20cf4128485a176094b36acaf99b3.jpg)](https://baike.baidu.com/pic/%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%E5%8E%9F%E5%88%99/3104602/0/9a1151c2f64bcb7be5dd3bdc?fr=lemma&ct=single)
+[![](https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D220/sign=512742bdd7ca7bcb797bc02d8e096b3f/5882b2b7d0a20cf4128485a176094b36acaf99b3.jpg)](https://baike.baidu.com/pic/接口隔离原则/3104602/0/9a1151c2f64bcb7be5dd3bdc?fr=lemma&ct=single)
 
 下面是实现的代码.
 
 //--这儿不用
 
-[接口继承](https://baike.baidu.com/item/%E6%8E%A5%E5%8F%A3%E7%BB%A7%E6%89%BF/2475168)
+[接口继承](https://baike.baidu.com/item/接口继承/2475168)
 
 ,因为可能出现修改了父接口影响了
 
-[子接口](https://baike.baidu.com/item/%E5%AD%90%E6%8E%A5%E5%8F%A3)
+[子接口](https://baike.baidu.com/item/子接口)
 
