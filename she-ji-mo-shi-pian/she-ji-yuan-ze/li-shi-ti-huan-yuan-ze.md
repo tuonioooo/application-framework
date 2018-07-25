@@ -20,11 +20,7 @@ Liskov于1987年提出了一个关于继承的原则“Inheritance should ensure
 
 ## 形象理解
 
-我们来研究一下LSP的实质。学习OO的时候，我们知道，一个对象是一组状态和一系列行为的
-
-[组合体](https://baike.baidu.com/item/组合体)
-
-。状态是对象的内在特性，行为是对象的外在特性。LSP所表述的就是在同一个继承体系中的对象应该有共同的行为特征。
+我们来研究一下LSP的实质。学习OO的时候，我们知道，一个对象是一组状态和一系列行为的[组合体](https://baike.baidu.com/item/组合体)。状态是对象的内在特性，行为是对象的外在特性。LSP所表述的就是在同一个继承体系中的对象应该有共同的行为特征。
 
 这一点上，表明了OO的继承与日常生活中的继承的本质区别。举一个例子：生物学的分类体系中把企鹅归属为鸟类。我们模仿这个体系，设计出这样的类和关系。
 
@@ -38,15 +34,7 @@ Liskov于1987年提出了一个关于继承的原则“Inheritance should ensure
 
 LSP并没有提供解决这个问题的方案，而只是提出了这么一个问题。
 
-于是，工程师们开始关注如何确保对象的行为。1988年，B. Meyer提出了Design by Contract（
-
-[契约式设计](https://baike.baidu.com/item/契约式设计)
-
-）理论。DbC从
-
-[形式化方法](https://baike.baidu.com/item/形式化方法)
-
-中借鉴了一套确保对象行为和自身状态的方法，其基本概念很简单：
+于是，工程师们开始关注如何确保对象的行为。1988年，B. Meyer提出了Design by Contract（[契约式设计](https://baike.baidu.com/item/契约式设计)）理论。DbC从[形式化方法](https://baike.baidu.com/item/形式化方法)中借鉴了一套确保对象行为和自身状态的方法，其基本概念很简单：
 
 **Pre-condition:**
 
