@@ -8,7 +8,7 @@
     * [依赖倒置原则](she-ji-mo-shi-pian/she-ji-yuan-ze/yi-lai-dao-zhi-yuan-ze.md)
     * [接口隔离原则](she-ji-mo-shi-pian/she-ji-yuan-ze/jie-kou-ge-li-yuan-ze.md)
     * [迪米特法则](she-ji-mo-shi-pian/she-ji-yuan-ze/di-mi-te-fa-yuan-ze.md)
-    * 开闭原则
+    * [开闭原则](she-ji-mo-shi-pian/she-ji-yuan-ze/kai-bi-yuan-ze.md)
   * [代理模式](she-ji-mo-shi-pian/dai-li-mo-shi.md)
   * [工厂模式](she-ji-mo-shi-pian/gong-chang-mo-shi.md)
   * [策略模式](she-ji-mo-shi-pian/ce-lve-mo-shi.md)
