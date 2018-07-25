@@ -26,7 +26,7 @@
   * [Actuator系统监控](springbootpian/actuatorxi-tong-jian-kong.md)
     * 数据库、消息中间件
     * 自定义监控
-  * SpringBoot-CLI使用
+  * [SpringBoot-CLI使用](springbootpian/springboot-clishi-yong.md)
   * [环境配置化及打包](springbootpian/huan-jing-pei-zhi-hua-ji-da-bao.md)
     * 开发环境、测试环境、生成环境
   * 新注解特性分析
