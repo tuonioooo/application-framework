@@ -23,7 +23,7 @@
     * [消息队列](springbootpian/starterkuai-su-ji-cheng-zu-jian/xiao-xi-dui-lie.md)
     * [搜索引擎](springbootpian/starterkuai-su-ji-cheng-zu-jian/sou-suo-yin-qing.md)
     * [等..其他](springbootpian/starterkuai-su-ji-cheng-zu-jian/7b49-qi-ta.md)
-  * Autoconfigure自动化配置
+  * [Autoconfigure自动化配置](springbootpian/autoconfigurezi-dong-hua-pei-zhi.md)
   * [Actuator系统监控](springbootpian/actuatorxi-tong-jian-kong.md)
     * 数据库、消息中间件
     * 自定义监控
