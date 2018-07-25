@@ -78,9 +78,10 @@ public class SubClassB extends SuperClass{
 //this overriding is OK.
 public void methodA() throws FileNotFoundException{}
 }
-从Java5开始，子类中的方法的返回值也可以是对应的超类方法的返回值的子类。这叫做“
-协变
-”(Covariant)
+
+
+从Java5开始，子类中的方法的返回值也可以是对应的超类方法的返回值的子类。这叫做“协变”(Covariant)
+
 public class SuperClass {
 public Number caculate(){
 return null;
