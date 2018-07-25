@@ -10,7 +10,7 @@
     * 迪米特发原则
     * 开闭原则
   * [代理模式](she-ji-mo-shi-pian/dai-li-mo-shi.md)
-  * 工厂模式
+  * [工厂模式](she-ji-mo-shi-pian/gong-chang-mo-shi.md)
   * 策略模式
   * 常用设计模式在开源软件的应用
 
