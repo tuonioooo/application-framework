@@ -62,3 +62,11 @@ ConcreteStrategy\(具体策略类\)：
 
 2、 策略模式造成很多的策略类，每个具体策略类都会产生一个新类。有时候可以通过把依赖于环境的状态保存到客户端里面，而将策略类设计成可共享的，这样策略类实例可以被不同客户端使用。换言之，可以使用享元模式来减少对象的数量。
 
+### UML类图
+
+![](file:///C:\Users\tony\AppData\Roaming\Tencent\Users\596807862\QQ\WinTemp\RichOle\XF3%28`D%28W@HHIV[BH5CY7H]J.png)
+
+> 说明：应用示例请请参考文档
+
+
+
