@@ -59,8 +59,18 @@ springboot使用actuator的方式非常简单，只需要在项目中加入依�
 
 
 </project>
+```
+
+其余没有任何修改，没有新建任何类，在配置文件中加入了几条属性，配置文件如下：
+
+```
+##端口号
+server.port=8888
 
 
+##项目信息
+info.name=dalaoyang
+info.server.port=${server.port}
 ```
 
 
