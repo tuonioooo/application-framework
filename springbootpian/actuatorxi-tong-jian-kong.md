@@ -95,12 +95,9 @@ info.server.port=${server.port}
 | POST | /shutdown | 关闭应用 | true |
 | GET | /trace | 查看基本追踪信息 | true |
 
-  
+通过上面表格，我们可以在浏览器上访问
 
+[http://localhost:8888/health](https://link.jianshu.com/?t=http%3A%2F%2Flocalhost%3A8888%2Fhealth)
 
-
-
-
-
-
+可以看到如下图:
 
