@@ -101,9 +101,7 @@ info.server.port=${server.port}
 
 访问  [http://localhost:8888/info](https://link.jianshu.com/?t=http%3A%2F%2Flocalhost%3A8888%2Finfo)，可以看到
 
-
-
-
+![](/assets/import-actuator-03.png)
 
 
 
