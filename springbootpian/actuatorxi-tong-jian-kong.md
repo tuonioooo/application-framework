@@ -73,5 +73,5 @@ info.name=dalaoyang
 info.server.port=${server.port}
 ```
 
-
+然后启动项目可以看到：
 
