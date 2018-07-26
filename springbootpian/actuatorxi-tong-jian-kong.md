@@ -97,6 +97,18 @@ info.server.port=${server.port}
 
 通过上面表格，我们可以在浏览器上访问 [http://localhost:8888/health](https://link.jianshu.com/?t=http%3A%2F%2Flocalhost%3A8888%2Fhealth)  可以看到如下图:
 
+![](/assets/import-actuator-02.png)
+
+
+
+访问  [http://localhost:8888/info](https://link.jianshu.com/?t=http%3A%2F%2Flocalhost%3A8888%2Finfo)，可以看到
+
+
+
+
+
+
+
 
 
 
