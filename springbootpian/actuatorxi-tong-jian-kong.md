@@ -75,3 +75,11 @@ info.server.port=${server.port}
 
 然后启动项目可以看到：
 
+![](/assets/import-actuator-01.png)
+
+
+
+
+
+
+
