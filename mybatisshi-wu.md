@@ -144,9 +144,17 @@ public void commit() throws SQLException {
 
 如果是ManagedTransaction的commit\(\)方法，则为空方法不进行任何操作；
 
+```
+@Override
+public void commit() throws SQLException {
+  // Does nothing
+}
 
-
-
+@Override
+public void rollback() throws SQLException {
+  // Does nothing
+}
+```
 
 
 
