@@ -193,5 +193,11 @@ public void commit(boolean force) {
 }
 ```
 
+在关闭会话时会判断dirty是否为true，如果为true则需要进行事务回滚操作，否则直接关闭会话
+
+```
+
+```
+
 
 
