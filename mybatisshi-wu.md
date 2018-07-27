@@ -290,7 +290,27 @@ public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBoun
 
 在Mapper.xml文件解析时会根据文件中的标签或者创建Cache实例，并将该实例放入每一个MappedStatement中，在MappedStatement执行select操作时候会获取该cache;
 
-
+```
+@Override
+public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql)
+    throws SQLException {
+  Cache cache = ms.getCache();
+  if (cache != null) {
+    flushCacheIfRequired(ms);
+    if (ms.isUseCache() && resultHandler == null) {
+      ensureNoOutParams(ms, parameterObject, boundSql);
+      @SuppressWarnings("unchecked")
+      List<E> list = (List<E>) tcm.getObject(cache, key);
+      if (list == null) {
+        list = delegate.<E> query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+        tcm.putObject(cache, key, list); // issue #578 and #116
+      }
+      return list;
+    }
+  }
+  return delegate.<E> query(ms, parameterObject, rowBounds, resultHandler, key, boundSql);
+}
+```
 
 
 
