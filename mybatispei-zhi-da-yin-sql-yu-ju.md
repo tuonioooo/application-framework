@@ -13,7 +13,7 @@ log4j.appender.logfile=org.apache.log4j.FileAppender
 log4j.appender.logfile.File=D:/test.log
 log4j.appender.logfile.layout=org.apache.log4j.PatternLayout
 log4j.appender.logfile.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %F %p %m%n
- 
+
 ###显示SQL语句部分
 log4j.logger.com.ibatis=DEBUG
 log4j.logger.com.ibatis.common.jdbc.SimpleDataSource=DEBUG
@@ -22,6 +22,16 @@ log4j.logger.com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate=DEBUG
 log4j.logger.java.sql.Connection=DEBUG
 log4j.logger.java.sql.Statement=DEBUG
 log4j.logger.java.sql.PreparedStatement=DEBUG
+```
+
+或者只加上
+
+```
+###显示SQL语句部分
+
+log4j.logger.java.sql.Connection=DEBUG
+log4j.logger.java.sql.PreparedStatement=DEBUG
+log4j.logger.java.sql.ResultSet=DEBUG
 ```
 
 
