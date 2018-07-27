@@ -246,5 +246,53 @@ public void close(boolean forceRollback) {
 
 事务对select操作的影响主要体现在对缓存的影响上，主要包括一级缓存和二级缓存
 
+### 一级缓存 {#一级缓存}
+
+因为一级缓存是Session级别的，事务的提交回滚对MyBatis的一级缓存没有影响；一级缓存放在BaseExector中的PerpectualCache类型的localCache中；
+
+```
+public <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
+  ErrorContext.instance().resource(ms.getResource()).activity("executing a query").object(ms.getId());
+  if (closed) {
+    throw new ExecutorException("Executor was closed.");
+  }
+  if (queryStack == 0 && ms.isFlushCacheRequired()) {
+    clearLocalCache();
+  }
+  List<E> list;
+  try {
+    queryStack++;
+    list = resultHandler == null ? (List<E>) localCache.getObject(key) : null;
+    if (list != null) {
+      handleLocallyCachedOutputParameters(ms, key, parameter, boundSql);
+    } else {
+      list = queryFromDatabase(ms, parameter, rowBounds, resultHandler, key, boundSql);
+    }
+  } finally {
+    queryStack--;
+  }
+  if (queryStack == 0) {
+    for (DeferredLoad deferredLoad : deferredLoads) {
+      deferredLoad.load();
+    }
+    // issue #601
+    deferredLoads.clear();
+    if (configuration.getLocalCacheScope() == LocalCacheScope.STATEMENT) {
+      // issue #482
+      clearLocalCache();
+    }
+  }
+  return list;
+}
+```
+
+### 二级缓存 {#二级缓存}
+
+在Mapper.xml文件解析时会根据文件中的标签或者创建Cache实例，并将该实例放入每一个MappedStatement中，在MappedStatement执行select操作时候会获取该cache;
+
+
+
+
+
 
 
