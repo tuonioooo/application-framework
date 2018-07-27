@@ -242,5 +242,11 @@ public void close(boolean forceRollback) {
 }
 ```
 
+## 事务对SELECT的影响 {#3-事务对select的影响}
+
+事务对select操作的影响主要体现在对缓存的影响上，主要包括一级缓存和二级缓存
+
+### 一级缓存 {#一级缓存}
+
 
 
