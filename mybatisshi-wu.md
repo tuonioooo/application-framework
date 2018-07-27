@@ -89,5 +89,30 @@ session.close();
 >
 > 如果type=”MANAGED”则使用ManagedTransactionFactory事务工厂则MyBatis不在ORM层管理事务而是将事务管理托付给其他框架，如Spring
 
+## 事务对UPDATE操作的影响 {#2-事务对update操作的影响}
+
+### 事务的提交 {#事务的提交}
+
+在sqlSession中执行了UPDATE操作，需要执行sqlSession.commit\(\)方法提交事务，不然在连接关闭时候会自动回滚；
+
+```
+@Override
+public void commit() {
+  commit(false);
+}
+
+@Override
+public void commit(boolean force) {
+  try {
+    executor.commit(isCommitOrRollbackRequired(force));
+    dirty = false;
+  } catch (Exception e) {
+    throw ExceptionFactory.wrapException("Error committing transaction.  Cause: " + e, e);
+  } finally {
+    ErrorContext.instance().reset();
+  }
+}
+```
+
 
 
