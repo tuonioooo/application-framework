@@ -64,5 +64,5 @@ public class InterceptorChain {
 }
 ```
 
-
+分别有添加拦截器、为目标对象添加所有拦截器、获取当前所有拦截器三个方法。
 
