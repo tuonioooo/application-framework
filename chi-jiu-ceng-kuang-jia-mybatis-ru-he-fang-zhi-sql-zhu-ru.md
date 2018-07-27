@@ -12,7 +12,7 @@
 
 ⑴ 某个[ASP.NET](https://baike.baidu.com/item/ASP.NET/197912)Web应用有一个登录页面，这个登录页面控制着用户是否有权访问应用，它要求用户输入一个名称和密码。
 
-⑵ 登录页面中输入的内容将直接用来构造动态的SQL命令，或者直接用作[存储过程](https://baike.baidu.com/item/%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B)的参数。下面是ASP.NET应用构造查询的一个例子：
+⑵ 登录页面中输入的内容将直接用来构造动态的SQL命令，或者直接用作[存储过程](https://baike.baidu.com/item/存储过程)的参数。下面是ASP.NET应用构造查询的一个例子：
 
 System.Text.StringBuilder query = new System.Text.StringBuilder\("SELECT \* from Users WHERE login = '"\).
 
@@ -32,5 +32,82 @@ SELECT \* from Users WHERE login = '' or '1'='1' AND password = '' or '1'='1'。
 
 ⑹ 由于SQL命令实际上已被注入式攻击修改，已经不能真正验证用户身份，所以系统会错误地授权给攻击者。
 
-如果攻击者知道应用会将[表单](https://baike.baidu.com/item/%E8%A1%A8%E5%8D%95)中输入的内容直接用于验证身份的查询，他就会尝试输入某些特殊的SQL字符串篡改查询改变其原来的功能，欺骗系统授予[访问](https://baike.baidu.com/item/%E8%AE%BF%E9%97%AE)权限。
+如果攻击者知道应用会将[表单](https://baike.baidu.com/item/表单)中输入的内容直接用于验证身份的查询，他就会尝试输入某些特殊的SQL字符串篡改查询改变其原来的功能，欺骗系统授予[访问](https://baike.baidu.com/item/访问)权限。
+
+## \#和$ 在SQL语句中使用区别
+
+```
+<select id="selectByNameAndPassword" parameterType="java.util.Map" resultMap="BaseResultMap">
+select 
+    id, username, password, role 
+from 
+    user
+where 
+    username = #{username,jdbcType=VARCHAR} 
+    and 
+    password = #{password,jdbcType=VARCHAR}
+</select>
+```
+
+```
+<select id="selectByNameAndPassword" parameterType="java.util.Map" resultMap="BaseResultMap">
+select 
+    id, username, password, role
+from 
+    user
+where 
+    username = ${username,jdbcType=VARCHAR}
+    and 
+    password = ${password,jdbcType=VARCHAR}
+</select>
+```
+
+**mybatis中的\#和$的区别：**
+
+1、\#将传入的数据都当成一个字符串，会对自动传入的数据加一个双引号。
+
+  
+
+
+如：where username=\#{username}，如果传入的值是111,那么解析成sql时的值为where username="111", 如果传入的值是id，则解析成的sql为where username="id".　
+
+  
+
+
+2、$将传入的数据直接显示生成在sql中。
+
+  
+
+
+如：where username=${username}，如果传入的值是111,那么解析成sql时的值为where username=111；
+
+  
+
+
+如果传入的值是;drop table user;，则解析成的sql为：select id, username, password, role from user where username=;drop table user;
+
+  
+
+
+3、\#方式能够很大程度防止sql注入，$方式无法防止Sql注入。
+
+  
+
+
+4、$方式一般用于传入数据库对象，例如传入表名.
+
+  
+
+
+5、一般能用\#的就别用$，若不得不使用“${xxx}”这样的参数，要手工地做好过滤工作，来防止sql注入攻击。
+
+  
+
+
+6、在MyBatis中，“${xxx}”这样格式的参数会直接参与SQL编译，从而不能避免注入攻击。但涉及到动态表名和列名时，只能使用“${xxx}”这样的参数格式。所以，这样的参数需要我们在代码中手工进行处理来防止注入。
+
+  
+
+
+【结论】在编写MyBatis的映射语句时，尽量采用“\#{xxx}”这样的格式。若不得不使用“${xxx}”这样的参数，要手工地做好过滤工作，来防止SQL注入攻击。
 
