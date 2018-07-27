@@ -132,11 +132,11 @@ private static Map<Class<?>, Set<Method>> getSignatureMap(Interceptor intercepto
     }
 ```
 
-
-
-
-
-
+> 看到先拿@Intercepts注解，如果没有定义@Intercepts注解，抛出异常，这意味着**使用MyBatis的插件，必须使用注解方式**。
+>
+> 接着拿到@Intercepts注解下的所有@Signature注解，获取其type属性（表示具体某个接口），再根据method与args两个属性去type下找方法签名一致的方法Method（如果没有方法签名一致的就抛出异常，此签名的方法在该接口下找不到），能找到的话key=type，value=Set&lt;Method&gt;，添加到signatureMap中，构建出一个方法签名映射。举个例子来说，就是我定义的@Intercepts注解，Executor下我要拦截的所有Method、StatementHandler下我要拦截的所有Method。
+>
+> 回过头继续看wrap方法，在拿到方法签名映射后，调用getAllInterfaces方法，传入的是Target的Class对象以及之前获取到的方法签名映射：
 
 
 
