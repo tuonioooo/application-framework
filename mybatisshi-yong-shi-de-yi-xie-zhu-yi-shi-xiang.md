@@ -7,7 +7,6 @@
 示例1：
 
 ```
-
 传入参数为‘parentCategoryId’，运行报错为：There is no getter for property named 'parentCategoryId' in 'class java.lang.String
 
 <select id="selectCategoryList" parameterType="java.lang.String" resultType="MstCategoryBean">
@@ -88,7 +87,7 @@ from job_module
 <when test="_parameter==null or _parameter==''">(parentmodule is null or len(parentmodule)&lt;=0)</when>
 </choose>
 </where>
-lt;/select>
+</select>
  不管你的参数是什么，都要改成"_parameter"；
 ```
 
