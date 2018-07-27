@@ -42,7 +42,7 @@ public interface Transaction {
 
 ## MyBatis事务遇到的问题 {#0-mybatis事务遇到的问题}
 
-* 如果开启MyBatis事务管理，则需要手动进行事务提交，否则事务会回滚到原状态;
+如果开启MyBatis事务管理，则需要手动进行事务提交，否则事务会回滚到原状态;
 
 ```
 String resource = "mybatis/config.xml";
@@ -80,6 +80,10 @@ session.insert(statement,user);
 session.commit();
 session.close();
 ```
+
+## 事务管理入口 {#1-事务管理入口}
+
+在XML配置文件中定义事务工厂类型，JDBC或者MANAGED分别对应JdbcTransactionFactory.class和ManagedTransactionFactory.class;
 
 
 
