@@ -160,7 +160,7 @@ public void rollback() throws SQLException {
 
 sqlSession执行close\(\)关闭操作时，如果close\(\)操作之前进行了UPDATE操作未进行commit\(\)事务提交则会进行事务回滚然后再关闭会话；如果update后执行了commit则直接关闭会话；
 
-> 在DefaultSqlSession类中如果执行了UPDATE操作则会将标志位dirty赋值为true
+在DefaultSqlSession类中如果执行了UPDATE操作则会将标志位dirty赋值为true
 
 ```
 @Override
@@ -171,6 +171,22 @@ public int update(String statement, Object parameter) {
     return executor.update(ms, wrapCollection(parameter));
   } catch (Exception e) {
     throw ExceptionFactory.wrapException("Error updating database.  Cause: " + e, e);
+  } finally {
+    ErrorContext.instance().reset();
+  }
+}
+```
+
+在事务提交时会将dirty赋值为false;
+
+```
+@Override
+public void commit(boolean force) {
+  try {
+    executor.commit(isCommitOrRollbackRequired(force));
+    dirty = false;
+  } catch (Exception e) {
+    throw ExceptionFactory.wrapException("Error committing transaction.  Cause: " + e, e);
   } finally {
     ErrorContext.instance().reset();
   }
