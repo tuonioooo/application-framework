@@ -33,7 +33,7 @@
   * [Mybatis基础教程](mybatisji-chu-jiao-cheng.md)
   * [Sqlsession原理](sqlsessionyuan-li.md)
   * [Mybatis代码架构分析](mybatisdai-ma-jia-gou-fen-xi.md)
-  * Mybatis事务
+  * [Mybatis事务](mybatisshi-wu.md)
   * 结果/参数绑定
   * Mybatis插件拓展
   * 自带缓存机制与Spring结合实现缓存
