@@ -312,7 +312,15 @@ public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds r
 }
 ```
 
+#### 查询二级缓存 {#查询二级缓存}
 
+根据Statement所在的Mapper的cache缓存对象和根据statement生成的cacheKey，从正式缓存中取缓存数据
+
+```
+List<E> list = (List<E>) tcm.getObject(cache, key);
+```
+
+根据Statement所在的Mapper的cache缓存对象在TransactionManager中定位对应的TransactionCache，TransactionCache中保存这正式缓存delegate和临时未提交缓存entiryToAddOnCommit；
 
 
 
