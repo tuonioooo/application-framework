@@ -94,5 +94,19 @@ select id, username, password, role from user where username=? and password=?
 
 不管输入什么参数，打印出的SQL都是这样的。这是因为MyBatis启用了预编译功能，在SQL执行前，会先将上面的SQL发送给数据库进行编译；执行时，直接使用编译好的SQL，替换占位符“?”就可以了。因为SQL注入只能对编译过程起作用，所以这样的方式就很好地避免了SQL注入的问题。
 
-　　【底层实现原理】MyBatis是如何做到SQL预编译的呢？其实在框架底层，是JDBC中的PreparedStatement类在起作用，PreparedStatement是我们很熟悉的Statement的子类，它的对象包含了编译好的SQL语句。这种“准备好”的方式不仅能提高安全性，而且在多次执行同一个SQL时，能够提高效率。原因是SQL已编译好，再次执行时无需再编译。
+**底层实现原理MyBatis是如何做到SQL预编译的呢？**
+
+其实在框架底层，是JDBC中的PreparedStatement类在起作用，PreparedStatement是我们很熟悉的Statement的子类，它的对象包含了编译好的SQL语句。这种“准备好”的方式不仅能提高安全性，而且在多次执行同一个SQL时，能够提高效率。原因是SQL已编译好，再次执行时无需再编译。
+
+```
+//安全的，预编译了的
+Connection conn = getConn();//获得连接
+String sql = "select id, username, password, role from user where id=?"; //执行sql前会预编译好该条语句
+PreparedStatement pstmt = conn.prepareStatement(sql); 
+pstmt.setString(1, id); 
+ResultSet rs=pstmt.executeUpdate(); 
+......
+```
+
+
 
