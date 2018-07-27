@@ -216,5 +216,31 @@ private boolean isCommitOrRollbackRequired(boolean force) {
 }
 ```
 
+如果dirty为true则判定forceRollback为true，执行回滚操作；
+
+```
+@Override
+public void close(boolean forceRollback) {
+  try {
+    try {
+      rollback(forceRollback);
+    } finally {
+      if (transaction != null) {
+        transaction.close();
+      }
+    }
+  } catch (SQLException e) {
+    // Ignore.  There's nothing that can be done at this point.
+    log.warn("Unexpected exception on closing transaction.  Cause: " + e);
+  } finally {
+    transaction = null;
+    deferredLoads = null;
+    localCache = null;
+    localOutputParameterCache = null;
+    closed = true;
+  }
+}
+```
+
 
 
