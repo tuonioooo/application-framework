@@ -225,5 +225,7 @@ public Object invoke(Object proxy, Method method, Object[] args) throws Throwabl
 }
 ```
 
+在这里，将method对应的Class拿出来，获取该Class中有哪些方法签名，换句话说就是Executor、ParameterHandler、ResultSetHandler、StatementHandler，在@Intercepts注解中定义了要拦截哪些方法签名。
 
+如果当前调用的方法的方法签名在方法签名集合中，即满足第4行的判断，那么调用拦截器的intercept方法，否则方法原样调用，不会执行拦截器。
 
