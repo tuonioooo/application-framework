@@ -1,11 +1,11 @@
 # 使用代码生成器快速开发
 
-参考示例及使用说明：
+## 生成器插件及使用说明：
 
 * 官方生成器插件： [https://github.com/tuonioooo/mybatis-maven-plugin](https://github.com/tuonioooo/mybatis-maven-plugin)
-* 自主研发生成器插件：[https://github.com/tuonioooo/mybatis-third-generate](https://github.com/tuonioooo/mybatis-third-generate) 
+* 自主研发生成器插件：[https://github.com/tuonioooo/mybatis-third-generate](https://github.com/tuonioooo/mybatis-third-generate)
 
-* Mybatis-Generator自动生成Dao、Model、Mapping相关文件
+## 第三方插件Mybatis-Generator自动生成Dao、Model、Mapping相关文件
 
 **1、相关文件**
 
@@ -59,15 +59,12 @@ generatorConfig.xml
 </generatorConfiguration>
 ```
 
-
-
 需要修改文件配置的地方我都已经把注释标注出来了，这里的相关路径（如数据库驱动包，生成对应的相关文件位置可以自定义）不能带有中文。
 
 上面配置文件中的：
 
 ```
 <table tableName="message" domainObjectName="Messgae" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-
 ```
 
 tableName和domainObjectName为必选项，分别代表数据库表名和生成的实力类名，其余的可以自定义去选择（一般情况下均为false）。
