@@ -167,9 +167,25 @@ if (interfaces.length > 0) {
 return target;
 ```
 
+如果当前传入的Target的接口中有@Intercepts注解中定义的接口，那么为之生成代理，否则原Target返回。
 
+这段理论可能大家会看得有点云里雾里，我这里举个例子：
 
+```
+就以SqlCostPlugin为例，我的@Intercepts定义的是：
+@Intercepts({@Signature(type = StatementHandler.class, method = "query", args = {Statement.class, ResultHandler.class}), @Signature(type = StatementHandler.class, 
+method = "update", args = {Statement.class})})
 
+此时，生成的方法签名映射signatureMap应当是（我这里把Map给toString()了）：
+{interface org.apache.ibatis.executor.statement.StatementHandler=[public abstract int org.apache.ibatis.executor.statement.StatementHandler.update(java.sql.
+Statement) throws java.sql.SQLException, public abstract java.util.List org.apache.ibatis.executor.statement.StatementHandler.query(java.sql.Statement,org.apache.
+ibatis.session.ResultHandler) throws java.sql.SQLException]}
+一个Class对应一个Set，Class为StatementHandler.class，Set为StataementHandler中的两个方法
+
+如果我new的是StatementHandler接口的实现类，那么可以为之生成代理，因为signatureMap中的key有StatementHandler这个接口
+
+如果我new的是Executor接口的实现类，那么直接会把Executor接口的实现类原样返回，因为signatureMap中的key并没有Executor这个接口
+```
 
 
 
