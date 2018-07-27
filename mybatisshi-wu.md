@@ -196,7 +196,24 @@ public void commit(boolean force) {
 在关闭会话时会判断dirty是否为true，如果为true则需要进行事务回滚操作，否则直接关闭会话
 
 ```
+@Override
+public void close() {
+  try {
+    executor.close(isCommitOrRollbackRequired(false));
+    closeCursors();
+    dirty = false;
+  } finally {
+    ErrorContext.instance().reset();
+  }
+}
+```
 
+判断dirty标志是否为true
+
+```
+private boolean isCommitOrRollbackRequired(boolean force) {
+  return (!autoCommit && dirty) || force;
+}
 ```
 
 
