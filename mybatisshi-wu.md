@@ -65,5 +65,21 @@ session.close();
 >
 > 如果不执行sqlSession.commit\(\)操作也不手动关闭sqlSession，在程序结束时关闭数据库连接时会进行事务回滚；
 
+```
+String resource = "mybatis/config.xml";
+InputStream is = Main.class.getClassLoader().getResourceAsStream(resource);
+SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(is);
+SqlSession session = sessionFactory.openSession();
+
+User user = new User();
+user.setName("liuliu");
+user.setPassword("123123");
+user.setScore("88");
+String statement = "mybatis.mapping.UserMapper.insertUser";
+session.insert(statement,user);
+session.commit();
+session.close();
+```
+
 
 
