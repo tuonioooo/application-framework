@@ -2,8 +2,6 @@
 
 官网详细教程：[http://www.mybatis.org/mybatis-3/zh/configuration.html\#plugins](http://www.mybatis.org/mybatis-3/zh/configuration.html#plugins)
 
-
-
 ## **插件原理**
 
 * 首先，我们从插件&lt;plugins&gt;解析开始，源码位于XMLConfigBuilder的pluginElement方法中：
@@ -36,6 +34,34 @@ private void pluginElement(XNode parent) throws Exception {
 public void addInterceptor(Interceptor interceptor) {
         this.interceptorChain.addInterceptor(interceptor);
     }
+```
+
+InterceptorChain是一个拦截器链，存储了所有定义的拦截器以及相关的几个操作的方法：
+
+```
+public class InterceptorChain {
+    private final List<Interceptor> interceptors = new ArrayList();
+
+    public InterceptorChain() {
+    }
+
+    public Object pluginAll(Object target) {
+        Interceptor interceptor;
+        for(Iterator var2 = this.interceptors.iterator(); var2.hasNext(); target = interceptor.plugin(target)) {
+            interceptor = (Interceptor)var2.next();
+        }
+
+        return target;
+    }
+
+    public void addInterceptor(Interceptor interceptor) {
+        this.interceptors.add(interceptor);
+    }
+
+    public List<Interceptor> getInterceptors() {
+        return Collections.unmodifiableList(this.interceptors);
+    }
+}
 ```
 
 
