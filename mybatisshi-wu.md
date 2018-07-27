@@ -156,5 +156,26 @@ public void rollback() throws SQLException {
 }
 ```
 
+### 事务的回滚 {#事务的回滚}
+
+sqlSession执行close\(\)关闭操作时，如果close\(\)操作之前进行了UPDATE操作未进行commit\(\)事务提交则会进行事务回滚然后再关闭会话；如果update后执行了commit则直接关闭会话；
+
+> 在DefaultSqlSession类中如果执行了UPDATE操作则会将标志位dirty赋值为true
+
+```
+@Override
+public int update(String statement, Object parameter) {
+  try {
+    dirty = true;
+    MappedStatement ms = configuration.getMappedStatement(statement);
+    return executor.update(ms, wrapCollection(parameter));
+  } catch (Exception e) {
+    throw ExceptionFactory.wrapException("Error updating database.  Cause: " + e, e);
+  } finally {
+    ErrorContext.instance().reset();
+  }
+}
+```
+
 
 
