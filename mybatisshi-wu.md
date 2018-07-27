@@ -42,3 +42,31 @@ public interface Transaction {
 
 
 
+## MyBatis事务遇到的问题 {#0-mybatis事务遇到的问题}
+
+* 如果开启MyBatis事务管理，则需要手动进行事务提交，否则事务会回滚到原状态;
+
+```
+String resource = "mybatis/config.xml";
+InputStream is = Main.class.getClassLoader().getResourceAsStream(resource);
+SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(is);
+SqlSession session = sessionFactory.openSession();
+
+User user = new User();
+user.setName("liuliu");
+user.setPassword("123123");
+user.setScore("88");
+String statement = "mybatis.mapping.UserMapper.insertUser";
+session.insert(statement,user);
+session.close();
+
+```
+
+* 如果在具体操作执行完后不通过sqlSession.commit\(\)方法提交事务，事务在sqlSession关闭时会自动回滚到原状态；只有执行了commit\(\)事务提交方法才会真正完成操作；
+* 如果不执行sqlSession.commit\(\)操作，直接执行sqlSession.close\(\)，则会在close\(\)中进行事务回滚；
+* 如果不执行sqlSession.commit\(\)操作也不手动关闭sqlSession，在程序结束时关闭数据库连接时会进行事务回滚；
+
+
+
+
+
