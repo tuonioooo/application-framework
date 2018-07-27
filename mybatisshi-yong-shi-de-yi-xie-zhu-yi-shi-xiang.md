@@ -91,13 +91,13 @@ from job_module
  不管你的参数是什么，都要改成"_parameter"；
 ```
 
-3.Error parsing Mapper XML  IllegalArgumentException: Mapped Statements collection already contains value for .......
+3.Error parsing Mapper XML  IllegalArgumentException: Mapped Statements collection already contains value for .......
 
 目前知道有三个原因：
 
-1.parameterMap改成parameterType...
+* 1.parameterMap改成parameterType...
+* id 重复
+* 3 parameterType参数有问题
 
-2. id 重复
 
-3 parameterType参数有问题
 
