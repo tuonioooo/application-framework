@@ -1,6 +1,8 @@
 # Mybatis事务
 
-**事务管理器（transactionManager）**
+## 概述
+
+### **事务管理器（transactionManager）**
 
 在 MyBatis 中有两种类型的事务管理器（也就是 type=”\[JDBC\|MANAGED\]”）：
 
@@ -37,4 +39,6 @@ public interface Transaction {
 ```
 
 使用这两个接口，你可以完全自定义 MyBatis 对事务的处理。
+
+
 
