@@ -129,5 +129,18 @@ public void commit(boolean required) throws SQLException {
 }
 ```
 
+如果是JdbcTransaction的commit\(\)方法，通过调用connection.commit\(\)方法通过数据库连接实现事务提交；
+
+```
+public void commit() throws SQLException {
+  if (connection != null && !connection.getAutoCommit()) {
+    if (log.isDebugEnabled()) {
+      log.debug("Committing JDBC Connection [" + connection + "]");
+    }
+    connection.commit();
+  }
+}
+```
+
 
 
