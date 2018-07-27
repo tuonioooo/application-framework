@@ -28,7 +28,6 @@ log4j.logger.java.sql.PreparedStatement=DEBUG
 
 ```
 ###显示SQL语句部分
-
 log4j.logger.java.sql.Connection=DEBUG
 log4j.logger.java.sql.PreparedStatement=DEBUG
 log4j.logger.java.sql.ResultSet=DEBUG
