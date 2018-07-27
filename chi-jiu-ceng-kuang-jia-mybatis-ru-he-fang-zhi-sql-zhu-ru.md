@@ -34,6 +34,8 @@ SELECT \* from Users WHERE login = '' or '1'='1' AND password = '' or '1'='1'。
 
 如果攻击者知道应用会将[表单](https://baike.baidu.com/item/表单)中输入的内容直接用于验证身份的查询，他就会尝试输入某些特殊的SQL字符串篡改查询改变其原来的功能，欺骗系统授予[访问](https://baike.baidu.com/item/访问)权限。
 
+相关的示例参考：[https://www.cnblogs.com/sdya/p/4568548.html](https://www.cnblogs.com/sdya/p/4568548.html)
+
 ## \#和$ 在SQL语句中使用区别
 
 ```
