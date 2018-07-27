@@ -153,5 +153,23 @@ private static Class<?>[] getAllInterfaces(Class<?> type, Map<Class<?>, Set<Meth
 }
 ```
 
+这里获取Target的所有接口，如果方法签名映射中有这个接口，那么添加到interfaces中，这是一个Set，最终将Set转换为数组返回。
+
+wrap方法的最后一步：
+
+```
+if (interfaces.length > 0) {
+  return Proxy.newProxyInstance(
+      type.getClassLoader(),
+      interfaces,
+      new Plugin(target, interceptor, signatureMap));
+}
+return target;
+```
+
+
+
+
+
 
 
