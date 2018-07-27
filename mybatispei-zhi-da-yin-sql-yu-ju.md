@@ -1,5 +1,7 @@
 # Mybatis配置打印SQL语句
 
+* log4j整个文件
+
 ```
 #将ibatis log4j运行级别调到DEBUG可以在控制台打印出ibatis运行的sql语句
 
@@ -24,14 +26,15 @@ log4j.logger.java.sql.Statement=DEBUG
 log4j.logger.java.sql.PreparedStatement=DEBUG
 ```
 
-或者只加上
-
-```
-###显示SQL语句部分
-log4j.logger.java.sql.Connection=DEBUG
-log4j.logger.java.sql.PreparedStatement=DEBUG
-log4j.logger.java.sql.ResultSet=DEBUG
-```
+> 说明：
+>
+> \#\#\#显示SQL语句部分也可以写成
+>
+> log4j.logger.java.sql.Connection=DEBUG
+>
+> log4j.logger.java.sql.Statement=DEBUG
+>
+> log4j.logger.java.sql.PreparedStatement=DEBUG
 
 
 
