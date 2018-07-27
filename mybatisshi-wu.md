@@ -114,5 +114,20 @@ public void commit(boolean force) {
 }
 ```
 
+exector.commit\(\)事务提交方法归根到底是调用了transaction.commit\(\)事务的提交方法；这里的transaction就是根据配置对应的JdbcTransaction或者ManagedTransaction；
+
+```
+public void commit(boolean required) throws SQLException {
+  if (closed) {
+    throw new ExecutorException("Cannot commit, transaction is already closed");
+  }
+  clearLocalCache();
+  flushStatements();
+  if (required) {
+    transaction.commit();
+  }
+}
+```
+
 
 
