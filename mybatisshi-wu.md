@@ -328,5 +328,25 @@ public Object getObject(Cache cache, CacheKey key) {
 }
 ```
 
+获取缓存时直接从正式缓存delegate中查询
+
+```
+
+@Override
+public Object getObject(Object key) {
+  // issue #116
+  Object object = delegate.getObject(key);
+  if (object == null) {
+    entriesMissedInCache.add(key);
+  }
+  // issue #146
+  if (clearOnCommit) {
+    return null;
+  } else {
+    return object;
+  }
+}
+```
+
 
 
