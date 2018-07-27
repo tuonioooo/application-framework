@@ -98,5 +98,45 @@ public static Object wrap(Object target, Interceptor interceptor) {
     }
 ```
 
+首先看一下第2行的代码，获取Interceptor上定义的所有方法签名：
+
+```
+private static Map<Class<?>, Set<Method>> getSignatureMap(Interceptor interceptor) {
+        Intercepts interceptsAnnotation = (Intercepts)interceptor.getClass().getAnnotation(Intercepts.class);
+        if (interceptsAnnotation == null) {
+            throw new PluginException("No @Intercepts annotation was found in interceptor " + interceptor.getClass().getName());
+        } else {
+            Signature[] sigs = interceptsAnnotation.value();
+            Map<Class<?>, Set<Method>> signatureMap = new HashMap();
+            Signature[] var4 = sigs;
+            int var5 = sigs.length;
+
+            for(int var6 = 0; var6 < var5; ++var6) {
+                Signature sig = var4[var6];
+                Set<Method> methods = (Set)signatureMap.get(sig.type());
+                if (methods == null) {
+                    methods = new HashSet();
+                    signatureMap.put(sig.type(), methods);
+                }
+
+                try {
+                    Method method = sig.type().getMethod(sig.method(), sig.args());
+                    ((Set)methods).add(method);
+                } catch (NoSuchMethodException var10) {
+                    throw new PluginException("Could not find method on " + sig.type() + " named " + sig.method() + ". Cause: " + var10, var10);
+                }
+            }
+
+            return signatureMap;
+        }
+    }
+```
+
+
+
+
+
+
+
 
 
