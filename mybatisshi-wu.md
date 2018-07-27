@@ -331,7 +331,6 @@ public Object getObject(Cache cache, CacheKey key) {
 获取缓存时直接从正式缓存delegate中查询
 
 ```
-
 @Override
 public Object getObject(Object key) {
   // issue #116
@@ -344,6 +343,86 @@ public Object getObject(Object key) {
     return null;
   } else {
     return object;
+  }
+}
+```
+
+#### 存储二级缓存 {#存储二级缓存}
+
+如果从二级缓存中未命中缓存，则需要从数据库中查取，再将查询结果放入二级缓存中；查询结果首先放入二级缓存临时缓存中，只有执行了commit\(\)事务提交才正式转移到正式缓存中；也就是说只有执行了commit\(\)方法的缓存才被下次查询使用，不然仍会执行数据库查询任务并覆盖上次的临时缓存；
+
+根据Statement所在的Mapper的cache缓存对象在TransactionManager中定位对应的TransactionCache
+
+```
+public void putObject(Cache cache, CacheKey key, Object value) {
+  getTransactionalCache(cache).putObject(key, value);
+}
+```
+
+将数据放入TransactionCache中的临时缓存entiryToAddOnCommit中
+
+```
+public void putObject(Object key, Object object) {
+  entriesToAddOnCommit.put(key, object);
+}
+```
+
+#### 提交二级缓存 {#提交二级缓存}
+
+执行事务提交时候会调用TransactionCacheManager内的commit\(\)方法提交缓存，每一个cachingExecutor对应一个TransactionCacheManager，也就是一个SqlSeesion对应一个TransactionCacheManager，因此sqlSession.commit\(\)是提交了当前会话的所以二级缓存的临时缓存；每个sqlSession对每一个Mapper的cache都有一个临时缓存，多个sqlSession共享一个Mapper的cache的正式缓存；
+
+```
+public void commit() {
+  for (TransactionalCache txCache : transactionalCaches.values()) {
+    txCache.commit();
+  }
+}
+```
+
+```
+public void commit() {
+  if (clearOnCommit) {
+    delegate.clear();
+  }
+  flushPendingEntries();
+  reset();
+}
+```
+
+将临时缓存entiryToAddOnCommit中的数据转移到正式缓存delegate中
+
+```
+private void flushPendingEntries() {
+  for (Map.Entry<Object, Object> entry : entriesToAddOnCommit.entrySet()) {
+    delegate.putObject(entry.getKey(), entry.getValue());
+  }
+  for (Object entry : entriesMissedInCache) {
+    if (!entriesToAddOnCommit.containsKey(entry)) {
+      delegate.putObject(entry, null);
+    }
+  }
+}
+```
+
+#### 回滚二级缓存 {#回滚二级缓存}
+
+* 如果之前未执行UPDATE操作，dirty标志为false，在关闭会话之前没有进行事务提交则进行数据库回滚和缓存提交；
+
+* 如果执行了UPDATE操作，dirty标志为true，在关闭会话之前没有进行事务提交则进行数据库回滚和缓存回滚；
+
+* 可以调用session.close\(true\)关闭会话时强行回滚缓存；
+
+```
+@Override
+public void close(boolean forceRollback) {
+  try {
+    if (forceRollback) { 
+      tcm.rollback();
+    } else {
+      tcm.commit();
+    }
+  } finally {
+    delegate.close(forceRollback);
   }
 }
 ```
