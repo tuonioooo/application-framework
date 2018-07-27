@@ -108,5 +108,18 @@ ResultSet rs=pstmt.executeUpdate();
 ......
 ```
 
+```
+//不安全的，没进行预编译
+private String getNameByUserId(String userId) {
+    Connection conn = getConn();//获得连接
+    String sql = "select id,username,password,role from user where id=" + id;
+    //当id参数为"3;drop table user;"时，执行的sql语句如下:
+    //select id,username,password,role from user where id=3; drop table user;  
+    PreparedStatement pstmt =  conn.prepareStatement(sql);
+    ResultSet rs=pstmt.executeUpdate();
+    ......
+}
+```
+
 
 
