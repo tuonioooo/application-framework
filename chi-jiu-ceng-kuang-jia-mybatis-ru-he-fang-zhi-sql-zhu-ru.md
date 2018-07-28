@@ -20,7 +20,7 @@ System.Text.StringBuilder query = new System.Text.StringBuilder\("SELECT \* from
 
 .Append\(txtPassword.Text\).Append\("'"\);
 
-⑶ 攻击者在用户名字和密码输入框中输入"'或'1'='1"之类的内容，例如a' or '1'='1。
+⑶ 攻击者在用户名字和密码输入框中输入"'或'1'='1"之类的内容，例如'a' or '1'='1'。
 
 ⑷ 用户输入的内容提交给服务器之后，服务器运行上面的[ASP.NET](https://baike.baidu.com/item/ASP.NET/197912)
 

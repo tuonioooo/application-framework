@@ -1,6 +1,10 @@
 # Mybatis配置打印SQL语句
 
-* log4j整个文件
+* mybatis配置日志框架
+
+见官方网址：[http://www.mybatis.org/mybatis-3/zh/logging.html](http://www.mybatis.org/mybatis-3/zh/logging.html)
+
+* demo示例：配置log4j整个文件
 
 ```
 #将ibatis log4j运行级别调到DEBUG可以在控制台打印出ibatis运行的sql语句
@@ -35,6 +39,8 @@ log4j.logger.java.sql.PreparedStatement=DEBUG
 > log4j.logger.java.sql.Statement=DEBUG
 >
 > log4j.logger.java.sql.PreparedStatement=DEBUG
+
+
 
 
 
