@@ -95,9 +95,14 @@ from job_module
 
 目前知道有三个原因：
 
-* 1.parameterMap改成parameterType...
+* parameterMap改成parameterType...
 * id 重复
-* 3 parameterType参数有问题
+* parameterType参数有问题
+* mapper.xml中没有加入namespace 
+* mapper.xml中的方法和接口mapper的方法不对应 
+* mapper.xml没有加入到mybatis-config.xml中\(即总的配置文件\)，例外：配置了mapper文件的包路径的除外 
+
+* mapper.xml文件名和所写的mapper名称不相同。
 
 
 
