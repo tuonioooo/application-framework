@@ -42,4 +42,5 @@
   * [Mybatis使用时的一些注意事项](mybatisshi-yong-shi-de-yi-xie-zhu-yi-shi-xiang.md)
   * [Mybatis配置打印SQL语句](mybatispei-zhi-da-yin-sql-yu-ju.md)
   * [持久层框架mybatis如何防止sql注入](chi-jiu-ceng-kuang-jia-mybatis-ru-he-fang-zhi-sql-zhu-ru.md)
+  * [SqlSessionTemplate与SqlSessionDaoSupport讲解](sqlsessiontemplateyu-sqlsessiondaosupport-jiang-jie.md)
 
