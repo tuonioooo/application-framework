@@ -44,4 +44,5 @@
   * [持久层框架mybatis如何防止sql注入](chi-jiu-ceng-kuang-jia-mybatis-ru-he-fang-zhi-sql-zhu-ru.md)
   * [SqlSessionTemplate与SqlSessionDaoSupport讲解](sqlsessiontemplateyu-sqlsessiondaosupport-jiang-jie.md)
   * [MapperFactoryBean与MapperScannerConfigurer讲解](mapperfactorybeanyu-mapperscannerconfigurer-jiang-jie.md)
+  * [HIBERNATE与 MYBATIS的区别](hibernateyu-mybatis-de-qu-bie.md)
 
