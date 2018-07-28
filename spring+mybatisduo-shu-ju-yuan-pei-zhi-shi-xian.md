@@ -334,3 +334,63 @@ public abstract class AbstractDataSource implements DataSource {
 
 再来说下MultipleDataSource的实现原理，MultipleDataSource实现AbstractRoutingDataSource抽象类，然后实现了determineCurrentLookupKey方法，这个方法用于选择具体使用targetDataSources中的哪一个数据源
 
+```
+<bean id="multipleDataSource" class="com.cnblogs.lzrabbit.MultipleDataSource">
+<property name="defaultTargetDataSource" ref="mySqlDataSource"/>
+<property name="targetDataSources">
+<map>
+<entry key="mySqlDataSource" value-ref="mySqlDataSource"/>
+<entry key="sqlServerDataSource" value-ref="sqlServerDataSource"/>
+</map>
+</property>
+</bean>
+```
+
+可以看到Spring配置中multipleDataSource设置了两个属性defaultTargetDataSource和targetDataSources，这两个属性定义在AbstractRoutingDataSource，当MyBatis执行查询时会先选择数据源，选择顺序时现根据determineCurrentLookupKey方法返回的值到targetDataSources中去找，若能找到怎返回对应的数据源，若找不到返回默认的数据源defaultTargetDataSource，具体参考AbstractRoutingDataSource的源码
+
+```
+public abstract class AbstractRoutingDataSource extends AbstractDataSource implements InitializingBean {
+
+private Map<Object, Object> targetDataSources;
+
+private Object defaultTargetDataSource;
+
+/**
+* Retrieve the current target DataSource. Determines the
+* {@link #determineCurrentLookupKey() current lookup key}, performs
+* a lookup in the {@link #setTargetDataSources targetDataSources} map,
+* falls back to the specified
+* {@link #setDefaultTargetDataSource default target DataSource} if necessary.
+* @see #determineCurrentLookupKey()
+*/
+protected DataSource determineTargetDataSource() {
+Assert.notNull(this.resolvedDataSources, "DataSource router not initialized");
+Object lookupKey = determineCurrentLookupKey();
+DataSource dataSource = this.resolvedDataSources.get(lookupKey);
+if (dataSource == null && (this.lenientFallback || lookupKey == null)) {
+dataSource = this.resolvedDefaultDataSource;
+}
+if (dataSource == null) {
+throw new IllegalStateException("Cannot determine target DataSource for lookup key [" + lookupKey + "]");
+}
+return dataSource;
+}
+
+/**
+* Determine the current lookup key. This will typically be
+* implemented to check a thread-bound transaction context.
+* <p>Allows for arbitrary keys. The returned key needs
+* to match the stored lookup key type, as resolved by the
+* {@link #resolveSpecifiedLookupKey} method.
+*/
+protected abstract Object determineCurrentLookupKey();
+　　
+　　.............
+
+}
+```
+
+在动态切换数据源方法时选择了AOP方式实现，这里实现的简单粗暴，具体应用时根据实际需要灵活变通吧
+
+题外话，这里提下SqlServer驱动选择的问题，目前SqlServer的驱动主要有微软的官方驱动和JTDS驱动两种，关于这两个驱动我做过测试，批量更新，在小数据量\(100以下\)时，JTDS相对微软驱动性能稍微高一点点，在数据量增大时几万到上百万时，微软驱动有着明显优势，所以若对性能比较敏感，建议使用微软驱动，否则随意微软驱动在Maven库找不到，这点比较郁闷，若使用maven的话还得先安装到本地，这点很不爽JTDS使用比较方便Maven直接引用即可相关jar maven引用
+
