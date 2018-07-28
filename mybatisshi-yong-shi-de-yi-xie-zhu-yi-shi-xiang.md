@@ -1,8 +1,8 @@
 # Mybatis使用时的一些注意事项
 
-1.Mybatis 使用foreach 时，in 里的参数如果多个是字符串的话，代码不需要加单引号，mybatis应该会自动加，否则查询不出
+**1.Mybatis 使用foreach 时，in 里的参数如果多个是字符串的话，代码不需要加单引号，mybatis应该会自动加，否则查询不出**
 
-2.There is no getter for property named ‘XXX’ in ‘class java.lang.String’解决办法
+**2.There is no getter for property named ‘XXX’ in ‘class java.lang.String’解决办法**
 
 示例1：
 
@@ -91,7 +91,7 @@ from job_module
  不管你的参数是什么，都要改成"_parameter"；
 ```
 
-3.Error parsing Mapper XML  IllegalArgumentException: Mapped Statements collection already contains value for .......
+**3.Error parsing Mapper XML  IllegalArgumentException: Mapped Statements collection already contains value for .......**
 
 目前知道有三个原因：
 
@@ -102,6 +102,24 @@ from job_module
 * mapper.xml中的方法和接口mapper的方法不对应 
 * mapper.xml没有加入到mybatis-config.xml中\(即总的配置文件\)，例外：配置了mapper文件的包路径的除外
 * mapper.xml文件名和所写的mapper名称不相同。
+
+**4.org.apache.ibatis.executor.statement.StatementHandler.prepare\(java.sql.Connection\)**
+
+出现此错误的原因是MyBatis 3.4.0 之后，StatementHandler的prepare方法做了修改，如下
+
+```
+Statement prepare(Connection connection, Integer transactionTimeout) throws SQLException;  
+```
+
+解决办法：
+
+* 在args = { Connection.class }中添加第二个参数，即：
+
+```
+@Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class,Integer.class }) })
+```
+
+* 降低MyBatis版本号。
 
 
 
