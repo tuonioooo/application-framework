@@ -30,15 +30,33 @@ Ehcache最初是由Greg Luck于2003年开始开发。2009年,该项目被Terraco
 
 4. 缓存数据有两级：内存和磁盘，因此无需担心容量问题
 
-5. 缓存数据会在[虚拟机](https://baike.baidu.com/item/%E8%99%9A%E6%8B%9F%E6%9C%BA)重启的过程中写入磁盘
+5. 缓存数据会在[虚拟机](https://baike.baidu.com/item/虚拟机)重启的过程中写入磁盘
 
 6. 可以通过RMI、可插入API等方式进行分布式缓存
 
 7. 具有缓存和缓存管理器的侦听接口
 
-8. 支持多[缓存](https://baike.baidu.com/item/%E7%BC%93%E5%AD%98)管理器实例，以及一个实例的多个缓存区域
+8. 支持多[缓存](https://baike.baidu.com/item/缓存)管理器实例，以及一个实例的多个缓存区域
 
 9. 提供Hibernate的缓存实现
+
+## MyBatis中使用Ehcache POM依赖
+
+```
+<dependency>
+	<groupId>net.sf.ehcache</groupId>
+	<artifactId>ehcache</artifactId>
+</dependency>
+<dependency>
+	<groupId>org.mybatis.caches</groupId>
+	<artifactId>mybatis-ehcache</artifactId>
+	<version>1.1.0</version>
+</dependency>
+```
+
+
+
+
 
 
 
