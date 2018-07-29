@@ -1,4 +1,4 @@
-# Mybatis 使用Ehcache缓存机制
+# Mybatis 使用Ehcache缓存机制/自带缓存与Spring结合使用
 
 参考文档：
 
