@@ -98,7 +98,24 @@ Ehcache最初是由Greg Luck于2003年开始开发。2009年,该项目被Terraco
 </ehcache>
 ```
 
-在mybatis-config.xml中&lt;settings&gt;&lt;/settings&gt;中设置开启缓存配置
+## 在mybatis-config.xml中&lt;settings&gt;&lt;/settings&gt;中设置开启缓存配置
+
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <settings>
+        <!-- 全局映射器启用缓存 -->
+        <!-- 外部缓存和二级缓存都需要 -->
+        <setting name="cacheEnabled" value="true" />
+        ...
+
+    </settings>
+</configuration>
+```
 
 
 
