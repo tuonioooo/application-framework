@@ -117,5 +117,13 @@ Ehcache最初是由Greg Luck于2003年开始开发。2009年,该项目被Terraco
 </configuration>
 ```
 
+## mybatis的mapper中启用缓存  {#在mybatis的mapper中启用}
+
+ehcache已经配置好了,之后我们只需要在需要缓存的mapper配置文件里面加入&lt;cache type="org.mybatis.caches.ehcache.LoggingEhcache"/&gt;,该查询语句得到的结果将会被缓存
+
+```
+
+```
+
 
 
