@@ -21,7 +21,9 @@
 
 官网地址：[http://blog.mybatis.org/](http://blog.mybatis.org/)
 
-mybatis官网教程中文版：[http://www.mybatis.org/mybatis-3/zh/index.html](http://www.mybatis.org/mybatis-3/zh/index.html)  
+mybatis官网教程中文版：[http://www.mybatis.org/mybatis-3/zh/index.html](http://www.mybatis.org/mybatis-3/zh/index.html)
 
-mybatis-spring官网地址（非常详细）：[http://www.mybatis.org/spring/zh/index.html](http://www.mybatis.org/spring/zh/index.html)
+mybatis-spring官网地址（非常详细）：[http://www.mybatis.org/spring/zh/index.html](http://www.mybatis.org/spring/zh/index.html)  
+
+github使用示例：[https://github.com/tuonioooo/Mybatis-master](https://github.com/tuonioooo/Mybatis-master)
 
