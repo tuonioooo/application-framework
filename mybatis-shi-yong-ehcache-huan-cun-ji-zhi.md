@@ -117,13 +117,68 @@ Ehcache最初是由Greg Luck于2003年开始开发。2009年,该项目被Terraco
 </configuration>
 ```
 
-## mybatis的mapper中启用缓存  {#在mybatis的mapper中启用}
+## mybatis的mapper中启用缓存 {#在mybatis的mapper中启用}
 
-ehcache已经配置好了,之后我们只需要在需要缓存的mapper配置文件里面加入&lt;cache type="org.mybatis.caches.ehcache.LoggingEhcache"/&gt;,该查询语句得到的结果将会被缓存
+_**有两种写法**_
 
+```
+<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
 ```
 
 ```
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AccountOfMapper">
+
+    <sql id="aa"> account </sql>
+
+    <!-- 自定义缓存(实现缓存接口或者第三方缓存插件，比如：ehcache)——>ehcache-->
+
+    <!--
+    ehcache的使用方式：
+    以下两个<cache>标签都可以,第一个可以输出日志,第二个不输出日志
+     <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+     <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+    -->
+
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache">
+        <property name="timeToIdleSeconds" value="3600"/><!--1 hour-->
+        <property name="timeToLiveSeconds" value="3600"/><!--1 hour-->
+        <property name="maxEntriesLocalHeap" value="10000"/>
+        <property name="maxEntriesLocalDisk" value="10000000"/>
+    </cache>
+
+    <!--
+
+    可用的收回策略有:
+
+    LRU – 最近最少使用的:移除最长时间不被使用的对象（默认的）。
+    FIFO – 先进先出:按对象进入缓存的顺序来移除它们。
+    SOFT – 软引用:移除基于垃圾回收器状态和软引用规则的对象。
+    WEAK – 弱引用:更积极地移除基于垃圾收集器状态和弱引用规则的对象。
+
+    缓存默认配置
+
+    <select ... flushCache="false" useCache="true"/>
+    <insert ... flushCache="true"/>
+    <update ... flushCache="true"/>
+    <delete ... flushCache="true"/>
+
+
+    -->
+
+    <select id="getAccount" resultType="Account">
+        select id, name, money from account where id = #{id}
+    </select>
+
+
+</mapper>
+```
+
+
+
+
 
 
 
