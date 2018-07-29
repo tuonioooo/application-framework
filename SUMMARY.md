@@ -39,6 +39,7 @@
   * [结果/参数绑定](jie-679c-can-shu-bang-ding.md)
   * [Mybatis插件拓展/插件原理](mybatischa-jian-tuo-zhan.md)
   * [自带缓存机制与Spring结合实现缓存](zi-dai-huan-cun-ji-zhi-yu-spring-jie-he-shi-xian-huan-cun.md)
+  * [Mybatis 使用Ehcache缓存机制](mybatis-shi-yong-ehcache-huan-cun-ji-zhi.md)
   * [使用代码生成器快速开发](shi-yong-dai-ma-sheng-cheng-qi-kuai-su-kai-fa.md)
   * [Mybatis使用时的一些注意事项](mybatisshi-yong-shi-de-yi-xie-zhu-yi-shi-xiang.md)
   * [Mybatis配置打印SQL语句](mybatispei-zhi-da-yin-sql-yu-ju.md)
