@@ -61,27 +61,27 @@ Ehcache最初是由Greg Luck于2003年开始开发。2009年,该项目被Terraco
    <diskStore path="java.io.tmpdir/Tmp_EhCache" /><!-- 缓存存放目录(此目录为放入系统默认缓存目录),也可以是”D:/cache“ java.io.tmpdir -->
 
    <defaultCache 
-   		eternal="false" 
-   		maxElementsInMemory="1000" 
-   		overflowToDisk="false" 
-   		diskPersistent="false"
-    	timeToIdleSeconds="0" 
-    	timeToLiveSeconds="1200" 
-    	memoryStoreEvictionPolicy="LRU" />
-   
+           eternal="false" 
+           maxElementsInMemory="1000" 
+           overflowToDisk="false" 
+           diskPersistent="false"
+        timeToIdleSeconds="0" 
+        timeToLiveSeconds="1200" 
+        memoryStoreEvictionPolicy="LRU" />
+
    <!-- 自定义缓存 -->
    <cache 
-   	name="iseCache" 
-   	eternal="false" 
-   	maxElementsInMemory="1000000" 
-   	overflowToDisk="true" 
-   	diskPersistent="false"
+       name="iseCache" 
+       eternal="false" 
+       maxElementsInMemory="1000000" 
+       overflowToDisk="true" 
+       diskPersistent="false"
     timeToIdleSeconds="0" 
     timeToLiveSeconds="36000" 
     memoryStoreEvictionPolicy="LRU" />
 
 
-	<!--
+    <!--
     name：Cache的唯一标识
     maxElementsInMemory：内存中最大缓存对象数
     maxElementsOnDisk：磁盘中最大缓存对象数，若是0表示无穷大
@@ -98,7 +98,7 @@ Ehcache最初是由Greg Luck于2003年开始开发。2009年,该项目被Terraco
 </ehcache>
 ```
 
-
+在mybatis-config.xml中&lt;settings&gt;&lt;/settings&gt;中设置开启缓存配置
 
 
 
