@@ -2,7 +2,9 @@
 
 参考文档：
 
-官方cache教程网址：[http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html\#cache   ](http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html#cache)
+官方cache教程网址：[http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html\#cache   ](http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html#cache) 
+
+github使用示例：[https://github.com/tuonioooo/Mybatis-master/tree/master/mybatis-sample-5](https://github.com/tuonioooo/Mybatis-master/tree/master/mybatis-sample-5)
 
 ## Ehcache简介
 
