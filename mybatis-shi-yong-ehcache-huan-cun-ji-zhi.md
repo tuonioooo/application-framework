@@ -216,11 +216,19 @@ public class AccountController {
         return accountDao.save(account) + "";
     }
 }
-
-
 ```
 
-## 测试日志 
+## 测试日志
+
+```
+JDBC Connection [HikariProxyConnection@139347354 wrapping com.mysql.jdbc.JDBC4Connection@14e7e982] will not be managed by Spring
+==>  Preparing: select id, name, money from account where id = ? 
+==> Parameters: 1(Integer)
+<==    Columns: id, name, money
+<==        Row: 1, aaa, 1000
+<==      Total: 1
+Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@3273fac8]
+```
 
 ```
 Creating a new SqlSession
