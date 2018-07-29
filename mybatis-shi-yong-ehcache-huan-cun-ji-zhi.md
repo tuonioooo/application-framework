@@ -1,8 +1,8 @@
-# Mybatis 使用Ehcache缓存机制 
+# Mybatis 使用Ehcache缓存机制
 
 参考文档：
 
-官方cache教程网址：[http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html\#cache   ](http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html#cache) 
+官方cache教程网址：[http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html\#cache   ](http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html#cache)
 
 ## Ehcache简介
 
@@ -16,11 +16,29 @@ Ehcache最初是由Greg Luck于2003年开始开发。2009年,该项目被Terraco
 
 下图是 Ehcache 在应用程序中的位置：
 
+![](/assets/import-ehcache-01.png)
 
+## 特性
 
+主要的特性有：
 
+1. 快速
 
+2. 简单
 
+3. 多种缓存策略
+
+4. 缓存数据有两级：内存和磁盘，因此无需担心容量问题
+
+5. 缓存数据会在[虚拟机](https://baike.baidu.com/item/%E8%99%9A%E6%8B%9F%E6%9C%BA)重启的过程中写入磁盘
+
+6. 可以通过RMI、可插入API等方式进行分布式缓存
+
+7. 具有缓存和缓存管理器的侦听接口
+
+8. 支持多[缓存](https://baike.baidu.com/item/%E7%BC%93%E5%AD%98)管理器实例，以及一个实例的多个缓存区域
+
+9. 提供Hibernate的缓存实现
 
 
 
