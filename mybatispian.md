@@ -17,5 +17,11 @@
 * [MapperFactoryBean与MapperScannerConfigurer讲解](/mapperfactorybeanyu-mapperscannerconfigurer-jiang-jie.md) 
 * [Spring+MyBatis多数据源配置实现](/spring+mybatisduo-shu-ju-yuan-pei-zhi-shi-xian.md) 
 
+## 参考文档：
 
+官网地址：[http://blog.mybatis.org/](http://blog.mybatis.org/)
+
+mybatis官网教程中文版：[http://www.mybatis.org/mybatis-3/zh/index.html](http://www.mybatis.org/mybatis-3/zh/index.html)  
+
+mybatis-spring官网地址（非常详细）：[http://www.mybatis.org/spring/zh/index.html](http://www.mybatis.org/spring/zh/index.html)
 
