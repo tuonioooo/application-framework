@@ -13,5 +13,11 @@ IoC container, Events, Resources, i18n, Validation, Data Binding, Type Conversio
 * ### Events
 * ### Resources
 
-https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html\#resources
+[https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html\#resources](https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html#resources)
+
+* ### Validation
+
+https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html\#validation
+
+
 
