@@ -4,7 +4,7 @@
 
 IoC container, Events, Resources, i18n, Validation, Data Binding, Type Conversion, SpEL, AOP.
 
-## 主件分析
+## 组件分析
 
 * ### IoC container——IoC容器
 
