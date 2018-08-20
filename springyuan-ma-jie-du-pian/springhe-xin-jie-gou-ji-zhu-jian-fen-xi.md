@@ -15,9 +15,7 @@ IoC container, Events, Resources, i18n, Validation, Data Binding, Type Conversio
 
 [https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html\#resources](https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html#resources)
 
-* ### Validation
+* ### Validation——验证、Data Binding——数据绑定、Type Conversion——类型转换
 
-https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html\#validation
-
-
+[https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html\#validation](https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html#validation)
 
