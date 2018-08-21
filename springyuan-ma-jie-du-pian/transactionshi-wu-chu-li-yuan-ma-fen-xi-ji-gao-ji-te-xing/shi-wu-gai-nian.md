@@ -2,7 +2,7 @@
 
 ## 概念
 
-事务（Transaction），一般是指要做的或所做的事情。在计算机术语中是指访问并可能更新数据库中各种数据项的一个程序执行单元\(unit\)。事务通常由高级数据库操纵语言或编程语言（如SQL，C++或Java）书写的用户程序的执行所引起，并用形如begin transaction和end transaction语句（或函数调用）来界定。事务由事务开始\(begin transaction\)和事务结束\(end transaction\)之间执行的全体操作组成。（做事情，全部成功或者全部失败）
+事务（Transaction），一般是指要做的或所做的事情。在计算机术语中是指访问并可能更新数据库中各种数据项的一个程序执行单元\(unit\)。事务通常由高级数据库操纵语言或编程语言（如SQL，C++或Java）书写的用户程序的执行所引起，并用形如begin transaction和end transaction语句（或函数调用）来界定。事务由事务开始\(begin transaction\)和事务结束\(end transaction\)之间执行的全体操作组成。
 
 ## 事务有四个特性：ACID
 
