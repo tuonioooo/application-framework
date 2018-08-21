@@ -67,11 +67,11 @@ return null;
 * @Transactional\(propagation=Propagation.NEVER\) 必须在一个没有的事务中执行,否则抛出异常\(与Propagation.MANDATORY相反\)
 * @Transactional\(propagation=Propagation.SUPPORTS\) 如果其他bean调用这个方法,在其他bean中声明事务,那就用事务.如果其他bean没有声明事务,那就不用事务.
 
-事物超时设置:
+**事物超时设置:**
 
 @Transactional\(timeout=30\) //默认是30秒
 
-事务隔离级别:
+**事务隔离级别:**
 
 @Transactional\(isolation = Isolation.READ\_UNCOMMITTED\)
 
@@ -103,7 +103,7 @@ SQLSERVER: 默认为READ\_COMMITTED
 
 幻读 : 一个事务读到另一个事务已提交的insert数据
 
-@Transactional注解中常用参数说明
+**@Transactional注解中常用参数说明**
 
 | 参 数 名 称 | 功 能 描 述 |
 | :--- | :--- |
