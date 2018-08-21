@@ -27,7 +27,7 @@
 
 要是只在接口上写, 接口的实现类就会继承下来、接口的实现类的具体方法,可以覆盖类声明处的设置
 
-@Transactional   //类级的注解、适用于类中所有的public的方法
+@Transactional   //类级的注解、适用于类中所有的public的方法
 
 **事务的传播行为和隔离级别**
 
@@ -35,7 +35,7 @@
 
 事物注解方式: @Transactional
 
-当标于类前时, 标示类中所有方法都进行事物处理 , 例子:
+当标于类前时, 标示类中所有方法都进行事物处理 , 例子:
 
 ```
 @Transactional
@@ -58,7 +58,7 @@ return null;
 }
 ```
 
-事物传播行为介绍: 
+**事物传播行为介绍:**
 
 * @Transactional\(propagation=Propagation.REQUIRED\) 如果有事务, 那么加入事务, 没有的话新建一个\(默认情况下\)
 * @Transactional\(propagation=Propagation.NOT\_SUPPORTED\) 容器不为这个方法开启事务
@@ -67,13 +67,9 @@ return null;
 * @Transactional\(propagation=Propagation.NEVER\) 必须在一个没有的事务中执行,否则抛出异常\(与Propagation.MANDATORY相反\)
 * @Transactional\(propagation=Propagation.SUPPORTS\) 如果其他bean调用这个方法,在其他bean中声明事务,那就用事务.如果其他bean没有声明事务,那就不用事务.
 
-
-
 事物超时设置:
 
 @Transactional\(timeout=30\) //默认是30秒
-
-
 
 事务隔离级别:
 
@@ -93,17 +89,13 @@ return null;
 
 串行化
 
-
-
 MYSQL: 默认为REPEATABLE\_READ级别
 
 SQLSERVER: 默认为READ\_COMMITTED
 
-
-
 脏读 : 一个事务读取到另一事务未提交的更新数据
 
-不可重复读 : 在同一事务中, 多次读取同一数据返回的结果有所不同, 换句话说, 
+不可重复读 : 在同一事务中, 多次读取同一数据返回的结果有所不同, 换句话说,
 
 后续读取可以读到另一事务已提交的更新数据. 相反, "可重复读"在同一事务中多次
 
@@ -118,7 +110,7 @@ SQLSERVER: 默认为READ\_COMMITTED
 | readOnly | 该属性用于设置当前事务是否为只读事务，设置为true表示只读，false则表示可读写，默认值为false。例如：@Transactional\(readOnly=true\) |
 | rollbackFor | 该属性用于设置需要进行回滚的异常类数组，当方法中抛出指定异常数组中的异常时，则进行事务回滚。例如：指定单一异常类：@Transactional\(rollbackFor=RuntimeException.class\)指定多个异常类：@Transactional\(rollbackFor={RuntimeException.class, Exception.class}\) |
 
- 续表）
+续表）
 
 | 参 数 名 称 | 功 能 描 述 |
 | :--- | :--- |
