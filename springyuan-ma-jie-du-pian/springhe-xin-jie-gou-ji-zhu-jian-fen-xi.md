@@ -6,7 +6,7 @@ IoC container, Events, Resources, i18n, Validation, Data Binding, Type Conversio
 
 ## 组件分析
 
-* ### IoC container——IoC容器
+* ### IoC container——IoC容器（包括beans、context）
 
 [https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html\#beans](https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html#beans)
 
@@ -26,13 +26,7 @@ IoC container, Events, Resources, i18n, Validation, Data Binding, Type Conversio
 
 [https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html\#expressions](https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html#expressions)
 
-* ### AOP——面向切面编程
 
-[https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html\#aop](https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html#aop)
 
-[https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html\#aop-api](https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/core.html#aop-api)
 
-参考
-
-[https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/](https://docs.spring.io/spring/docs/5.0.8.RELEASE/spring-framework-reference/)
 
