@@ -52,7 +52,7 @@
   * [Spring核心结构及组件分析](springyuan-ma-jie-du-pian/springhe-xin-jie-gou-ji-zhu-jian-fen-xi.md)
   * [IOC机制从设计理念/实现原理到源码解读](springyuan-ma-jie-du-pian/iocji-zhi-cong-she-ji-li-nian-dao-yuan-ma-jie-du.md)
   * [AOP实现原理及常见误区](springyuan-ma-jie-du-pian/aopshi-xian-yuan-li-ji-chang-jian-wu-qu.md)
-    * aop编程思想
+    * [aop编程思想](springyuan-ma-jie-du-pian/aopshi-xian-yuan-li-ji-chang-jian-wu-qu/aopbian-cheng-si-xiang.md)
     * aop在Spring中的应用
     * cglib和jdk动态代理
     * 常见误区
