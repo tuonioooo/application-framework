@@ -76,22 +76,17 @@ return null;
 * @Transactional\(isolation = Isolation.READ\_UNCOMMITTED\)读取未提交数据\(会出现脏读, 不可重复读\) 基本不使用
 * @Transactional\(isolation = Isolation.READ\_COMMITTED\)读取已提交数据\(会出现不可重复读和幻读\)
 * @Transactional\(isolation = Isolation.REPEATABLE\_READ\)可重复读\(会出现幻读\)
-
 * @Transactional\(isolation = Isolation.SERIALIZABLE\)串行化
 
-MYSQL: 默认为REPEATABLE\_READ级别
+**MYSQL: 默认为REPEATABLE\_READ级别**
 
-SQLSERVER: 默认为READ\_COMMITTED
+**SQLSERVER: 默认为READ\_COMMITTED**
 
-脏读 : 一个事务读取到另一事务未提交的更新数据
+**脏读** : 一个事务读取到另一事务未提交的更新数据
 
-不可重复读 : 在同一事务中, 多次读取同一数据返回的结果有所不同, 换句话说,
+**不可重复读** : 在同一事务中, 多次读取同一数据返回的结果有所不同, 换句话说,后续读取可以读到另一事务已提交的更新数据. 相反, "可重复读"在同一事务中多次读取数据时, 能够保证所读数据一样, 也就是后续读取不能读到另一事务已提交的更新数据
 
-后续读取可以读到另一事务已提交的更新数据. 相反, "可重复读"在同一事务中多次
-
-读取数据时, 能够保证所读数据一样, 也就是后续读取不能读到另一事务已提交的更新数据
-
-幻读 : 一个事务读到另一个事务已提交的insert数据
+**幻读** : 一个事务读到另一个事务已提交的insert数据
 
 **@Transactional注解中常用参数说明**
 
