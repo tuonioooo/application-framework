@@ -14,5 +14,14 @@
 
 **步骤二、具有@Transactional 注解的bean自动配置为声明式事务支持 **
 
+```
+<!-- 事务管理器配置, Hibernate单数据源事务 -->
+<bean id="defaultTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+<property name="sessionFactory" ref="sessionFactory" />
+</bean>
+<!-- 使用annotation定义事务 -->
+<tx:annotation-driven transaction-manager="defaultTransactionManager" proxy-target-class="true" />
+```
+
 
 
