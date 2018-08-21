@@ -55,7 +55,6 @@
     * [aop编程思想](springyuan-ma-jie-du-pian/aopshi-xian-yuan-li-ji-chang-jian-wu-qu/aopbian-cheng-si-xiang.md)
     * [aop在Spring中的应用](springyuan-ma-jie-du-pian/aopshi-xian-yuan-li-ji-chang-jian-wu-qu/aopzai-spring-zhong-de-ying-yong.md)
     * cglib和jdk动态代理
-    * 常见误区
   * [Transaction事务处理源码分析及高级特性](springyuan-ma-jie-du-pian/transactionshi-wu-chu-li-yuan-ma-fen-xi-ji-gao-ji-te-xing.md)
     * 事务概念
     * Spring事务传播
