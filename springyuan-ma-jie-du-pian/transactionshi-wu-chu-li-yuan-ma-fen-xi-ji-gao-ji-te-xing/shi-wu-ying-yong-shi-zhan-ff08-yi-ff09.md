@@ -78,9 +78,11 @@ return null;
 * @Transactional\(isolation = Isolation.REPEATABLE\_READ\)可重复读\(会出现幻读\)
 * @Transactional\(isolation = Isolation.SERIALIZABLE\)串行化
 
-**MYSQL: 默认为REPEATABLE\_READ级别**
+**MYSQL: **默认为REPEATABLE\_READ级别
 
-**SQLSERVER: 默认为READ\_COMMITTED**
+**SQLSERVER: **默认为READ\_COMMITTED
+
+**Oracle:** 默认为READ\_COMMITTED
 
 **脏读** : 一个事务读取到另一事务未提交的更新数据
 
