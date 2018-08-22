@@ -70,8 +70,8 @@
     * [Spring事物应用实战（一）](springyuan-ma-jie-du-pian/transactionshi-wu-chu-li-yuan-ma-fen-xi-ji-gao-ji-te-xing/shi-wu-ying-yong-shi-zhan-ff08-yi-ff09.md)
     * [Spring事务应用实战（二）之spring+hibernate+JTA 分布式事务的例子](springyuan-ma-jie-du-pian/transactionshi-wu-chu-li-yuan-ma-fen-xi-ji-gao-ji-te-xing/springshi-wu-ying-yongshi621828-4e8c29-zhi-spring-+-hibernate-+-jta-fen-bu-shi-shi-wu-de-li-zi.md)
   * [SpringMVC源码解读](springyuan-ma-jie-du-pian/springmvcyuan-ma-jie-du.md)
-    * 核心流程剖析
-    * DispatcherServlet说明
+    * [核心流程剖析](springyuan-ma-jie-du-pian/springmvcyuan-ma-jie-du/he-xin-liu-cheng-pou-xi.md)
+    * [DispatcherServlet说明](springyuan-ma-jie-du-pian/springmvcyuan-ma-jie-du/dispatcherservletshuo-ming.md)
     * 请求映射机制
     * 参数绑定与转换机制
     * 页面渲染机制
