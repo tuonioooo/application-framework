@@ -259,9 +259,35 @@ protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
 
 AbstractApplicationContext子类的refreshBeanFactory\(\)方法：
 
+AbstractApplicationContext类中只抽象定义了refreshBeanFactory\(\)方法，容器真正调用的是其子类AbstractRefreshableApplicationContext实现的    refreshBeanFactory\(\)方法，方法的源码如下：
+
+```
+protected final void refreshBeanFactory() throws BeansException {  
+       if (hasBeanFactory()) {//如果已经有容器，销毁容器中的bean，关闭容器  
+           destroyBeans();  
+           closeBeanFactory();  
+       }  
+       try {  
+            //创建IoC容器  
+            DefaultListableBeanFactory beanFactory = createBeanFactory();  
+            beanFactory.setSerializationId(getId());  
+           //对IoC容器进行定制化，如设置启动参数，开启注解的自动装配等  
+           customizeBeanFactory(beanFactory);  
+           //调用载入Bean定义的方法，主要这里又使用了一个委派模式，在当前类中只定义了抽象的loadBeanDefinitions方法，具体的实现调用子类容器  
+           loadBeanDefinitions(beanFactory);  
+           synchronized (this.beanFactoryMonitor) {  
+               this.beanFactory = beanFactory;  
+           }  
+       }  
+       catch (IOException ex) {  
+           throw new ApplicationContextException("I/O error parsing bean definition source for " + getDisplayName(), ex);  
+       }  
+   }
+```
+
+在这个方法中，先判断BeanFactory是否存在，如果存在则先销毁beans并关闭beanFactory，接着创建DefaultListableBeanFactory，并调用loadBeanDefinitions\(beanFactory\)装载bean
 
 
-   AbstractApplicationContext类中只抽象定义了refreshBeanFactory\(\)方法，容器真正调用的是其子类AbstractRefreshableApplicationContext实现的    refreshBeanFactory\(\)方法，方法的源码如下：
 
-
+定义。
 
