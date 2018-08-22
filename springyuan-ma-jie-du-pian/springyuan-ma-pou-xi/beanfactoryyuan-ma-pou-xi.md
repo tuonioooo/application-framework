@@ -1,7 +1,5 @@
 # BeanFactory
 
-## 介绍
-
 Spring Bean的创建是典型的工厂模式，这一系列的Bean工厂，也即IOC容器为开发者管理对象间的依赖关系提供了很多便利和基础服务，在Spring中有许多的IOC容器的实现供用户选择和使用，其相互关系如下：
 
 ![](/assets/import-beanfactory-02.png)
