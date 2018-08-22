@@ -1,4 +1,4 @@
-# java代理实现与原理详细分析
+# java/jdk代理实现与原理详细分析
 
 ## 前言
 
@@ -327,7 +327,6 @@ public class WangPoInvocationHandler implements InvocationHandler {
 
     }
 }
-
 ```
 
 潘金莲的实现步骤，参考上面的
@@ -351,7 +350,7 @@ public class XiMenQing {
      * 如果没有王婆在中间牵线，这两个不要脸的能成吗？难说的很！
      */
     public static void main(String[] args) {
-       
+
         //JDK动态代理实现
         WangPoInvocationHandler wangPoInvocationHandler = new WangPoInvocationHandler();
         KindWomen kindWomen = (KindWomen) wangPoInvocationHandler.bind(new PanJinLian());
