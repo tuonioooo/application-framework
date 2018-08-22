@@ -216,7 +216,7 @@ public class XiMenQing {
 
 ** 1.动态代理**
 
-代理类在程序运行时创建的代理方式被成为动态代理。 我们上面静态代理的例子中，代理类\(studentProxy\)是自己定义好的，在程序运行之前就已经编译完成。然而动态代理，代理类并不是在Java代码中定义的，而是在运行时根据我们在Java代码中的“指示”动态生成的。相比于静态代理， 动态代理的优势在于可以很方便的对代理类的函数进行统一的处理，而不用修改每个代理类中的方法。 
+代理类在程序运行时创建的代理方式被成为动态代理。 我们上面静态代理的例子中，代理类\(studentProxy\)是自己定义好的，在程序运行之前就已经编译完成。然而动态代理，代理类并不是在Java代码中定义的，而是在运行时根据我们在Java代码中的“指示”动态生成的。相比于静态代理， 动态代理的优势在于可以很方便的对代理类的函数进行统一的处理，而不用修改每个代理类中的方法。
 
 > 实现原理：在程序运行时，运用反射机制动态创建而成。
 
@@ -236,64 +236,130 @@ public void happyWithMan() {
 
 在java的java.lang.reflect包下提供了一个Proxy类和一个InvocationHandler接口，通过这个类和这个接口可以生成JDK动态代理类和动态代理对象。
 
-* **InvocationHandler接口： **
+* **InvocationHandler接口： **
 
 ```
-public interface InvocationHandler { 
-    public Object invoke(Object proxy,Method method,Object[] args) throws Throwable; 
-} 
+public interface InvocationHandler { 
+    public Object invoke(Object proxy,Method method,Object[] args) throws Throwable; 
+}
 ```
 
-> 参数说明： 
+> 参数说明：
 >
-> Object proxy：指被代理的对象/目标对象/委托对象。 
+> Object proxy：指被代理的对象/目标对象/委托对象。
 >
-> Method method：要调用的方法 
+> Method method：要调用的方法
 >
-> Object\[\] args：方法调用时所需要的参数 
+> Object\[\] args：方法调用时所需要的参数
 >
 > 可以将InvocationHandler接口的子类想象成一个代理的最终操作类，替换掉ProxySubject。
 
-* **Proxy类：   **
+* **Proxy类： **
 
-Proxy类是专门完成代理的操作类，可以通过此类为一个或多个接口动态地生成实现类，此类提供了如下的操作方法： 
+Proxy类是专门完成代理的操作类，可以通过此类为一个或多个接口动态地生成实现类，此类提供了如下的操作方法：
 
 ```
-public static Object newProxyInstance(ClassLoader loader, Class<?>[] interfaces, InvocationHandler h) throws IllegalArgumentException 
+public static Object newProxyInstance(ClassLoader loader, Class<?>[] interfaces, 
+InvocationHandler h) 
+throws IllegalArgumentException
 ```
 
-> **参数说明：** 
+> **参数说明：**
 >
-> ClassLoader loader：类加载器 
+> ClassLoader loader：类加载器
 >
-> Class&lt;?&gt;\[\] interfaces：得到全部的接口 
+> Class&lt;?&gt;\[\] interfaces：得到全部的接口
 >
-> InvocationHandler h：得到InvocationHandler接口的子类实例 
+> InvocationHandler h：得到InvocationHandler接口的子类实例
 >
 > **类加载器说明：**
 >
-> 在Proxy类中的newProxyInstance（）方法中需要一个ClassLoader类的实例，ClassLoader实际上对应的是类加载器，在Java中主要有一下三种类加载器; 
+> 在Proxy类中的newProxyInstance（）方法中需要一个ClassLoader类的实例，ClassLoader实际上对应的是类加载器，在Java中主要有一下三种类加载器;
 >
-> Booststrap ClassLoader：此加载器采用C++编写，一般开发中是看不到的； 
+> Booststrap ClassLoader：此加载器采用C++编写，一般开发中是看不到的；
 >
-> Extendsion ClassLoader：用来进行扩展类的加载，一般对应的是jre\lib\ext目录中的类; 
+> Extendsion ClassLoader：用来进行扩展类的加载，一般对应的是jre\lib\ext目录中的类;
 >
 > AppClassLoader：\(默认\)加载classpath指定的类，是最常使用的是一种加载器。
 
+还是以王婆、潘金莲、西门庆为示例：
 
-
-
-
-
-
-创建一个动态代理对象步骤，具体代码见后面：
-
-* 创建一个InvocationHandler对象
+先定义一个王婆动态代理类，他可以代理所有的实现KindWomen这种类型的人（JDK动态代理类）
 
 ```
-//创建一个与代理对象相关联的InvocationHandler
-InvocationHandler stuHandler = new MyInvocationHandler<Person>(stu);
+package com.master.proxy;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+/**
+ * Created by daizhao.
+ * User: tony
+ * Date: 2018-8-22
+ * Time: 11:09
+ * info: 定义一个王婆动态代理类，他可以代理所有的实现KindWomen这种类型的人（JDK动态代理类）
+ */
+public class WangPoInvocationHandler implements InvocationHandler {
+
+    private Object target;// 目标对象/委托对象/被代理对象
+
+    /**
+     *  @Author daizhao
+     *  @Date 2018-8-22 11:13
+     *  @Params [target]
+     *  @Return java.lang.Object
+     *  @Info   绑定委托对象并返回一个代理类
+     */
+    public Object bind(Object target) {
+        this.target = target;
+        //取得代理对象
+        return Proxy.newProxyInstance(target.getClass().getClassLoader(),
+                target.getClass().getInterfaces(), this);   //要绑定接口(这是一个缺陷，cglib弥补了这一缺陷)
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        System.out.println("WangPoInvocationHandler：invoke");
+        //执行方法
+        return method.invoke(target, args);
+
+
+    }
+}
+
+```
+
+潘金莲的实现步骤，参考上面的
+
+定义一个西门庆的示例：
+
+```
+package com.master.proxy;
+
+/**
+ * @Author tuonioooo
+ * @Date 2018-8-22 10:43
+ * @Info 西门庆（这人色中饿鬼）
+ * @Blog https://blog.csdn.net/tuoni123
+ */
+public class XiMenQing {
+    /*
+     * 水浒里是这样写的：西门庆被潘金莲用竹竿敲了一下难道，痴迷了，
+     * 被王婆看到了, 就开始撮合两人好事，王婆作为潘金莲的代理人
+     * 收了不少好处费，那我们假设一下：
+     * 如果没有王婆在中间牵线，这两个不要脸的能成吗？难说的很！
+     */
+    public static void main(String[] args) {
+       
+        //JDK动态代理实现
+        WangPoInvocationHandler wangPoInvocationHandler = new WangPoInvocationHandler();
+        KindWomen kindWomen = (KindWomen) wangPoInvocationHandler.bind(new PanJinLian());
+        kindWomen.happyWithMan();
+
+
+    }
+}
 ```
 
 
