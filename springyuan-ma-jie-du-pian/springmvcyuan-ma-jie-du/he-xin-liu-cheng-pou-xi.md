@@ -14,6 +14,7 @@
     这篇文章）
 
 5. DispatcherServlet 取出 HandlerAdapter 组件，根据已经找到的 Handler，再从所有 HandlerAdapter 中找到可以处理该 Handler 的 HandlerAdapter 对象；
+
 6. 执行 HandlerExecutionChain 中所有拦截器的 preHandler\(\) 方法，然后再利用 HandlerAdapter 执行 Handler ，执行完成得到 ModelAndView，再依次调用拦截器的 postHandler\(\) 方法；
 7. 利用 ViewResolver 将 ModelAndView 或是 Exception（可解析成 ModelAndView）解析成 View，然后 View 会调用 render\(\) 方法再根据 ModelAndView 中的数据渲染出页面；
 8. 最后再依次调用拦截器的 afterCompletion\(\) 方法，这一次请求就结束了。
@@ -38,7 +39,7 @@ DispatcherServlet 继承自 HttpServlet，它遵循 Servlet 里的“init-servic
 
 1.1 HttpServletBean 的 init\(\) 方法
 
-DispatcherServlet 的 init\(\) 方法在其父类 **HttpServletBean** 中实现的，它覆盖了 GenericServlet 的 init\(\) 方法，主要作用是加载 web.xml 中 
+DispatcherServlet 的 init\(\) 方法在其父类 **HttpServletBean** 中实现的，它覆盖了 GenericServlet 的 init\(\) 方法，主要作用是加载 web.xml 中
 
 DispatcherServlet 的 &lt;init-param&gt; 配置，并调用子类的初始化。下面是 init\(\) 方法的具体代码：
 
@@ -60,9 +61,9 @@ public final void init() throws ServletException {
 }
 ```
 
-1.2 FrameworkServlet 的 initServletBean\(\) 方法
+1.2 FrameworkServlet 的 initServletBean\(\) 方法
 
-在 HttpServletBean 的 init\(\) 方法中调用了 initServletBean\(\) 这个方法，它是在**FrameworkServlet**类中实现的，主要作用是建立 WebApplicationContext 容器（有时也称上下文），并加载 SpringMVC 配置文件中定义的 Bean 到改容器中，最后将该容器添加到 ServletContext 中。下面是 initServletBean\(\) 方法的具体代码：
+在 HttpServletBean 的 init\(\) 方法中调用了 initServletBean\(\) 这个方法，它是在**FrameworkServlet**类中实现的，主要作用是建立 WebApplicationContext 容器（有时也称上下文），并加载 SpringMVC 配置文件中定义的 Bean 到改容器中，最后将该容器添加到 ServletContext 中。下面是 initServletBean\(\) 方法的具体代码：
 
 ```
 @Override
@@ -120,7 +121,7 @@ protected WebApplicationContext initWebApplicationContext() {
 }
 ```
 
-下面是查找 WebApplicationContext 的 findWebApplicationContext\(\) 方法代码：
+下面是查找 WebApplicationContext 的 findWebApplicationContext\(\) 方法代码：
 
 ```
 protected WebApplicationContext findWebApplicationContext() {
@@ -140,7 +141,7 @@ protected WebApplicationContext findWebApplicationContext() {
 
 1.3 DispatcherServlet 的 onRefresh\(\) 方法
 
-建立好 WebApplicationContext\(上下文\) 后，通过 onRefresh\(ApplicationContext context\) 方法回调，进入 DispatcherServlet 类中。onRefresh\(\) 方法，提供 SpringMVC 的初始化，具体代码如下：
+建立好 WebApplicationContext\(上下文\) 后，通过 onRefresh\(ApplicationContext context\) 方法回调，进入 DispatcherServlet 类中。onRefresh\(\) 方法，提供 SpringMVC 的初始化，具体代码如下：
 
 ```
     @Override
@@ -161,6 +162,37 @@ protected WebApplicationContext findWebApplicationContext() {
 ```
 
 在 initStrategies\(\) 方法中进行了各个组件的初始化，先来看一下这些组件的初始化方法，稍后再来详细分析这些组件。
+
+1.3.1 initHandlerMappings 方法
+
+initHandlerMappings\(\) 方法从 SpringMVC 的容器及 Spring 的容器中查找所有的 HandlerMapping 实例，并把它们放入到 handlerMappings 这个 list 中。这个方法并不是对 HandlerMapping 实例的创建，HandlerMapping 实例是在上面 WebApplicationContext 容器初始化，即 SpringMVC 容器初始化的时候创建的。
+
+```
+private void initHandlerMappings(ApplicationContext context) {
+    this.handlerMappings = null;
+    if (this.detectAllHandlerMappings) {
+        // 从 SpringMVC 的 IOC 容器及 Spring 的 IOC 容器中查找 HandlerMapping 实例
+        Map<String, HandlerMapping> matchingBeans =
+        　　　　BeanFactoryUtils.beansOfTypeIncludingAncestors(context, HandlerMapping.class, true, false);
+        if (!matchingBeans.isEmpty()) {
+            this.handlerMappings = new ArrayList<HandlerMapping>(matchingBeans.values());
+            // 按一定顺序放置 HandlerMapping 对象
+            OrderComparator.sort(this.handlerMappings);
+        }
+    } else {
+        try {
+            HandlerMapping hm = context.getBean(HANDLER_MAPPING_BEAN_NAME, HandlerMapping.class);
+            this.handlerMappings = Collections.singletonList(hm);
+        } catch (NoSuchBeanDefinitionException ex) {
+            // Ignore, we'll add a default HandlerMapping later.
+        }
+    }
+    // 如果没有 HandlerMapping，则加载默认的
+    if (this.handlerMappings == null) {
+        this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
+    }
+}
+```
 
 
 
