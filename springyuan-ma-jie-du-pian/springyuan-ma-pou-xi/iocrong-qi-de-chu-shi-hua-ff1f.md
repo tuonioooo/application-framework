@@ -162,7 +162,7 @@ public PathMatchingResourcePatternResolver(ResourceLoader resourceLoader) {
         Assert.notNull(resourceLoader, "ResourceLoader must not be null");  
         //设置Spring的资源加载器  
         this.resourceLoader = resourceLoader;  
-} 
+}
 ```
 
 在设置容器的资源加载器之后，接下来FileSystemXmlApplicationContet执行setConfigLocations方法通过调用其父类AbstractRefreshableConfigApplicationContext的方法进行对Bean定义资源文件的定位，该方法的源码如下：
@@ -191,5 +191,61 @@ public PathMatchingResourcePatternResolver(ResourceLoader resourceLoader) {
     }
 ```
 
+4.AbstractApplicationContext的refresh函数载入Bean定义过程：
 
+Spring IoC容器对Bean定义资源的载入是从refresh\(\)函数开始的，refresh\(\)是一个模板方法，refresh\(\)方法的作用是：在创建IoC容器前，如果已经有容器存在，则需要把已有的容器销毁和关闭，以保证在refresh之后使用的是新建立起来的IoC容器。refresh的作用类似于对IoC容器的重启，在新建立好的容器中对容器进行初始化，对Bean定义资源进行载入
+
+FileSystemXmlApplicationContext通过调用其父类AbstractApplicationContext的refresh\(\)函数启动整个IoC容器对Bean定义的载入过程：
+
+```
+public void refresh() throws BeansException, IllegalStateException {  
+       synchronized (this.startupShutdownMonitor) {  
+           //调用容器准备刷新的方法，获取容器的当时时间，同时给容器设置同步标识  
+           prepareRefresh();  
+           //告诉子类启动refreshBeanFactory()方法，Bean定义资源文件的载入从  
+          //子类的refreshBeanFactory()方法启动  
+           ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();  
+           //为BeanFactory配置容器特性，例如类加载器、事件处理器等  
+           prepareBeanFactory(beanFactory);  
+           try {  
+               //为容器的某些子类指定特殊的BeanPost事件处理器  
+               postProcessBeanFactory(beanFactory);  
+               //调用所有注册的BeanFactoryPostProcessor的Bean  
+               invokeBeanFactoryPostProcessors(beanFactory);  
+               //为BeanFactory注册BeanPost事件处理器.  
+               //BeanPostProcessor是Bean后置处理器，用于监听容器触发的事件  
+               registerBeanPostProcessors(beanFactory);  
+               //初始化信息源，和国际化相关.  
+               initMessageSource();  
+               //初始化容器事件传播器.  
+               initApplicationEventMulticaster();  
+               //调用子类的某些特殊Bean初始化方法  
+               onRefresh();  
+               //为事件传播器注册事件监听器.  
+               registerListeners();  
+               //初始化所有剩余的单态Bean.  
+               finishBeanFactoryInitialization(beanFactory);  
+               //初始化容器的生命周期事件处理器，并发布容器的生命周期事件  
+               finishRefresh();  
+           }  
+           catch (BeansException ex) {  
+               //销毁以创建的单态Bean  
+               destroyBeans();  
+               //取消refresh操作，重置容器的同步标识.  
+               cancelRefresh(ex);  
+               throw ex;  
+           }  
+       }  
+   }
+```
+
+refresh\(\)方法主要为IoC容器Bean的生命周期管理提供条件，Spring IoC容器载入Bean定义资源文件从其子类容器的refreshBeanFactory\(\)方法启动，所以整个refresh\(\)中“ConfigurableListableBeanFactory beanFactory =obtainFreshBeanFactory\(\);”这句以后代码的都是注册容器的信息源和生命周期事件，载入过程就是从这句代码启动。
+
+
+
+ refresh\(\)方法的作用是：在创建IoC容器前，如果已经有容器存在，则需要把已有的容器销毁和关闭，以保证在refresh之后使用的是新建立起来的IoC容器。refresh的作用类似于对IoC容器的重启，在新建立好的容器中对容器进行初始化，对Bean定义资源进行载入
+
+
+
+AbstractApplicationContext的obtainFreshBeanFactory\(\)方法调用子类容器的refreshBeanFactory\(\)方法，启动容器载入Bean定义资源文件的过程，代码如下：
 
