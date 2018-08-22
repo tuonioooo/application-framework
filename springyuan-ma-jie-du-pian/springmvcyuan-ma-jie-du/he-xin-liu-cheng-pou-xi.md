@@ -18,6 +18,7 @@
 6. 执行 HandlerExecutionChain 中所有拦截器的 preHandler\(\) 方法，然后再利用 HandlerAdapter 执行 Handler ，执行完成得到 ModelAndView，再依次调用拦截器的 postHandler\(\) 方法；
 
 7. 利用 ViewResolver 将 ModelAndView 或是 Exception（可解析成 ModelAndView）解析成 View，然后 View 会调用 render\(\) 方法再根据 ModelAndView 中的数据渲染出页面；
+
 8. 最后再依次调用拦截器的 afterCompletion\(\) 方法，这一次请求就结束了。
 
 示例**一**![](/assets/import-dispatcher-01.png)
@@ -195,7 +196,7 @@ private void initHandlerMappings(ApplicationContext context) {
 }
 ```
 
-1.3.2 initHandlerAdapters 方法
+1.3.2 initHandlerAdapters 方法
 
 ```
 private void initHandlerAdapters(ApplicationContext context) {
@@ -226,6 +227,133 @@ private void initHandlerAdapters(ApplicationContext context) {
 ```
 
 > 其他initHandlerExceptionResolvers、initViewResolvers等初始化方法，都是用SpringMVC已经初始化好的容器，从中取出来，放到map 中去，以便于在组件中调用，具体这里不再陈述代码实现示例
+
+2 处理请求
+
+HttpServlet 提供了 doGet\(\)、doPost\(\) 等方法，DispatcherServlet 中这些方法是在其父类 FrameworkServlet 中实现的，代码如下：
+
+```
+@Override
+protected final void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    processRequest(request, response);
+}
+@Override
+protected final void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    processRequest(request, response);
+}
+```
+
+这些方法又都调用了 processRequest\(\) 方法，我们来看一下代码：
+
+```
+protected final void processRequest(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    long startTime = System.currentTimeMillis();
+    Throwable failureCause = null;
+    // 返回与当前线程相关联的 LocaleContext
+    LocaleContext previousLocaleContext = LocaleContextHolder.getLocaleContext();
+    // 根据请求构建 LocaleContext，公开请求的语言环境为当前语言环境
+    LocaleContext localeContext = buildLocaleContext(request);
+    
+    // 返回当前绑定到线程的 RequestAttributes
+    RequestAttributes previousAttributes = RequestContextHolder.getRequestAttributes();
+    // 根据请求构建ServletRequestAttributes
+    ServletRequestAttributes requestAttributes = buildRequestAttributes(request, response, previousAttributes);
+    
+    // 获取当前请求的 WebAsyncManager，如果没有找到则创建
+    WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);    
+    asyncManager.registerCallableInterceptor(FrameworkServlet.class.getName(), new RequestBindingInterceptor());
+
+    // 使 LocaleContext 和 requestAttributes 关联
+    initContextHolders(request, localeContext, requestAttributes);
+
+    try {
+        // 由 DispatcherServlet 实现
+        doService(request, response);
+    } catch (ServletException ex) {
+    } catch (IOException ex) {
+    } catch (Throwable ex) {
+    } finally {
+        // 重置 LocaleContext 和 requestAttributes，解除关联
+        resetContextHolders(request, previousLocaleContext, previousAttributes);
+        if (requestAttributes != null) {
+            requestAttributes.requestCompleted();
+        }// 发布 ServletRequestHandlerEvent 事件
+        publishRequestHandledEvent(request, startTime, failureCause);
+    }
+}
+```
+
+DispatcherServlet 的 doService\(\) 方法主要是设置一些 request 属性，并调用 doDispatch\(\) 方法进行请求分发处理，doDispatch\(\) 方法的主要过程是通过 HandlerMapping 获取 Handler，再找到用于执行它的 HandlerAdapter，执行 Handler 后得到 ModelAndView ，ModelAndView 是连接“业务逻辑层”与“视图展示层”的桥梁，接下来就要通过 ModelAndView 获得 View，再通过它的 Model 对 View 进行渲染。doDispatch\(\) 方法如下：
+
+```
+protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    HttpServletRequest processedRequest = request;
+    HandlerExecutionChain mappedHandler = null;
+    boolean multipartRequestParsed = false;
+    // 获取当前请求的WebAsyncManager，如果没找到则创建并与请求关联
+    WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);
+    try {
+        ModelAndView mv = null;
+        Exception dispatchException = null;
+        try {
+            // 检查是否有 Multipart，有则将请求转换为 Multipart 请求
+            processedRequest = checkMultipart(request);
+            multipartRequestParsed = (processedRequest != request);
+            // 遍历所有的 HandlerMapping 找到与请求对应的 Handler，并将其与一堆拦截器封装到 HandlerExecution 对象中。
+            mappedHandler = getHandler(processedRequest);
+            if (mappedHandler == null || mappedHandler.getHandler() == null) {
+                noHandlerFound(processedRequest, response);
+                return;
+            }
+            // 遍历所有的 HandlerAdapter，找到可以处理该 Handler 的 HandlerAdapter
+            HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
+            // 处理 last-modified 请求头 
+            String method = request.getMethod();
+            boolean isGet = "GET".equals(method);
+            if (isGet || "HEAD".equals(method)) {
+                long lastModified = ha.getLastModified(request, mappedHandler.getHandler());
+                if (new ServletWebRequest(request, response).checkNotModified(lastModified) && isGet) {
+                    return;
+                }
+            }
+            // 遍历拦截器，执行它们的 preHandle() 方法
+            if (!mappedHandler.applyPreHandle(processedRequest, response)) {
+                return;
+            }
+            try {
+                // 执行实际的处理程序
+                mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
+            } finally {
+                if (asyncManager.isConcurrentHandlingStarted()) {
+                    return;
+                }
+            }
+            applyDefaultViewName(request, mv);
+            // 遍历拦截器，执行它们的 postHandle() 方法
+            mappedHandler.applyPostHandle(processedRequest, response, mv);
+        } catch (Exception ex) {
+            dispatchException = ex;
+        }
+        // 处理执行结果，是一个 ModelAndView 或 Exception，然后进行渲染
+        processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
+    } catch (Exception ex) {
+    } catch (Error err) {
+    } finally {
+        if (asyncManager.isConcurrentHandlingStarted()) {
+            // 遍历拦截器，执行它们的 afterCompletion() 方法  
+            mappedHandler.applyAfterConcurrentHandlingStarted(processedRequest, response);
+            return;
+        }
+        // Clean up any resources used by a multipart request.
+        if (multipartRequestParsed) {
+            cleanupMultipart(processedRequest);
+        }
+    }
+}
+```
 
 
 
