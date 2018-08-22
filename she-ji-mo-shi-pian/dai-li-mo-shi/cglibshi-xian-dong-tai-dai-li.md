@@ -31,7 +31,6 @@ public class ChenYuanYuan {
         System.out.println("dragonEnteredShuangFeng：hahaha");
     }
 }
-
 ```
 
 再定义一个田弘这样一个人物：
@@ -78,6 +77,29 @@ public class TianHongCglib implements MethodInterceptor {
     public Object intercept(Object o, Method method, Object[] args, MethodProxy proxy) throws Throwable {
         System.out.println("intercept：" + o.getClass().getName());
         return proxy.invokeSuper(o, args);
+    }
+}
+```
+
+最后，自然少不了吴三桂了，与圆圆的分开和又见面，连自己全家都被杀，都忘记了，哎
+
+```
+package com.master.proxy;
+
+/**
+ * Created by daizhao.
+ * User: tony
+ * Date: 2018-8-22
+ * Time: 11:55
+ * info: 吴三桂
+ */
+public class WuSanGui {
+
+    public static void main(String[] args) {
+        //cglib动态代理实现
+        TianHongCglib cglib = new TianHongCglib();
+        ChenYuanYuan chenYuanYuan = (ChenYuanYuan) cglib.bind(new ChenYuanYuan());
+        chenYuanYuan.happyWithMan();
     }
 }
 
