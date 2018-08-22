@@ -42,7 +42,7 @@ ApplicationContext接口继承众多接口，集众多接口功能与一身，�
 
 还有，它可以发布事件给注册的Listener，实现监听机制。
 
-## ApplicationContext 的子接口
+**ApplicationContext 的子接口**
 
 ```
 org.springframework.context.ConfigurableApplicationContext
