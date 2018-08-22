@@ -167,19 +167,19 @@ public interface ConfigurableWebApplicationContext extends WebApplicationContext
 }
 ```
 
-这里 ConfigurableWebApplicationContext 又将上述两个接口结合起来，提供了一个可配置、可管理、可关闭的WebApplicationContext，同时该接口还增加了setServletContext\(\)，setServletConfig\(\)等set方法，用于装配WebApplicationContext。
-
-到这里ApplicationContext相关接口基本上已经讲完了，总结起来就两大接口：
-
-org.springframework.context.ConfigurableApplicationContext
-
-org.springframework.web.context.ConfigurableWebApplicationContext
-
-对于普通应用，使用ConfigurableApplicationContext 接口的实现类作为bean的管理者，对于web应用，使用ConfigurableWebApplicationContext 接口的实现类作为bean的管理者。
-
-这两个接口，从结构上讲他们是继承关系，从应用上讲他们是平级关系
-
-，在不同的领域为Spring提供强大的支撑。
+> 这里 ConfigurableWebApplicationContext 又将上述两个接口结合起来，提供了一个可配置、可管理、可关闭的WebApplicationContext，同时该接口还增加了setServletContext\(\)，setServletConfig\(\)等set方法，用于装配WebApplicationContext。
+>
+> 到这里ApplicationContext相关接口基本上已经讲完了，总结起来就两大接口：
+>
+> org.springframework.context.ConfigurableApplicationContext
+>
+> org.springframework.web.context.ConfigurableWebApplicationContext
+>
+> 对于普通应用，使用ConfigurableApplicationContext 接口的实现类作为bean的管理者，对于web应用，使用ConfigurableWebApplicationContext 接口的实现类作为bean的管理者。
+>
+> 这两个接口，从结构上讲他们是继承关系，从应用上讲他们是平级关系
+>
+> ，在不同的领域为Spring提供强大的支撑。
 
 ## ApplicationContext相关实现类设计：
 
