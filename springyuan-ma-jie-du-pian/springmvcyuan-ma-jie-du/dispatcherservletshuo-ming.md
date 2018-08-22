@@ -60,5 +60,9 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
 </web-app>
 ```
 
+## 上下文层次结构
+
+https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html\#mvc-servlet-context-hierarchy
+
 
 
