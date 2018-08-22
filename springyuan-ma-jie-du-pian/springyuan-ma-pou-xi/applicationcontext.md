@@ -83,7 +83,11 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 }
 ```
 
-根据接口名可以判决，该接口是可配置的！ApplicationContext 接口本身是 read-only 的，所以子接ConfigurableApplicationContext 就提供了如setID\(\)、setParent\(\)、setEnvironment\(\)等方法，用来配置ApplicationContext。详细接口详解，参考https://docs.spring.io/spring/docs/5.0.8.RELEASE/javadoc-api/
+根据接口名可以判决，该接口是可配置的！ApplicationContext 接口本身是 read-only 的，所以子接ConfigurableApplicationContext 就提供了如setID\(\)、setParent\(\)、setEnvironment\(\)等方法，用来配置ApplicationContext。
+
+接口详解参考
+
+[https://docs.spring.io/spring/docs/5.0.8.RELEASE/javadoc-api/](https://docs.spring.io/spring/docs/5.0.8.RELEASE/javadoc-api/)
 
 * **Lifecycle**
 
