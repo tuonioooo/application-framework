@@ -256,12 +256,12 @@ protected final void processRequest(HttpServletRequest request, HttpServletRespo
     LocaleContext previousLocaleContext = LocaleContextHolder.getLocaleContext();
     // 根据请求构建 LocaleContext，公开请求的语言环境为当前语言环境
     LocaleContext localeContext = buildLocaleContext(request);
-    
+
     // 返回当前绑定到线程的 RequestAttributes
     RequestAttributes previousAttributes = RequestContextHolder.getRequestAttributes();
     // 根据请求构建ServletRequestAttributes
     ServletRequestAttributes requestAttributes = buildRequestAttributes(request, response, previousAttributes);
-    
+
     // 获取当前请求的 WebAsyncManager，如果没有找到则创建
     WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);    
     asyncManager.registerCallableInterceptor(FrameworkServlet.class.getName(), new RequestBindingInterceptor());
