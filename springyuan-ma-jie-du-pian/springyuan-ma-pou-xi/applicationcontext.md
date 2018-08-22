@@ -83,27 +83,66 @@ public interface ConfigurableApplicationContext extends ApplicationContext, Life
 }
 ```
 
-根据接口名可以判决，该接口是可配置的！ApplicationContext 接口本身是 read-only 的，所以子接口 ConfigurableApplicationContext 就提供了如setID\(\)、setParent\(\)、setEnvironment\(\)等方法，用来配置ApplicationContext。
+根据接口名可以判决，该接口是可配置的！ApplicationContext 接口本身是 read-only 的，所以子接ConfigurableApplicationContext 就提供了如setID\(\)、setParent\(\)、setEnvironment\(\)等方法，用来配置ApplicationContext。
 
-再看其继承的另外两个接口：
+* **Lifecycle**
 
+```
+public interface Lifecycle {
+    void start();
 
+    void stop();
 
-Lifecycle：Lifecycle接口中具有start\(\)、stop\(\)等方法，用于对context生命周期的管理；
+    boolean isRunning();
+}
+```
 
-Closeable：Closeable是标准JDK所提供的一个接口，用于最后关闭组件释放资源等；
+Lifecycle接口中具有start\(\)、stop\(\)等方法，用于对context生命周期的管理；
 
-public
+* **Closeable**
 
-interface
+```
+public interface Closeable extends AutoCloseable {
 
-WebApplicationContext
+    /**
+     * Closes this stream and releases any system resources associated
+     * with it. If the stream is already closed then invoking this
+     * method has no effect.
+     *
+     * <p> As noted in {@link AutoCloseable#close()}, cases where the
+     * close may fail require careful attention. It is strongly advised
+     * to relinquish the underlying resources and to internally
+     * <em>mark</em> the {@code Closeable} as closed, prior to throwing
+     * the {@code IOException}.
+     *
+     * @throws IOException if an I/O error occurs
+     */
+    public void close() throws IOException;
+}
+```
 
-extends
+Closeable是标准JDK所提供的一个接口，用于最后关闭组件释放资源等；
 
-ApplicationContext
+* **WebApplicationContext**
+
+```
+public interface WebApplicationContext extends ApplicationContext {
+    String ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE = WebApplicationContext.class.getName() + ".ROOT";
+    String SCOPE_REQUEST = "request";
+    String SCOPE_SESSION = "session";
+    String SCOPE_GLOBAL_SESSION = "globalSession";
+    String SCOPE_APPLICATION = "application";
+    String SERVLET_CONTEXT_BEAN_NAME = "servletContext";
+    String CONTEXT_PARAMETERS_BEAN_NAME = "contextParameters";
+    String CONTEXT_ATTRIBUTES_BEAN_NAME = "contextAttributes";
+
+    ServletContext getServletContext();
+}
+```
 
 该接口仅仅在原接口基础上提供了getServletContext\(\)，用于给servlet提供上下文信息。
+
+* **ConfigurableWebApplicationContext**
 
 public
 
@@ -127,7 +166,7 @@ org.springframework.web.context.ConfigurableWebApplicationContext
 
 这两个接口，从结构上讲他们是继承关系，从应用上讲他们是平级关系
 
-，在不同的领域为Spring提供强大的支撑。  
+，在不同的领域为Spring提供强大的支撑。
 
 ## ApplicationContext相关实现类设计：
 
