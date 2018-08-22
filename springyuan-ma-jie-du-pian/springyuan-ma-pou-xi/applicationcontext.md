@@ -8,11 +8,11 @@
 
 ApplicationContext是Spring提供的一个高级的IoC容器，它除了能够提供IoC容器的基本功能外，还为用户提供了以下的附加服务。
 
-## ApplicationContext接口
+## ApplicationContext
 
 **结构**
 
-![](/assets/import-applicationcontext-01.png)
+![](/assets/import-applicationcontext-01.png)**接口**
 
 ```
 public interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory, MessageSource, ApplicationEventPublisher, ResourcePatternResolver {
