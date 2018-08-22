@@ -25,10 +25,10 @@ public interface BeanFactory {
     <T> T getBean(Class<T> var1) throws BeansException;
 
     <T> T getBean(Class<T> var1, Object... var2) throws BeansException;
-    
+
     //提供对bean的检索，看看是否在IOC容器有这个名字的bean    
     boolean containsBean(String var1);
-
+    //根据bean名字得到bean实例，并同时判断这个bean是不是单例 
     boolean isSingleton(String var1) throws NoSuchBeanDefinitionException;
 
     boolean isPrototype(String var1) throws NoSuchBeanDefinitionException;
@@ -36,7 +36,7 @@ public interface BeanFactory {
     boolean isTypeMatch(String var1, ResolvableType var2) throws NoSuchBeanDefinitionException;
 
     boolean isTypeMatch(String var1, Class<?> var2) throws NoSuchBeanDefinitionException;
-
+    //得到bean实例的Class类型    
     Class<?> getType(String var1) throws NoSuchBeanDefinitionException;
 
     String[] getAliases(String var1);
