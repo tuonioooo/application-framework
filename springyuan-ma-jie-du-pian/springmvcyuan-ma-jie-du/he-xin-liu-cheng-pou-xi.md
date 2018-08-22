@@ -1,2 +1,4 @@
-[核心流程剖析](/springyuan-ma-jie-du-pian/springmvcyuan-ma-jie-du/he-xin-liu-cheng-pou-xi.md)
+# 核心流程剖析
+
+**流程一**![](/assets/import-dispatcher-01.png)
 
