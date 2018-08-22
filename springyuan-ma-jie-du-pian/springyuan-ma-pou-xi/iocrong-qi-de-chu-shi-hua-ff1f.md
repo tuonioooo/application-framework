@@ -285,9 +285,13 @@ protected final void refreshBeanFactory() throws BeansException {
    }
 ```
 
-在这个方法中，先判断BeanFactory是否存在，如果存在则先销毁beans并关闭beanFactory，接着创建DefaultListableBeanFactory，并调用loadBeanDefinitions\(beanFactory\)装载bean
+在这个方法中，先判断BeanFactory是否存在，如果存在则先销毁beans并关闭beanFactory，接着创建DefaultListableBeanFactory，并调用loadBeanDefinitions\(beanFactory\)装载bean定义。
+
+5.AbstractRefreshableApplicationContext子类的loadBeanDefinitions方法：
+
+AbstractRefreshableApplicationContext中只定义了抽象的loadBeanDefinitions方法，容器真正调用的是其子类AbstractXmlApplicationContext对该方法的实现，AbstractXmlApplicationContext的主要源码如下：
 
 
 
-定义。
+loadBeanDefinitions方法同样是抽象方法，是由其子类实现的，也即在AbstractXmlApplicationContext中。
 
