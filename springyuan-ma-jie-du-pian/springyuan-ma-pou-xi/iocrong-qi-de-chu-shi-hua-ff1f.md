@@ -193,7 +193,7 @@ public PathMatchingResourcePatternResolver(ResourceLoader resourceLoader) {
 
 4.AbstractApplicationContext的refresh函数载入Bean定义过程：
 
-Spring IoC容器对Bean定义资源的载入是从refresh\(\)函数开始的，refresh\(\)是一个模板方法，refresh\(\)方法的作用是：在创建IoC容器前，如果已经有容器存在，则需要把已有的容器销毁和关闭，以保证在refresh之后使用的是新建立起来的IoC容器。refresh的作用类似于对IoC容器的重启，在新建立好的容器中对容器进行初始化，对Bean定义资源进行载入
+Spring IoC容器对Bean定义资源的载入是从refresh\(\)函数开始的，refresh\(\)是一个模板方法，refresh\(\)方法的作用是：在创建IoC容器前，如果已经有容器存在，则需要把已有的容器销毁和关闭，以保证在refresh之后使用的是新建立起来的IoC容器。refresh的作用类似于对IoC容器的重启，在新建立好的容器中对容器进行初始化，对Bean定义资源进行载入
 
 FileSystemXmlApplicationContext通过调用其父类AbstractApplicationContext的refresh\(\)函数启动整个IoC容器对Bean定义的载入过程：
 
@@ -239,13 +239,29 @@ public void refresh() throws BeansException, IllegalStateException {
    }
 ```
 
-refresh\(\)方法主要为IoC容器Bean的生命周期管理提供条件，Spring IoC容器载入Bean定义资源文件从其子类容器的refreshBeanFactory\(\)方法启动，所以整个refresh\(\)中“ConfigurableListableBeanFactory beanFactory =obtainFreshBeanFactory\(\);”这句以后代码的都是注册容器的信息源和生命周期事件，载入过程就是从这句代码启动。
+refresh\(\)方法主要为IoC容器Bean的生命周期管理提供条件，Spring IoC容器载入Bean定义资源文件从其子类容器的refreshBeanFactory\(\)方法启动，所以整个refresh\(\)中“ConfigurableListableBeanFactory beanFactory =obtainFreshBeanFactory\(\);”这句以后代码的都是注册容器的信息源和生命周期事件，载入过程就是从这句代码启动。
 
-
-
- refresh\(\)方法的作用是：在创建IoC容器前，如果已经有容器存在，则需要把已有的容器销毁和关闭，以保证在refresh之后使用的是新建立起来的IoC容器。refresh的作用类似于对IoC容器的重启，在新建立好的容器中对容器进行初始化，对Bean定义资源进行载入
-
-
+refresh\(\)方法的作用是：在创建IoC容器前，如果已经有容器存在，则需要把已有的容器销毁和关闭，以保证在refresh之后使用的是新建立起来的IoC容器。refresh的作用类似于对IoC容器的重启，在新建立好的容器中对容器进行初始化，对Bean定义资源进行载入
 
 AbstractApplicationContext的obtainFreshBeanFactory\(\)方法调用子类容器的refreshBeanFactory\(\)方法，启动容器载入Bean定义资源文件的过程，代码如下：
+
+```
+protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {  
+        //这里使用了委派设计模式，父类定义了抽象的refreshBeanFactory()方法，具体实现调用子类容器的refreshBeanFactory()方法
+         refreshBeanFactory();  
+        ConfigurableListableBeanFactory beanFactory = getBeanFactory();  
+        if (logger.isDebugEnabled()) {  
+            logger.debug("Bean factory for " + getDisplayName() + ": " + beanFactory);  
+        }  
+        return beanFactory;  
+    }
+```
+
+AbstractApplicationContext子类的refreshBeanFactory\(\)方法：
+
+
+
+   AbstractApplicationContext类中只抽象定义了refreshBeanFactory\(\)方法，容器真正调用的是其子类AbstractRefreshableApplicationContext实现的    refreshBeanFactory\(\)方法，方法的源码如下：
+
+
 
