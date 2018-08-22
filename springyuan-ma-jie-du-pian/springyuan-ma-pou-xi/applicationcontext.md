@@ -179,37 +179,7 @@ public interface ConfigurableWebApplicationContext extends WebApplicationContext
 >
 > 这两个接口，从结构上讲他们是继承关系，从应用上讲他们是平级关系，在不同的领域为Spring提供强大的支撑。
 
-## ApplicationContext相关实现类设计：
 
-Spring是一个优秀的框架，具有良好的结构设计和接口抽象，它的每一个接口都是其功能具体到各个模块中的高度抽象，实际使用过程中相当于把接口的各个实现类按照接口所提供的组织架构装配起来以提供完整的服务，可以说掌握了Spring的接口就相当于掌握了Spring的大部分功能。
 
-ApplicationContext 的实现类众多，然而
 
-上文中分析了 ApplicationContext 接口的各个功能，下面将分析 ApplicationContext 的实现类对上述接口的各个功能都是怎样实现的（PS. 限于篇幅，这里仅仅指出上述各个功能在实现类中什么位置通过什么方法实现，至于其具体实现过程，每一个功能拿出来都可以单独写一篇文章了，这里不进行详述）。至于实现类又扩展了其他接口或者继承了其他父类，这些只是实现类为了扩展功能或者为了对实现上述接口提供便利而做的事情，对ApplicationContext接口抽象出来的功能没有影响或者没有太大帮助，因此略去。
-
-以ClassPathXmlApplicationContext为例，其主要继承关系如下：
-
-org.springframework.context.support.AbstractApplicationContext
-
-org.springframework.context.support.AbstractRefreshableApplicationContext
-
-org.springframework.context.support.AbstractRefreshableConfigApplicationContext
-
-org.springframework.context.support.AbstractXmlApplicationContext
-
-org.springframework.context.support.ClassPathXmlApplicationContext
-
-而最顶层抽象类 AbstractApplicationContext 又实现了 ConfigurableApplicationContext 接口。
-
-AbstractApplicationContext
-
-extends
-
-DefaultResourceLoader
-
-implements
-
-ConfigurableApplicationContext, DisposableBean
-
-根据上文所述，这里略去其父类 DefaultResourceLoader 和接口 DisposableBean ，只关注接口 ConfigurableApplicationContext，回忆一下该的主要功能：
 
