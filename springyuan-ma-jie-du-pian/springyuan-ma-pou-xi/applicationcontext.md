@@ -144,15 +144,28 @@ public interface WebApplicationContext extends ApplicationContext {
 
 * **ConfigurableWebApplicationContext**
 
-public
+```
+public interface ConfigurableWebApplicationContext extends WebApplicationContext, ConfigurableApplicationContext {
+    String APPLICATION_CONTEXT_ID_PREFIX = WebApplicationContext.class.getName() + ":";
+    String SERVLET_CONFIG_BEAN_NAME = "servletConfig";
 
-interface
+    void setServletContext(ServletContext var1);
 
-ConfigurableWebApplicationContext
+    void setServletConfig(ServletConfig var1);
 
-extends
+    ServletConfig getServletConfig();
 
-WebApplicationContext, ConfigurableApplicationContext
+    void setNamespace(String var1);
+
+    String getNamespace();
+
+    void setConfigLocation(String var1);
+
+    void setConfigLocations(String... var1);
+
+    String[] getConfigLocations();
+}
+```
 
 这里 ConfigurableWebApplicationContext 又将上述两个接口结合起来，提供了一个可配置、可管理、可关闭的WebApplicationContext，同时该接口还增加了setServletContext\(\)，setServletConfig\(\)等set方法，用于装配WebApplicationContext。
 
