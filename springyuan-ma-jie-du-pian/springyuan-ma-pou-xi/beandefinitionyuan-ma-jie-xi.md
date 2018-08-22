@@ -8,6 +8,8 @@ Bean 的解析过程非常复杂，功能被分的很细，因为这里需要被
 
 ![](/assets/import-beande-02.png)
 
+* **BeanDefinition**
+
 ```
 public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
     String SCOPE_SINGLETON = "singleton";
@@ -70,7 +72,6 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 
     BeanDefinition getOriginatingBeanDefinition();
 }
-
 ```
 
 
