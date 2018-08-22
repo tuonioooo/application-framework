@@ -41,7 +41,7 @@ public class XmlBeanFactory extends DefaultListableBeanFactory {
 
 > 注意：XmlBeanFactory在Spring4.0以后的版本已经，不推荐使用了
 
-* FileSystemXmlApplicationContext 的IOC容器流程
+* FileSystemXmlApplicationContext 的IOC容器流程
 
 ```
 public class FileSystemXmlApplicationContext extends AbstractXmlApplicationContext {
@@ -129,5 +129,67 @@ public FileSystemXmlApplicationContext(String[] configLocations, boolean refresh
 
 然后，再调用父类AbstractRefreshableConfigApplicationContext的setConfigLocations\(configLocations\)方法设置Bean定义资源文件的定位路径。
 
-通过追踪FileSystemXmlApplicationContext的继承体系，发现其父类的父类AbstractApplicationContext中初始化IoC容器所做的主要源码如下
+通过追踪FileSystemXmlApplicationContext的继承体系，发现其父类的父类AbstractApplicationContext中初始化IoC容器所做的主要源码如下：
+
+```
+public abstract class AbstractApplicationContext extends DefaultResourceLoader  
+        implements ConfigurableApplicationContext, DisposableBean {  
+    //静态初始化块，在整个容器创建过程中只执行一次  
+    static {  
+        //为了避免应用程序在Weblogic8.1关闭时出现类加载异常加载问题，加载IoC容  
+       //器关闭事件(ContextClosedEvent)类  
+        ContextClosedEvent.class.getName();  
+    }  
+    //FileSystemXmlApplicationContext调用父类构造方法调用的就是该方法  
+    public AbstractApplicationContext(ApplicationContext parent) {  
+        this.parent = parent;  
+        this.resourcePatternResolver = getResourcePatternResolver();  
+    }  
+    //获取一个Spring Source的加载器用于读入Spring Bean定义资源文件  
+    protected ResourcePatternResolver getResourcePatternResolver() {  
+        // AbstractApplicationContext继承DefaultResourceLoader，也是一个S  
+        //Spring资源加载器，其getResource(String location)方法用于载入资源  
+        return new PathMatchingResourcePatternResolver(this);  
+    }   
+……  
+}
+```
+
+AbstractApplicationContext构造方法中调用PathMatchingResourcePatternResolver的构造方法创建Spring资源加载器：
+
+```
+public PathMatchingResourcePatternResolver(ResourceLoader resourceLoader) {  
+        Assert.notNull(resourceLoader, "ResourceLoader must not be null");  
+        //设置Spring的资源加载器  
+        this.resourceLoader = resourceLoader;  
+} 
+```
+
+在设置容器的资源加载器之后，接下来FileSystemXmlApplicationContet执行setConfigLocations方法通过调用其父类AbstractRefreshableConfigApplicationContext的方法进行对Bean定义资源文件的定位，该方法的源码如下：
+
+```
+//处理单个资源文件路径为一个字符串的情况  
+    public void setConfigLocation(String location) {  
+       //String CONFIG_LOCATION_DELIMITERS = ",; /t/n";  
+       //即多个资源文件路径之间用” ,; /t/n”分隔，解析成数组形式  
+        setConfigLocations(StringUtils.tokenizeToStringArray(location, CONFIG_LOCATION_DELIMITERS));  
+    }  
+
+    //解析Bean定义资源文件的路径，处理多个资源文件字符串数组  
+     public void setConfigLocations(String[] locations) {  
+        if (locations != null) {  
+            Assert.noNullElements(locations, "Config locations must not be null");  
+            this.configLocations = new String[locations.length];  
+            for (int i = 0; i < locations.length; i++) {  
+                // resolvePath为同一个类中将字符串解析为路径的方法  
+                this.configLocations[i] = resolvePath(locations[i]).trim();  
+            }  
+        }  
+        else {  
+            this.configLocations = null;  
+        }  
+    }
+```
+
+
 
