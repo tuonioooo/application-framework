@@ -38,7 +38,7 @@ public interface BeanFactory {
     boolean isTypeMatch(String var1, Class<?> var2) throws NoSuchBeanDefinitionException;
     //得到bean实例的Class类型    
     Class<?> getType(String var1) throws NoSuchBeanDefinitionException;
-
+    //得到bean的别名，如果根据别名检索，那么其原名也会被检索出来   
     String[] getAliases(String var1);
 }
 ```
