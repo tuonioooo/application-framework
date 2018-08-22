@@ -16,6 +16,7 @@
 5. DispatcherServlet 取出 HandlerAdapter 组件，根据已经找到的 Handler，再从所有 HandlerAdapter 中找到可以处理该 Handler 的 HandlerAdapter 对象；
 
 6. 执行 HandlerExecutionChain 中所有拦截器的 preHandler\(\) 方法，然后再利用 HandlerAdapter 执行 Handler ，执行完成得到 ModelAndView，再依次调用拦截器的 postHandler\(\) 方法；
+
 7. 利用 ViewResolver 将 ModelAndView 或是 Exception（可解析成 ModelAndView）解析成 View，然后 View 会调用 render\(\) 方法再根据 ModelAndView 中的数据渲染出页面；
 8. 最后再依次调用拦截器的 afterCompletion\(\) 方法，这一次请求就结束了。
 
@@ -163,9 +164,9 @@ protected WebApplicationContext findWebApplicationContext() {
 
 在 initStrategies\(\) 方法中进行了各个组件的初始化，先来看一下这些组件的初始化方法，稍后再来详细分析这些组件。
 
-1.3.1 initHandlerMappings 方法
+1.3.1 initHandlerMappings 方法
 
-initHandlerMappings\(\) 方法从 SpringMVC 的容器及 Spring 的容器中查找所有的 HandlerMapping 实例，并把它们放入到 handlerMappings 这个 list 中。这个方法并不是对 HandlerMapping 实例的创建，HandlerMapping 实例是在上面 WebApplicationContext 容器初始化，即 SpringMVC 容器初始化的时候创建的。
+initHandlerMappings\(\) 方法从 SpringMVC 的容器及 Spring 的容器中查找所有的 HandlerMapping 实例，并把它们放入到 handlerMappings 这个 list 中。这个方法并不是对 HandlerMapping 实例的创建，HandlerMapping 实例是在上面 WebApplicationContext 容器初始化，即 SpringMVC 容器初始化的时候创建的。
 
 ```
 private void initHandlerMappings(ApplicationContext context) {
@@ -193,6 +194,38 @@ private void initHandlerMappings(ApplicationContext context) {
     }
 }
 ```
+
+1.3.2 initHandlerAdapters 方法
+
+```
+private void initHandlerAdapters(ApplicationContext context) {
+    this.handlerAdapters = null;
+    if (this.detectAllHandlerAdapters) {
+        // Find all HandlerAdapters in the ApplicationContext, including ancestor contexts.
+        Map<String, HandlerAdapter> matchingBeans =
+                    BeanFactoryUtils.beansOfTypeIncludingAncestors(context, HandlerAdapter.class, true, false);
+        if (!matchingBeans.isEmpty()) {
+            this.handlerAdapters = new ArrayList<HandlerAdapter>(matchingBeans.values());
+            // We keep HandlerAdapters in sorted order.
+            OrderComparator.sort(this.handlerAdapters);
+        }
+    } else {
+        try {
+            HandlerAdapter ha = context.getBean(HANDLER_ADAPTER_BEAN_NAME, HandlerAdapter.class);
+            this.handlerAdapters = Collections.singletonList(ha);
+        } catch (NoSuchBeanDefinitionException ex) {
+            // Ignore, we'll add a default HandlerAdapter later.
+        }
+    }
+    // Ensure we have at least some HandlerAdapters, by registering
+    // default HandlerAdapters if no other adapters are found.
+    if (this.handlerAdapters == null) {
+        this.handlerAdapters = getDefaultStrategies(context, HandlerAdapter.class);
+    }
+}
+```
+
+> 其他initHandlerExceptionResolvers、initViewResolvers等初始化方法，都是用SpringMVC已经初始化好的容器，从中取出来，放到map 中去，以便于在组件中调用，具体这里不再陈述代码实现示例
 
 
 
