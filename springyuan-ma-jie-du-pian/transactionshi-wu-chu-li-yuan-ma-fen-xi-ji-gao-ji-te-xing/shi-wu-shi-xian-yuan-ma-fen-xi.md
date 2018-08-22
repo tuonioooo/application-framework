@@ -38,7 +38,7 @@ public interface TransactionDefinition {
 
 * **TransactionDefinition 的一个实现类：DefaultTransactionDefinition**
 
-就是对上述属性设置一些默认值，默认的传播特性为PROPAGATION\_REQUIRED ，隔离级别为ISOLATION\_DEFAULT 
+就是对上述属性设置一些默认值，默认的传播特性为PROPAGATION\_REQUIRED ，隔离级别为ISOLATION\_DEFAULT
 
 ```
 public class DefaultTransactionDefinition implements TransactionDefinition, Serializable {
@@ -166,7 +166,6 @@ public class DefaultTransactionDefinition implements TransactionDefinition, Seri
         return result;
     }
 }
-
 ```
 
 * **TransactionAttribute接口**
@@ -181,7 +180,7 @@ public interface TransactionAttribute extends TransactionDefinition {
 
 > 定义对什么类型的异常进行回滚
 
-* ** TransactionAttribute的实现类：DefaultTransactionAttribute**
+* ** TransactionAttribute的实现类：DefaultTransactionAttribute**
 
 ```
 public class DefaultTransactionAttribute extends DefaultTransactionDefinition implements TransactionAttribute {
