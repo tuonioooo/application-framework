@@ -320,7 +320,7 @@ public interface PlatformTransactionManager {
 }
 ```
 
-> 用它来对事务提交和回滚。我们的业务逻辑只要写在TransactionCallback.doInTransaction（）方法里面既可以，每次执行这个方法前，先会transactionManager.getTransaction\(this\)开启一   个事务，执行TransactionCallback.doInTransaction（）异常的话会调用transactionManager.rollback\(status\)来回滚事务，正确的话就会调用transactionManager.commit\(status\)提交事务；
+
 
 
 
