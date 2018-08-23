@@ -235,7 +235,262 @@ public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) 
 
 2. 在执行顺序是 processConfigBeanDefinitions在先, 而enhanceConfigurationClasses在后.
 
+* **processConfigBeanDefinitions方法**
 
+```
+/**
+ * Build and validate a configuration model based on the registry of
+ * {@link Configuration} classes.
+ */
+public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
+    Set<BeanDefinitionHolder> configCandidates = new LinkedHashSet<BeanDefinitionHolder>();
+    // 迭代现有容器中所有bean
+    for (String beanName : registry.getBeanDefinitionNames()) {
+        BeanDefinition beanDef = registry.getBeanDefinition(beanName);
+        // 注意下面这个方法会向BeanDefinition类型的beanDef注入一个名ConfigurationClassUtils.CONFIGURATION_CLASS_ATTRIBUTE为的Attribute
+        // 返回true的条件是该beanDef代表的类被@Configuration或@Component或@Bean修饰
+        // @Configuration注解上有@Component所修饰, @Bean上可没有
+        if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
+            configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
+        }
+    }
+
+    // Return immediately if no @Configuration classes were found
+    // 如果没有被任何被上述三注解所修饰的, 则中断接下来的处理, 直接返回.
+    if (configCandidates.isEmpty()) {
+        return;
+    }
+
+    // Detect any custom bean name generation strategy supplied through the enclosing application context
+    // 上面的官方注释已经很清楚了
+    SingletonBeanRegistry singletonRegistry = null;
+    if (registry instanceof SingletonBeanRegistry) {
+        singletonRegistry = (SingletonBeanRegistry) registry;
+        if (!this.localBeanNameGeneratorSet && singletonRegistry.containsSingleton(CONFIGURATION_BEAN_NAME_GENERATOR)) {
+            BeanNameGenerator generator = (BeanNameGenerator) singletonRegistry.getSingleton(CONFIGURATION_BEAN_NAME_GENERATOR);
+            this.componentScanBeanNameGenerator = generator;
+            this.importBeanNameGenerator = generator;
+        }
+    }
+
+    // Parse each @Configuration class
+    // 构建一个专门处理@Configuration的类, 注意该类的访问级别也是 package 
+    ConfigurationClassParser parser = new ConfigurationClassParser(
+            this.metadataReaderFactory, this.problemReporter, this.environment,
+            this.resourceLoader, this.componentScanBeanNameGenerator, registry);
+    for (BeanDefinitionHolder holder : configCandidates) {
+        BeanDefinition bd = holder.getBeanDefinition();
+        try {
+            // 解析每个BeanDefinition
+            if (bd instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) bd).hasBeanClass()) {
+                parser.parse(((AbstractBeanDefinition) bd).getBeanClass(), holder.getBeanName());
+            }
+            else {
+
+                parser.parse(bd.getBeanClassName(), holder.getBeanName());
+            }
+        }
+        catch (IOException ex) {
+            throw new BeanDefinitionStoreException("Failed to load bean class: " + bd.getBeanClassName(), ex);
+        }
+    }
+    // 验证解析的成果
+    parser.validate();
+
+    // --------------------------------------------------------------
+    // 1. 在经过上面的parser.validate();之后, 代表基本解析工作完毕, 并且通过验证
+    // 2. 接下来要做的是提取解析的成果, 进行相应的处理, 例如将解析出来的BeanMethod(代表一个被@Bean标注的方法)集合注册进容器
+    // --------------------------------------------------------------
+
+    // Handle any @PropertySource annotations
+    // 处理上面的parse解析出来的@PropertySource信息
+    // @PropertySource注解的主要功能是引入配置文件，将配置的属性键值对与环境变量中的配置合并
+    // @PropertySources仅仅只是包含多个@PropertySource
+    Stack<PropertySource<?>> parsedPropertySources = parser.getPropertySources();
+    if (!parsedPropertySources.isEmpty()) {
+        if (!(this.environment instanceof ConfigurableEnvironment)) {
+            logger.warn("Ignoring @PropertySource annotations. " +
+                    "Reason: Environment must implement ConfigurableEnvironment");
+        }
+        else {
+            MutablePropertySources envPropertySources = ((ConfigurableEnvironment)this.environment).getPropertySources();
+            while (!parsedPropertySources.isEmpty()) {
+                envPropertySources.addLast(parsedPropertySources.pop());
+            }
+        }
+    }
+
+    // Read the model and create bean definitions based on its content
+    // 创建一个用于加载Bean的reader
+    if (this.reader == null) {
+        this.reader = new ConfigurationClassBeanDefinitionReader(
+                registry, this.sourceExtractor, this.problemReporter, this.metadataReaderFactory,
+                this.resourceLoader, this.environment, this.importBeanNameGenerator);
+    }
+    // 1. 处理解析出来的被@Configuration注解的类信息(被@Configuration修饰的类相关的元数据被使用ConfigurationClass来承载)
+    // 2. 例如包括解析ConfigurationClass中的BeanMethod实例集合(每个BeanBeanMethod代表的是被@Bean修饰的方法,也就是一个Bean实例)
+    this.reader.loadBeanDefinitions(parser.getConfigurationClasses());
+
+    // Register the ImportRegistry as a bean in order to support ImportAware @Configuration classes
+    // 不再赘述
+    if (singletonRegistry != null) {
+        if (!singletonRegistry.containsSingleton(IMPORT_REGISTRY_BEAN_NAME)) {
+            singletonRegistry.registerSingleton(IMPORT_REGISTRY_BEAN_NAME, parser.getImportRegistry());
+        }
+    }
+
+    if (this.metadataReaderFactory instanceof CachingMetadataReaderFactory) {
+        ((CachingMetadataReaderFactory) this.metadataReaderFactory).clearCache();
+    }
+}
+```
+
+* **ConfigurationClassParser类**
+
+1. Parse each @Configuration class — 官方注释
+2. 访问级别级别为 package;
+3. 位于org.springframework.context.annotation package下
+
+```
+// Parse the specified {@link Configuration @Configuration} class.
+public void parse(String className, String beanName) throws IOException {
+    MetadataReader reader = this.metadataReaderFactory.getMetadataReader(className);
+    // 注意这里使用ConfigurationClass进行了包装
+    // 即在Spring中每个ConfigurationClass代表一个被@Configuration修饰的配置类
+    processConfigurationClass(new ConfigurationClass(reader, beanName));
+}
+
+protected void processConfigurationClass(ConfigurationClass configClass) throws IOException {
+    // 略过开始部分的代码
+
+    // Recursively process the configuration class and its superclass hierarchy.
+    do {
+        metadata = doProcessConfigurationClass(configClass, metadata);
+    }
+    while (metadata != null);
+
+    this.configurationClasses.add(configClass);
+}
+
+/**
+ * @return annotation metadata of superclass, {@code null} if none found or previously processed
+ */
+protected AnnotationMetadata doProcessConfigurationClass(ConfigurationClass configClass, AnnotationMetadata metadata) throws IOException {
+    //----------- 虽然看着比较多, 但还是比较清晰; 空格分开的段落之间, 彼此各自处理各自的内容
+
+    // recursively process any member (nested) classes first
+    processMemberClasses(metadata);
+
+    // process any @PropertySource annotations
+    AnnotationAttributes propertySource = MetadataUtils.attributesFor(metadata,
+            org.springframework.context.annotation.PropertySource.class);
+    if (propertySource != null) {
+        processPropertySource(propertySource);
+    }
+
+    // process any @ComponentScan annotations
+    // @ComponentScan定义自动扫描的包, 其最关键的方法为doScan方法，会注册BeanDefinition到容器中。
+    AnnotationAttributes componentScan = MetadataUtils.attributesFor(metadata, ComponentScan.class);
+    if (componentScan != null) {
+        // the config class is annotated with @ComponentScan -> perform the scan immediately
+        // 这里的this.componentScanParser, 其类型为ComponentScanAnnotationParser(访问级别也是package)
+        // 也就是说ComponentScanAnnotationParser负责了@ComponentScan的解析工作
+        Set<BeanDefinitionHolder> scannedBeanDefinitions =
+                this.componentScanParser.parse(componentScan, metadata.getClassName());
+
+        // check the set of scanned definitions for any further config classes and parse recursively if necessary
+        for (BeanDefinitionHolder holder : scannedBeanDefinitions) {
+            if (ConfigurationClassUtils.checkConfigurationClassCandidate(holder.getBeanDefinition(), this.metadataReaderFactory)) {
+                this.parse(holder.getBeanDefinition().getBeanClassName(), holder.getBeanName());
+            }
+        }
+    }
+
+    // process any @Import annotations
+    // @Import注解可以配置需要引入的class
+    Set<Object> imports = new LinkedHashSet<Object>();
+    Set<Object> visited = new LinkedHashSet<Object>();
+    collectImports(metadata, imports, visited);
+    if (!imports.isEmpty()) {
+        processImport(configClass, metadata, imports, true);
+    }
+
+    // process any @ImportResource annotations
+    // @ImportResource的主要功能为引入资源文件。
+    if (metadata.isAnnotated(ImportResource.class.getName())) {
+        AnnotationAttributes importResource = MetadataUtils.attributesFor(metadata, ImportResource.class);
+        String[] resources = importResource.getStringArray("value");
+        Class<? extends BeanDefinitionReader> readerClass = importResource.getClass("reader");
+        for (String resource : resources) {
+            String resolvedResource = this.environment.resolveRequiredPlaceholders(resource);
+            configClass.addImportedResource(resolvedResource, readerClass);
+        }
+    }
+
+    // process individual @Bean methods
+    // 这里就是解析每个@Bean元信息的
+    // 一个BeanMethod代表一个被@Bean修饰的方法,也就是一个Bean实例
+    Set<MethodMetadata> beanMethods = metadata.getAnnotatedMethods(Bean.class.getName());
+    for (MethodMetadata methodMetadata : beanMethods) {
+        // 使用BeanMethod封装解析出来的结果
+        configClass.addBeanMethod(new BeanMethod(methodMetadata, configClass));
+    }
+
+    // process superclass, if any
+    if (metadata.hasSuperClass()) {
+        String superclass = metadata.getSuperClassName();
+        if (!superclass.startsWith("java") && !this.knownSuperclasses.containsKey(superclass)) {
+            this.knownSuperclasses.put(superclass, configClass);
+            // superclass found, return its annotation metadata and recurse
+            if (metadata instanceof StandardAnnotationMetadata) {
+                Class<?> clazz = ((StandardAnnotationMetadata) metadata).getIntrospectedClass();
+                return new StandardAnnotationMetadata(clazz.getSuperclass(), true);
+            }
+            else {
+                MetadataReader reader = this.metadataReaderFactory.getMetadataReader(superclass);
+                return reader.getAnnotationMetadata();
+            }
+        }
+    }
+
+    // no superclass, processing is complete
+    return null;
+}
+```
+
+* **ConfigurationClassBeanDefinitionReader类**
+
+这个类的访问级别也是 package.
+
+```
+/**
+ * Read a particular {@link ConfigurationClass}, registering bean definitions for the
+ * class itself, all its {@link Bean} methods
+ */
+private void loadBeanDefinitionsForConfigurationClass(ConfigurationClass configClass) {
+    if (configClass.isImported()) {
+        // Register the {@link Configuration} class itself as a bean definition.
+        registerBeanDefinitionForImportedConfigurationClass(configClass);
+    }
+    for (BeanMethod beanMethod : configClass.getBeanMethods()) {
+        // 解读每个BeanMethod里的元数据, 将解析得到的bean注册进容器
+        loadBeanDefinitionsForBeanMethod(beanMethod);
+    }
+    loadBeanDefinitionsFromImportedResources(configClass.getImportedResources());
+}
+```
+
+* **enhanceConfigurationClasses方法**
+
+1. 唯一想要提及的是 如果我们从容器中取出配置类\(例如通过springConfig作为key取出上面的定义的SpringConfig\)的话, 就会发现, Spring返回给我们的并不是一个原生的SpringConfig实例; 而是类似SpringConfig$$EnhancerBySpringCGLIB$$47a5de53@11935e这样的实例; 这明显就是被CGLIB代理过的.
+2. 而原因就发生在 ConfigurationClassPostProcessor类的enhanceConfigurationClasses方法中.
+3. 其它暂时略.
+
+## Links
+
+1. [http://blog.csdn.net/honghailiang888/article/details/74981445](http://blog.csdn.net/honghailiang888/article/details/74981445)
+2. [http://www.mamicode.com/info-detail-1564393.html](http://www.mamicode.com/info-detail-1564393.html)
+3. [http://blog.csdn.net/isea533/article/details/78072133](http://blog.csdn.net/isea533/article/details/78072133)
 
 
 
