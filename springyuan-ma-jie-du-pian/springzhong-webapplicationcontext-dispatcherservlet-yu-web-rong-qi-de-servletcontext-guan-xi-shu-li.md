@@ -18,9 +18,11 @@
 
 ![](/assets/import-web-04.png)
 
-*   DispatcherServlet的上下文:  在WebApplicationContext初始化完后。开始初始化web.xml中的servlet。这个servlet可以有多个。默认我们都使用DispatcherServlet。&lt;servlet&gt;标签中可以有&lt;init-param&gt;标签用来配置一些DispatcherServlet的初始化参数。
+* DispatcherServlet的上下文:  在WebApplicationContext初始化完后。开始初始化web.xml中的servlet。这个servlet可以有多个。默认我们都使用DispatcherServlet。&lt;servlet&gt;标签中可以有&lt;init-param&gt;标签用来配置一些DispatcherServlet的初始化参数。可以参考[核心流程剖析及原理分析](/springyuan-ma-jie-du-pian/springmvcyuan-ma-jie-du/he-xin-liu-cheng-pou-xi.md)
 
+该servlet初始化流程是有tomcat的Servlet的init\(\)方法触发。DispatcherServleet-继承-&gt;FrameworkServlet-继承-&gt;HttpServletBean-继承-GenericServlet- 实现 -&gt;Servlet。这样的一条关系链。其核心方法在FrameworkServlet中的initServletBean\(\)中
 
+   中的initWebApplicationContext\(\)方法中。
 
 
 
