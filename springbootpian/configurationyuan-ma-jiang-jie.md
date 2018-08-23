@@ -347,10 +347,11 @@ public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 
 * **ConfigurationClassParser类**
 
-* Parse each @Configuration class — 官方注释
-
-* 访问级别级别为 package;
-* 位于org.springframework.context.annotation package下
+> Parse each @Configuration class — 官方注释
+>
+> 访问级别级别为 package;
+>
+> 位于org.springframework.context.annotation package下
 
 ```
 // Parse the specified {@link Configuration @Configuration} class.
