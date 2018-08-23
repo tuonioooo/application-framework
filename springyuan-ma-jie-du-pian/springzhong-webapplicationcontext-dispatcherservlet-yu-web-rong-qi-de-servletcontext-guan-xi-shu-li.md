@@ -18,3 +18,9 @@
 
 ![](/assets/import-web-04.png)
 
+*   DispatcherServlet的上下文:  在WebApplicationContext初始化完后。开始初始化web.xml中的servlet。这个servlet可以有多个。默认我们都使用DispatcherServlet。&lt;servlet&gt;标签中可以有&lt;init-param&gt;标签用来配置一些DispatcherServlet的初始化参数。
+
+
+
+
+
