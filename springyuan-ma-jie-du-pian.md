@@ -11,8 +11,6 @@
 * [SpringMVC源码解读](/springyuan-ma-jie-du-pian/springmvcyuan-ma-jie-du.md)
 * [Spring新版本特性解读](/springyuan-ma-jie-du-pian/springxin-ban-ben-te-xing-jie-du.md)
 * [Spring源码中的那些设计模式](/springyuan-ma-jie-du-pian/springyuan-ma-zhong-de-na-xie-she-ji-mo-shi.md)
-* [ContextLoader加载过程](/springyuan-ma-jie-du-pian/contextloaderjia-zai-guo-cheng.md)
-* [web.xml 中的listener、 filter、servlet 加载顺序及其详解](/springyuan-ma-jie-du-pian/webxml-zhong-de-listener-filter-servlet-jia-zai-shun-xu-ji-qi-xiang-jie.md)
 
 ## 参考
 
