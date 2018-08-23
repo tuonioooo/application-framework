@@ -74,3 +74,38 @@ Spring中在实例化对象的时候用到Strategy模式，见如下图：
 
 ![](/assets/import-strategy-02.png)
 
+还有，第一个地方，加载资源文件的方式，使用了不同的方法，比如：ClassPathResourece，FileSystemResource，ServletContextResource，UrlResource但他们都有共同的借口Resource；
+
+第二个地方就是在Aop的实现中，采用了两种不同的方式，JDK动态代理和CGLIB代理；  
+
+
+第三个地方就是Spring的事务管理，PlatformTransactionManager代表事务管理接口，但是它不知道底层如何管理事务，它只要求事务管理
+
+提供开始事务\(getTransaction\(\),commit\(\),rollback\(\)三个方法，但是如何实现则交给具体实现类来完成--不同的实现类代表不同的事务管理策略。
+
+一般来说，spring事务管理下面主要针对
+
+1\) JDBC\(org.springframework.jdbc.datasource.DataSourceTransactionManager\), 
+
+2\) Hibernate \(org.springframework.orm.hibernate3.HibernateTransactionManager\)，
+
+3\) JTA \(org.springframework.transaction.jta.JtaTransactionManager\)和
+
+4\) JPA\(org.springframework.orm.jpa.JpaTransactionManager\)
+
+四种具体的底层事务控制来包装的。
+
+**9.模板方法（Template Method）**
+
+定义一个操作中的算法的骨架，而将一些步骤延迟到子类中。Template Method使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。Template Method模式一般是需要继承的。这里想要探讨另一种对Template Method的理解。Spring中的JdbcTemplate，在用这个类时并不想去继承这个类，因为这个类的方法太多，但是我们还是想用到JdbcTemplate已有的稳定的、公用的数据库连接，那么我们怎么办呢？我们可以把变化的东西抽出来作为一个参数传入JdbcTemplate的方法中。但是变化的东西是一段代码，而且这段代码会用到JdbcTemplate中的变量。怎么办？那我们就用回调对象吧。在这个回调对象中定义一个操纵JdbcTemplate中变量的方法，我们去实现这个方法，就把变化的东西集中到这里了。然后我们再传入这个回调对象到JdbcTemplate，从而完成了调用。这可能是Template Method不需要继承的另一种实现方式吧。
+
+以下是一个具体的例子：
+
+JdbcTemplate中的execute方法：
+
+![](http://www.uml.org.cn/j2ee/images/2013010748.png)
+
+JdbcTemplate执行execute方法：
+
+![](http://www.uml.org.cn/j2ee/images/2013010749.png)
+
