@@ -246,7 +246,7 @@ protected void initHandlerMethods() {
 }
 ```
 
-看完上述代码后，可以知道是在 detectHandlerMethods\(\) 方法中将 Bean 的方法转换为 HandlerMethod 对象，具体实现如下
+看完上述代码后，可以知道是在 detectHandlerMethods\(\) 方法中将 Bean 的方法转换为 HandlerMethod 对象，具体实现如下
 
 ```
 protected void detectHandlerMethods(final Object handler) {
@@ -278,7 +278,7 @@ protected void detectHandlerMethods(final Object handler) {
 }
 ```
 
-最后在 registerHandlerMethod\(\) 方法中，将 RequestMappingInfo 作为 key，把 Method 包装成 HandlerMethod 作为 value 添加到了 Map&lt;T, HandlerMethod&gt;  handlerMethods 中。
+最后在 registerHandlerMethod\(\) 方法中，将 RequestMappingInfo 作为 key，把 Method 包装成 HandlerMethod 作为 value 添加到了 Map&lt;T, HandlerMethod&gt;  handlerMethods 中。
 
 ```
 protected void registerHandlerMethod(Object handler, Method method, T mapping) {
@@ -301,5 +301,19 @@ protected void registerHandlerMethod(Object handler, Method method, T mapping) {
 
 ![](/assets/import-abstractHandlermapping-01.png)
 
-AbstractHandlerMapping 只有一个实现类 RequestMappingHandlerMapping
+AbstractHandlerMapping 只有一个实现类 RequestMappingHandlerMapping
+
+## HandlerAdapter
+
+根据 Handler 来找到支持它的 HandlerAdapter，通过 HandlerAdapter 执行这个 Handler 得到 ModelAndView 对象。HandlerAdapter 接口中的方法如下：
+
+* boolean supports\(Object handler\); 
+  // 当前 HandlerAdapter 是否支持这个 Handler
+* ModelAndView handle\(HttpServletRequest req, HttpServletResponse res, Object handler\); 
+  // 利用 Handler 处理请求
+* long getLastModified\(HttpServletRequest request, Object handler\);
+
+![](/assets/import-adapter-01.png)
+
+
 
