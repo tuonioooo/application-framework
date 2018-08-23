@@ -16,6 +16,7 @@
   * [常用设计模式在开源软件的应用](she-ji-mo-shi-pian/chang-yong-she-ji-mo-shi-zai-kai-yuan-ruan-jian-de-ying-yong.md)
 * [SpringBoot篇](springbootpian.md)
   * [SpringBoot 官方教程结构图](springbootpian/springboot-guan-fang-jiao-cheng-jie-gou-tu.md)
+  * [@Configuration源码讲解](springbootpian/configurationyuan-ma-jiang-jie.md)
 * [Mybatis篇](mybatispian.md)
   * [Mybatis基础教程](mybatisji-chu-jiao-cheng.md)
   * [Mybatis-Spring基础教程](mybatis-springji-chu-jiao-cheng.md)
