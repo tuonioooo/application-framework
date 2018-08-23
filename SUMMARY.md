@@ -74,7 +74,7 @@
     * [核心流程剖析及原理分析](springyuan-ma-jie-du-pian/springmvcyuan-ma-jie-du/he-xin-liu-cheng-pou-xi.md)
     * [请求映射机制](springyuan-ma-jie-du-pian/springmvcyuan-ma-jie-du/qing-qiu-ying-she-ji-zhi.md)
     * [参数绑定与转换机制](springyuan-ma-jie-du-pian/springmvcyuan-ma-jie-du/can-shu-bang-ding-yu-zhuan-huan-ji-zhi.md)
-    * 页面渲染机制
+    * [页面渲染机制](springyuan-ma-jie-du-pian/springmvcyuan-ma-jie-du/ye-mian-xuan-ran-ji-zhi.md)
   * Spring新版本特性解读
   * Spring源码中的那些设计模式
 
