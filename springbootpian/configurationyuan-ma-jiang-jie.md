@@ -235,7 +235,7 @@ public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) 
 
 2. 在执行顺序是 processConfigBeanDefinitions在先, 而enhanceConfigurationClasses在后.
 
-* **processConfigBeanDefinitions方法**
+3. **processConfigBeanDefinitions方法**
 
 ```
 /**
@@ -347,9 +347,10 @@ public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 
 * **ConfigurationClassParser类**
 
-1. Parse each @Configuration class — 官方注释
-2. 访问级别级别为 package;
-3. 位于org.springframework.context.annotation package下
+* Parse each @Configuration class — 官方注释
+
+* 访问级别级别为 package;
+* 位于org.springframework.context.annotation package下
 
 ```
 // Parse the specified {@link Configuration @Configuration} class.
