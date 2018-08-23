@@ -137,13 +137,12 @@ protected Object getHandlerInternal(HttpServletRequest request) throws Exception
 
 ![](/assets/import-controller-01.png)
 
-另外下面所有的 Controller 均采用 SimpleUrlHandlerMapping 方式的。
+另外下面所有的 Controller 均采用 SimpleUrlHandlerMapping 方式的。
 
 1\) UrlFilenameViewController：用于跳转界面，控制器根据请求的URL直接解析出视图名，省去了自己实现 Ccntroller 跳转页面。
 
 ```
 <bean id="indexController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
-
 ```
 
 2\) ParameterizableViewController：同样用于界面跳转，控制器根据配置的参数来跳转界面，使用方式如下
@@ -159,7 +158,7 @@ protected Object getHandlerInternal(HttpServletRequest request) throws Exception
 ```
 <bean id="indexController" class="org.springframework.web.servlet.mvc.ServletForwardingController">    
     <property name="servletName" value="indexServlet" />    
-</bean> 
+</bean>
 ```
 
 另外还要在 web.xml 中配置要转发到的 Servlet
@@ -168,12 +167,12 @@ protected Object getHandlerInternal(HttpServletRequest request) throws Exception
 <servlet>    
     <servlet-name>indexServlet</servlet-name>    
     <servlet-class>com.servlet.ServletForwarding</servlet-class>    
-</servlet> 
+</servlet>
 ```
 
 4\) ServletWrappingController：将某个 Servlet 包装为 Controller，所有到 ServletWrappingController 的请求实际上是由它内部所包装的这个 Servlet 实例来处理的，这样可以将这个 Servlet 隐藏起来
 
-5\) MultiActionController：一个 Controller 可以写多个方法，分别对应不同的请求，使同一业务的方法可以放在一起了。在使用时让自己的 Controller 类继承 MultiActionController 类，使用方式如下
+5\) MultiActionController：一个 Controller 可以写多个方法，分别对应不同的请求，使同一业务的方法可以放在一起了。在使用时让自己的 Controller 类继承 MultiActionController 类，使用方式如下
 
 ```
 public class IndexController extends MultiActionController {  
@@ -192,7 +191,7 @@ public class IndexController extends MultiActionController {
 }
 ```
 
-配置自己的 Controller 时要配置一个方法名解析器（默认是 InternalPathMethodNameResolver ）
+配置自己的 Controller 时要配置一个方法名解析器（默认是 InternalPathMethodNameResolver ）
 
 ```
 <bean id="indexController" class="com.controller.IndexController">  
@@ -208,7 +207,26 @@ public class IndexController extends MultiActionController {
 </bean>
 ```
 
-当我们访问 http://localhost:8080/\*\*\*/indexAction.do?action=add 时，进入 add\(\) 方法；
+当我们访问 [http://localhost:8080/\*\*\*/indexAction.do?action=add](http://localhost:8080/***/indexAction.do?action=add) 时，进入 add\(\) 方法；
 
-当我们访问 http://localhost:8080/\*\*\*/indexAction.do?action=delete 时，进入 delete\(\) 方法。
+当我们访问 [http://localhost:8080/\*\*\*/indexAction.do?action=delete](http://localhost:8080/***/indexAction.do?action=delete) 时，进入 delete\(\) 方法。
+
+**2 AbstractHandlerMethodMapping**
+
+AbstractHandlerMethodMapping 这个分支获取的 Handler 的类型是 HandlerMethod，即这个 Handler 是一个方法，它保存了方法的信息（如Method），这样一个 Controller 就可以处理多个请求了，源码如下所示
+
+```
+@Override
+protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Exception {
+    // 根据当前请求获取“查找路径”
+    String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
+    // 获取当前请求最佳匹配的处理方法（即Controller类的方法中）
+    HandlerMethod handlerMethod = lookupHandlerMethod(lookupPath, request);
+    return (handlerMethod != null ? handlerMethod.createWithResolvedBean() : null);
+}
+```
+
+上述代码中 lookupHandlerMethod\(\) 方法主要工作是在 Map&lt;T, HandlerMethod&gt;
+
+ handlerMethods 中找到 HandlerMethod，这里的 T 是 HandlerMappingInfo，它封装了 @RequestMapping 注解中的信息。那 HandlerMethod 是怎么创建的（即怎么把 Controller 的方法变成了它），继续看一下源码找到 initHandlerMethods\(\) 方法，这个方法是在这个类创建后调用的，如下所示是它的源码
 
