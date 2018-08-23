@@ -347,11 +347,11 @@ public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 
 * **ConfigurationClassParser类**
 
-* Parse each @Configuration class — 官方注释
 
-* 访问级别级别为 package;
 
-* 位于org.springframework.context.annotation package下
+1. Parse each @Configuration class — 官方注释
+2. 访问级别级别为 package;
+3. 位于org.springframework.context.annotation package下
 
 ```
 // Parse the specified {@link Configuration @Configuration} class.
@@ -484,11 +484,10 @@ private void loadBeanDefinitionsForConfigurationClass(ConfigurationClass configC
 
 * **enhanceConfigurationClasses方法**
 
-
-
 1. 唯一想要提及的是 如果我们从容器中取出配置类\(例如通过springConfig作为key取出上面的定义的SpringConfig\)的话, 就会发现, Spring返回给我们的并不是一个原生的SpringConfig实例; 而是类似SpringConfig$$EnhancerBySpringCGLIB$$47a5de53@11935e这样的实例; 这明显就是被CGLIB代理过的.
 
 2. 而原因就发生在 ConfigurationClassPostProcessor类的enhanceConfigurationClasses方法中.
+
 3. 其它暂时略.
 
 ## Links
