@@ -12,5 +12,5 @@
 
 ![](/assets/import-web-02.png)在initWebApplicationContext这个方法中进行了创建根上下文，并将该上下文以key-value的方式存储到ServletContext中
 
-
+![](/assets/import-web-03.png)
 
