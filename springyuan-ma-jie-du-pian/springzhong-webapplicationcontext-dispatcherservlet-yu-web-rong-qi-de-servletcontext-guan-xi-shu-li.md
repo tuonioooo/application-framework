@@ -24,5 +24,7 @@
 
 ![](/assets/import-web-05.png)
 
-![](/assets/import-web-06.png)
+![](/assets/import-web-06.png)initWebApplicationContext\(\)方法中的第一个红色框内就是去获取之前存在Servlet中的WebApplicationContext。通过上面说的WebApplicationContext.ROOT\_WEB\_APPLICATION\_CONTEXT\_ATTRIBUTE作为key取到之后，设置为当前DispatcherServlet的父上下文。并且也把该上下文存在ServletContext中。方法如下：
+
+![](/assets/import-web-07.png)
 
