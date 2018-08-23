@@ -115,5 +115,25 @@ protected Object getHandlerInternal(HttpServletRequest request) throws Exception
 <bean id="/test.do" class="com.controller.TestController" />
 ```
 
+* **SimpleUrlHandlerMapping：可以将 URL 与处理器的定义分离，还可以对 URL 进行统一的映射管理。**
 
+```
+<!-- 注册 HandlerMapping -->
+<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property name="mappings">
+        <props>
+            <prop key="/test.do">testController</prop>
+            <prop key="/hello.do">testController</prop>
+        </props>
+    </property>
+</bean>
+<!-- 注册 Handler -->
+<bean id="testController" class="com.controller.TestController" />
+```
+
+**1.2 Controller 类**
+
+使用 AbstractUrlHandlerMapping 的实现类时，需要让控制层的类实现 Controller 接口（一般继承 AbstractController 即可），另外还有一些已经实现了的 Controller 类，如下图所示。但是不论是自己实现 Controller 接口还是使用系统已经实现的类，都只能处理一个请求（除了 MultiActionController 可以通过参数的方式让一个类可以处理多个请求）。
+
+![](/assets/import-controller-01.png)
 
