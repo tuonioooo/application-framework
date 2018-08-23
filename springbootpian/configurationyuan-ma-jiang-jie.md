@@ -171,3 +171,55 @@ ConfigurationClassPostProcessor 继承链
 
 ![](/assets/QQ截图20180823144431.jpg)
 
+```
+// --------------------------- BeanDefinitionRegistryPostProcessor接口的实现
+
+/**
+ * Derive further bean definitions from the configuration classes in the registry.
+ */
+public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
+    // 向容器中注册一个 ImportAwareBeanPostProcessor 实例; 用于处理 ImportAware 接口标签
+    RootBeanDefinition iabpp = new RootBeanDefinition(ImportAwareBeanPostProcessor.class);
+    iabpp.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+    registry.registerBeanDefinition(IMPORT_AWARE_PROCESSOR_BEAN_NAME, iabpp);
+
+    // this.registriesPostProcessed 和 this.factoriesPostProcessed : 这两个类级字段用于确保本方法只被调用一次, 
+    // 在结合下面的 postProcessBeanFactory 方法, 这两个字段的另外一个作用是确保 processConfigBeanDefinitions 方法只执行一次.
+    int registryId = System.identityHashCode(registry);
+    if (this.registriesPostProcessed.contains(registryId)) {
+        throw new IllegalStateException(
+                "postProcessBeanDefinitionRegistry already called for this post-processor against " + registry);
+    }
+    if (this.factoriesPostProcessed.contains(registryId)) {
+        throw new IllegalStateException(
+                "postProcessBeanFactory already called for this post-processor against " + registry);
+    }
+    this.registriesPostProcessed.add(registryId);
+
+    processConfigBeanDefinitions(registry);
+}
+
+// --------------------------- BeanFactoryPostProcessor接口的实现
+
+/**
+ * Prepare the Configuration classes for servicing bean requests at runtime
+ * by replacing them with CGLIB-enhanced subclasses.
+ */
+public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
+    int factoryId = System.identityHashCode(beanFactory);
+    if (this.factoriesPostProcessed.contains(factoryId)) {
+        throw new IllegalStateException(
+                "postProcessBeanFactory already called for this post-processor against " + beanFactory);
+    }
+    this.factoriesPostProcessed.add(factoryId);
+    if (!this.registriesPostProcessed.contains(factoryId)) {
+        // BeanDefinitionRegistryPostProcessor hook apparently not supported...
+        // Simply call processConfigurationClasses lazily at this point then.
+        processConfigBeanDefinitions((BeanDefinitionRegistry) beanFactory);
+    }
+    enhanceConfigurationClasses(beanFactory);
+}
+```
+
+
+
