@@ -76,8 +76,7 @@ Spring中在实例化对象的时候用到Strategy模式，见如下图：
 
 还有，第一个地方，加载资源文件的方式，使用了不同的方法，比如：ClassPathResourece，FileSystemResource，ServletContextResource，UrlResource但他们都有共同的借口Resource；
 
-第二个地方就是在Aop的实现中，采用了两种不同的方式，JDK动态代理和CGLIB代理；  
-
+第二个地方就是在Aop的实现中，采用了两种不同的方式，JDK动态代理和CGLIB代理；
 
 第三个地方就是Spring的事务管理，PlatformTransactionManager代表事务管理接口，但是它不知道底层如何管理事务，它只要求事务管理
 
@@ -85,9 +84,9 @@ Spring中在实例化对象的时候用到Strategy模式，见如下图：
 
 一般来说，spring事务管理下面主要针对
 
-1\) JDBC\(org.springframework.jdbc.datasource.DataSourceTransactionManager\), 
+1\) JDBC\(org.springframework.jdbc.datasource.DataSourceTransactionManager\),
 
-2\) Hibernate \(org.springframework.orm.hibernate3.HibernateTransactionManager\)，
+2\) Hibernate \(org.springframework.orm.hibernate3.HibernateTransactionManager\)，
 
 3\) JTA \(org.springframework.transaction.jta.JtaTransactionManager\)和
 
@@ -108,4 +107,8 @@ JdbcTemplate中的execute方法：
 JdbcTemplate执行execute方法：
 
 ![](http://www.uml.org.cn/j2ee/images/2013010749.png)
+
+> 在各种BeanFactory以及ApplicationContext实现中也都用到了。另外还有命令模式，职责链模式，抽象工厂模式。
+
+
 
