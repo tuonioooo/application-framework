@@ -8,7 +8,7 @@
 
 ![](/assets/import-web-01.png)
 
-* WebApplicationContext:  在web.xml\(上图\)中我们配置了ContextLoaderListener，该listener实现了ServletContextListener的contextInitialized方法用来监听Servlet初始化事件。
+* WebApplicationContext:  在web.xml\(上图\)中我们配置了ContextLoaderListener，该listener实现了ServletContextListener的contextInitialized方法用来监听Servlet初始化事件。下图中红框部门的注释解释了该方法的作用。即初始化根上下文（即IOC容器），也就是WebApplicationContext。该类是一个接口类，其默认实现为XmlWebApplicationContext。
 
-下图中红框部门的注释解释了该方法的作用。即初始化根上下文（即IOC容器），也就是WebApplicationContext。该类是一个接口类，其默认实现为XmlWebApplicationContext。
+
 
