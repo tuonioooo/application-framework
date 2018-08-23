@@ -213,7 +213,7 @@ public class IndexController extends MultiActionController {
 
 **2 AbstractHandlerMethodMapping**
 
-AbstractHandlerMethodMapping 这个分支获取的 Handler 的类型是 HandlerMethod，即这个 Handler 是一个方法，它保存了方法的信息（如Method），这样一个 Controller 就可以处理多个请求了，源码如下所示
+AbstractHandlerMethodMapping 这个分支获取的 Handler 的类型是 HandlerMethod，即这个 Handler 是一个方法，它保存了方法的信息（如Method），这样一个 Controller 就可以处理多个请求了，源码如下所示
 
 ```
 @Override
@@ -226,7 +226,5 @@ protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Ex
 }
 ```
 
-上述代码中 lookupHandlerMethod\(\) 方法主要工作是在 Map&lt;T, HandlerMethod&gt;
-
- handlerMethods 中找到 HandlerMethod，这里的 T 是 HandlerMappingInfo，它封装了 @RequestMapping 注解中的信息。那 HandlerMethod 是怎么创建的（即怎么把 Controller 的方法变成了它），继续看一下源码找到 initHandlerMethods\(\) 方法，这个方法是在这个类创建后调用的，如下所示是它的源码
+上述代码中 lookupHandlerMethod\(\) 方法主要工作是在 Map&lt;T, HandlerMethod&gt;handlerMethods 中找到 HandlerMethod，这里的 T 是 HandlerMappingInfo，它封装了 @RequestMapping 注解中的信息。那 HandlerMethod 是怎么创建的（即怎么把 Controller 的方法变成了它），继续看一下源码找到 initHandlerMethods\(\) 方法，这个方法是在这个类创建后调用的，如下所示是它的源码
 
