@@ -24,12 +24,10 @@
 
 ![](/assets/import-web-06.png)initWebApplicationContext\(\)方法中的第一个红色框内就是去获取之前存在Servlet中的WebApplicationContext。通过上面说的WebApplicationContext.ROOT\_WEB\_APPLICATION\_CONTEXT\_ATTRIBUTE作为key取到之后，设置为当前DispatcherServlet的父上下文。并且也把该上下文存在ServletContext中。方法如下：
 
-![](/assets/import-web-07.png)2.
+## ![](/assets/import-web-07.png)总结
 
 * 通过以上的流程，可以做到各个上下文之间既可以拥有自己独立的Bean，也可以访问各个Servlet相同的Bean
 * 通过init方法创建的dispatcherServlet上下文可以访问通过ServletContextListener中创建的WebApplicationContext上下文中的bean，反之则不行。因为WebApplicationContext是dispatcherServlet上下文的父容器。
-
-
 
 
 
