@@ -26,11 +26,11 @@ Assert.assertEquals("糊涂",c.getName()); //测试
 
 ## AnnotationConfigApplicationContext
 
-以上的代码非常简单, 一眼就能看出关键点就是这个AnnotationConfigApplicationContext类了. 
+以上的代码非常简单, 一眼就能看出关键点就是这个AnnotationConfigApplicationContext类了.
 
-而下面的AnnotationConfigApplicationContext构造函数中, 相信注释已经很清楚了, 这里我们关注的重点当然就是scan\(basePackages\);方法.至于其它两个方法: 
+而下面的AnnotationConfigApplicationContext构造函数中, 相信注释已经很清楚了, 这里我们关注的重点当然就是scan\(basePackages\);方法.至于其它两个方法:
 
-1. this\(\); 主要是为了实例化自身的两个重要字段. 
+1. this\(\); 主要是为了实例化自身的两个重要字段.
 
 2. refresh\(\); 这个方法至关重要, 不过不是本文的重点. 所以直接略过.如果读者有兴趣, 可以参见本人下面给出的链接, 或者查阅《Spring源码深度解读》—— 作者在其书中对此方法进行了详尽的解读, 个人觉得还是很值得买一本的
 
@@ -85,7 +85,7 @@ public int scan(String... basePackages) {
  */
 public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
         BeanDefinitionRegistry registry, Object source) {
-        
+
     DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);
     if (beanFactory != null) {
         if (!(beanFactory.getDependencyComparator() instanceof AnnotationAwareOrderComparator)) {
@@ -167,9 +167,7 @@ public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
 
 既然此次我们关注的重点是@Configuration, 目光当然就落在ConfigurationClassPostProcessor类上了, 观察其继承链, 鼎鼎大名的BeanFactoryPostProcessor赫然在目. 这个类的关键性就不在这里赘述了.
 
+ConfigurationClassPostProcessor 继承链
 
-
-ConfigurationClassPostProcessor 继承链 
-
-
+![](/assets/QQ截图20180823144431.jpg)
 
