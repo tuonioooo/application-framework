@@ -228,3 +228,23 @@ protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Ex
 
 上述代码中 lookupHandlerMethod\(\) 方法主要工作是在 Map&lt;T, HandlerMethod&gt;  handlerMethods 中找到 HandlerMethod，这里的 T 是 HandlerMappingInfo，它封装了 @RequestMapping 注解中的信息。那 HandlerMethod 是怎么创建的（即怎么把 Controller 的方法变成了它），继续看一下源码找到 initHandlerMethods\(\) 方法，这个方法是在这个类创建后调用的，如下所示是它的源码
 
+```
+protected void initHandlerMethods() {
+    // 从容器中获取所有 Bean 的名称，detectHandlerMethodsInAncestorContexts 默认false，不从父容器中查找
+    //即默认只查找 SpringMVC 的 IOC 容器，不查找它的父容器 Spring 的 IOC 容器
+    String[] beanNames = (this.detectHandlerMethodsInAncestorContexts ?
+        BeanFactoryUtils.beanNamesForTypeIncludingAncestors(getApplicationContext(), Object.class) :
+        getApplicationContext().getBeanNamesForType(Object.class));
+    for (String beanName : beanNames) {
+        // 这里的 isHandler()方法由子类实现，判断是否拥有 @Controller 注解或 @RequestMapping 注解
+        if (!beanName.startsWith(SCOPED_TARGET_NAME_PREFIX) && isHandler(getApplicationContext().getType(beanName))){
+            // 利用反射得到 Bean 中的 Method 并包装成 HandlerMethod，然后放入 Map 中
+            detectHandlerMethods(beanName);
+        }
+    }
+    handlerMethodsInitialized(getHandlerMethods());
+}
+```
+
+
+
