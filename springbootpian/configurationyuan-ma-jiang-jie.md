@@ -171,6 +171,14 @@ ConfigurationClassPostProcessor 继承链
 
 ![](/assets/QQ截图20180823144431.jpg)
 
+所以Spring会回调这三个方法 
+
+1. postProcessBeanDefinitionRegistry\(由BeanDefinitionRegistryPostProcessor接口定义\) 
+
+2. postProcessBeanFactory\(由BeanFactoryPostProcessor接口定义\) 
+
+3. BeanDefinitionRegistryPostProcessor接口又继承自BeanFactoryPostProcessor; 依据注释, 前者所定义方法的被执行时机位于后者所定义方法之前.
+
 ```
 // --------------------------- BeanDefinitionRegistryPostProcessor接口的实现
 
@@ -220,6 +228,12 @@ public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) 
     enhanceConfigurationClasses(beanFactory);
 }
 ```
+
+通过观察上面必将被Spring框架回调的两个方法, 我们可以推测: 
+
+1. 这两个方法必将被会调用, 且都只会被调用一次. 
+
+2. 在执行顺序是 processConfigBeanDefinitions在先, 而enhanceConfigurationClasses在后.
 
 
 
