@@ -131,9 +131,84 @@ protected Object getHandlerInternal(HttpServletRequest request) throws Exception
 <bean id="testController" class="com.controller.TestController" />
 ```
 
-**1.2 Controller 类**
+**1.2 Controller 类**
 
-使用 AbstractUrlHandlerMapping 的实现类时，需要让控制层的类实现 Controller 接口（一般继承 AbstractController 即可），另外还有一些已经实现了的 Controller 类，如下图所示。但是不论是自己实现 Controller 接口还是使用系统已经实现的类，都只能处理一个请求（除了 MultiActionController 可以通过参数的方式让一个类可以处理多个请求）。
+使用 AbstractUrlHandlerMapping 的实现类时，需要让控制层的类实现 Controller 接口（一般继承 AbstractController 即可），另外还有一些已经实现了的 Controller 类，如下图所示。但是不论是自己实现 Controller 接口还是使用系统已经实现的类，都只能处理一个请求（除了 MultiActionController 可以通过参数的方式让一个类可以处理多个请求）。
 
 ![](/assets/import-controller-01.png)
+
+另外下面所有的 Controller 均采用 SimpleUrlHandlerMapping 方式的。
+
+1\) UrlFilenameViewController：用于跳转界面，控制器根据请求的URL直接解析出视图名，省去了自己实现 Ccntroller 跳转页面。
+
+```
+<bean id="indexController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+
+```
+
+2\) ParameterizableViewController：同样用于界面跳转，控制器根据配置的参数来跳转界面，使用方式如下
+
+```
+<bean id="indexController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+     <property name="viewName" value="/index.jsp" />
+</bean>
+```
+
+3\) ServletForwardingController：将请求转发到 Servlet，使用方式如下
+
+```
+<bean id="indexController" class="org.springframework.web.servlet.mvc.ServletForwardingController">    
+    <property name="servletName" value="indexServlet" />    
+</bean> 
+```
+
+另外还要在 web.xml 中配置要转发到的 Servlet
+
+```
+<servlet>    
+    <servlet-name>indexServlet</servlet-name>    
+    <servlet-class>com.servlet.ServletForwarding</servlet-class>    
+</servlet> 
+```
+
+4\) ServletWrappingController：将某个 Servlet 包装为 Controller，所有到 ServletWrappingController 的请求实际上是由它内部所包装的这个 Servlet 实例来处理的，这样可以将这个 Servlet 隐藏起来
+
+5\) MultiActionController：一个 Controller 可以写多个方法，分别对应不同的请求，使同一业务的方法可以放在一起了。在使用时让自己的 Controller 类继承 MultiActionController 类，使用方式如下
+
+```
+public class IndexController extends MultiActionController {  
+    public ModelAndView add(HttpServletRequest request,HttpServletResponse response) {  
+        ModelAndView mv = new ModelAndView();   
+        mv.addObject("message","add");   
+        mv.setViewName("add");   
+        return mv;   
+    }  
+    public ModelAndView delete(HttpServletRequest request,HttpServletResponse response) {  
+        ModelAndView mv = new ModelAndView();   
+        mv.addObject("message","delete");   
+        mv.setViewName("delete");   
+        return mv;   
+    }  
+}
+```
+
+配置自己的 Controller 时要配置一个方法名解析器（默认是 InternalPathMethodNameResolver ）
+
+```
+<bean id="indexController" class="com.controller.IndexController">  
+      <property name="methodNameResolver">  
+        <!-- InternalPathMethodNameResolver 根据请求路径解析执行方法名
+             ParameterMethodNameResolver 根据参数解析执行方法名
+             PropertiesMethodNameResolver 根据 key/value 列表解析执行方法名 -->
+        <bean class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">  
+           <!-- 指定参数名为action -->  
+           <property name="paramName" value="action" />  
+        </bean>  
+      </property>  
+</bean>
+```
+
+当我们访问 http://localhost:8080/\*\*\*/indexAction.do?action=add 时，进入 add\(\) 方法；
+
+当我们访问 http://localhost:8080/\*\*\*/indexAction.do?action=delete 时，进入 delete\(\) 方法。
 
