@@ -246,5 +246,60 @@ protected void initHandlerMethods() {
 }
 ```
 
+看完上述代码后，可以知道是在 detectHandlerMethods\(\) 方法中将 Bean 的方法转换为 HandlerMethod 对象，具体实现如下
 
+```
+protected void detectHandlerMethods(final Object handler) {
+    // 获取这个 Bean 的 Class 对象
+    Class<?> handlerType = (handler instanceof String ? getApplicationContext().getType((String) handler) : handler.getClass());
+    // 避免重复调用 getMappingForMethod()，getMappingForMethod() 将重新构建 RequestMappingInfo 实例
+    final Map<Method, T> mappings = new IdentityHashMap<Method, T>();
+    // 获取被代理前的原始类型
+    final Class<?> userType = ClassUtils.getUserClass(handlerType);
+    // 获取 Method  
+    Set<Method> methods = HandlerMethodSelector.selectMethods(userType, new MethodFilter() {
+        @Override
+        public boolean matches(Method method) {
+            // 根据 Method 和它的 @RequestMapping 注解，创建 RequestMappingInfo 对象。
+            // 这里的 T 就是 RequestMappingInfo，它封装了 @RequestMapping 信息
+            T mapping = getMappingForMethod(method, userType);
+            if (mapping != null) {
+                mappings.put(method, mapping);
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+    for (Method method : methods) {
+        // 注册 Method 和它的映射，RequestMappingInfo 储存着映射信息
+        registerHandlerMethod(handler, method, mappings.get(method));
+    }
+}
+```
+
+最后在 registerHandlerMethod\(\) 方法中，将 RequestMappingInfo 作为 key，把 Method 包装成 HandlerMethod 作为 value 添加到了 Map&lt;T, HandlerMethod&gt;  handlerMethods 中。
+
+```
+protected void registerHandlerMethod(Object handler, Method method, T mapping) {
+    HandlerMethod newHandlerMethod = createHandlerMethod(handler, method);
+    HandlerMethod oldHandlerMethod = this.handlerMethods.get(mapping);
+    if (oldHandlerMethod != null && !oldHandlerMethod.equals(newHandlerMethod)) {
+        throw new IllegalStateException("");
+    }
+    this.handlerMethods.put(mapping, newHandlerMethod);
+    Set<String> patterns = getMappingPathPatterns(mapping);
+    for (String pattern : patterns) {
+        if (!getPathMatcher().isPattern(pattern)) {
+            this.urlMap.add(pattern, mapping);
+        }
+    }
+}
+```
+
+**1.1 AbstractHandlerMapping 实现类及使用**
+
+![](/assets/import-abstractHandlermapping-01.png)
+
+AbstractHandlerMapping 只有一个实现类 RequestMappingHandlerMapping
 
