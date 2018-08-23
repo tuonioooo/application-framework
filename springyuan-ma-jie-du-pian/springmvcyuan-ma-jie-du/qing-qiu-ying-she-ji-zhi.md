@@ -305,15 +305,132 @@ AbstractHandlerMapping 只有一个实现类 RequestMappingHandlerMapping
 
 ## HandlerAdapter
 
-根据 Handler 来找到支持它的 HandlerAdapter，通过 HandlerAdapter 执行这个 Handler 得到 ModelAndView 对象。HandlerAdapter 接口中的方法如下：
+根据 Handler 来找到支持它的 HandlerAdapter，通过 HandlerAdapter 执行这个 Handler 得到 ModelAndView 对象。HandlerAdapter 接口中的方法如下：
 
-* boolean supports\(Object handler\); 
+* boolean supports\(Object handler\); 
   // 当前 HandlerAdapter 是否支持这个 Handler
-* ModelAndView handle\(HttpServletRequest req, HttpServletResponse res, Object handler\); 
+* ModelAndView handle\(HttpServletRequest req, HttpServletResponse res, Object handler\); 
   // 利用 Handler 处理请求
 * long getLastModified\(HttpServletRequest request, Object handler\);
 
 ![](/assets/import-adapter-01.png)
+
+**1 RequestMappingHandlerAdapter**
+
+从上面的文章中可以知道，利用 RequestMappingHandlerMapping 获取的 Handler 是 HadnlerMethod 类型，它代表 Controller 里要执行的方法，而 RequestMappingHandlerAdapter 可以执行 HadnlerMethod 对象。
+
+RequestMappingHandlerAdapter 的 handle\(\) 方法是在它的父类 AbstractHandlerMethodAdapter 类中实现的，源码如下所示
+
+```
+@Override
+public final ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    return handleInternal(request, response, (HandlerMethod) handler);
+}
+```
+
+handleInternal\(\) 方法是由 RequestMappingHandlerAdapter 自己来实现的，源码如下所示
+
+```
+@Override
+protected ModelAndView handleInternal(HttpServletRequest request, HttpServletResponse response, HandlerMethod handlerMethod) throws Exception {
+    // 是否通过 @SessionAttributes 注释声明了 session 属性。
+    if (getSessionAttributesHandler(handlerMethod).hasSessionAttributes()) {
+        checkAndPrepare(request, response, this.cacheSecondsForSessionAttributeHandlers, true);
+    } else {
+        checkAndPrepare(request, response, true);
+    }
+    // 是否需要在 synchronize 块中执行
+    if (this.synchronizeOnSession) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            Object mutex = WebUtils.getSessionMutex(session);
+            synchronized (mutex) {
+                // 执行 HandlerMethod
+                return invokeHandleMethod(request, response, handlerMethod);
+            }
+        }
+    }
+    // 执行 HandlerMethod，得到 ModelAndView
+    return invokeHandleMethod(request, response, handlerMethod);
+}
+```
+
+继续再来看一下如何得到 ModelAndView，invokeHandlerMethod\(\) 方法如下
+
+```
+private ModelAndView invokeHandleMethod(HttpServletRequest request,
+        HttpServletResponse response, HandlerMethod handlerMethod) throws Exception {
+    // 
+    ServletWebRequest webRequest = new ServletWebRequest(request, response);
+    // 数据绑定
+    WebDataBinderFactory binderFactory = getDataBinderFactory(handlerMethod);
+    ModelFactory modelFactory = getModelFactory(handlerMethod, binderFactory);
+    // 绑定参数，执行方法
+    ServletInvocableHandlerMethod requestMappingMethod = createRequestMappingMethod(handlerMethod, binderFactory);
+    // 创建模型和视图容器
+    ModelAndViewContainer mavContainer = new ModelAndViewContainer();
+    // 设置FlasgMap中的值
+    mavContainer.addAllAttributes(RequestContextUtils.getInputFlashMap(request));
+    // 初始化模型
+    modelFactory.initModel(webRequest, mavContainer, requestMappingMethod);
+        mavContainer.setIgnoreDefaultModelOnRedirect(this.ignoreDefaultModelOnRedirect);
+
+    AsyncWebRequest asyncWebRequest = WebAsyncUtils.createAsyncWebRequest(request, response);
+    asyncWebRequest.setTimeout(this.asyncRequestTimeout);
+
+    final WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);
+    asyncManager.setTaskExecutor(this.taskExecutor);
+    asyncManager.setAsyncWebRequest(asyncWebRequest);
+    asyncManager.registerCallableInterceptors(this.callableInterceptors);
+    asyncManager.registerDeferredResultInterceptors(this.deferredResultInterceptors);
+    if (asyncManager.hasConcurrentResult()) {
+        Object result = asyncManager.getConcurrentResult();
+        mavContainer = (ModelAndViewContainer) asyncManager.getConcurrentResultContext()[0];
+        asyncManager.clearConcurrentResult();
+        requestMappingMethod = requestMappingMethod.wrapConcurrentResult(result);
+    }
+    requestMappingMethod.invokeAndHandle(webRequest, mavContainer);
+    if (asyncManager.isConcurrentHandlingStarted()) {
+        return null;
+    }
+    return getModelAndView(mavContainer, modelFactory, webRequest);
+}
+```
+
+**2 HttpRequestHandlerAdapter**
+
+HttpRequestHandlerAdapter 可以执行 HttpRequestHandler 类型的 Handler，源码如下
+
+```
+@Override
+public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    ((HttpRequestHandler) handler).handleRequest(request, response);
+    return null;
+}
+```
+
+**3 SimpleControllerHandlerAdapter**
+
+SimpleControllerHandlerAdapter 可以执行 Controller 类型的 Handler，源码如下
+
+```
+@Override
+public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    return ((Controller) handler).handleRequest(request, response);
+}
+```
+
+**4 SimpleServletHandlerAdapter **
+
+SimpleServletHandlerAdapter 可以执行 Servlet 类型的 Handler，源码如下
+
+```
+@Override
+public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    ((Servlet) handler).service(request, response);
+    return null;
+}
+```
 
 
 
