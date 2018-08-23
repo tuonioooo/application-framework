@@ -347,8 +347,6 @@ public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 
 * **ConfigurationClassParser类**
 
-
-
 1. Parse each @Configuration class — 官方注释
 2. 访问级别级别为 package;
 3. 位于org.springframework.context.annotation package下
@@ -484,17 +482,18 @@ private void loadBeanDefinitionsForConfigurationClass(ConfigurationClass configC
 
 * **enhanceConfigurationClasses方法**
 
-1. 唯一想要提及的是 如果我们从容器中取出配置类\(例如通过springConfig作为key取出上面的定义的SpringConfig\)的话, 就会发现, Spring返回给我们的并不是一个原生的SpringConfig实例; 而是类似SpringConfig$$EnhancerBySpringCGLIB$$47a5de53@11935e这样的实例; 这明显就是被CGLIB代理过的.
+* 唯一想要提及的是 如果我们从容器中取出配置类\(例如通过springConfig作为key取出上面的定义的SpringConfig\)的话, 就会发现, Spring返回给我们的并不是一个原生的SpringConfig实例; 而是类似SpringConfig$$EnhancerBySpringCGLIB$$47a5de53@11935e这样的实例; 这明显就是被CGLIB代理过的.
 
-2. 而原因就发生在 ConfigurationClassPostProcessor类的enhanceConfigurationClasses方法中.
+* 而原因就发生在 ConfigurationClassPostProcessor类的enhanceConfigurationClasses方法中.
 
-3. 其它暂时略.
+* 其它暂时略.
 
 ## Links
 
 1. [http://blog.csdn.net/honghailiang888/article/details/74981445](http://blog.csdn.net/honghailiang888/article/details/74981445)
 2. [http://www.mamicode.com/info-detail-1564393.html](http://www.mamicode.com/info-detail-1564393.html)
 3. [http://blog.csdn.net/isea533/article/details/78072133](http://blog.csdn.net/isea533/article/details/78072133)
+4. https://www.cnblogs.com/jiaoqq/p/7678037.html
 
 
 
