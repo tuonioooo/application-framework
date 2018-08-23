@@ -21,11 +21,11 @@ protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Ex
 }
 ```
 
-另外上面说到的 Handler 有可能是一个 HandlerMethod（封装了 Controller 中的方法）对象，也有可能是一个 Controller 对象、 HttpRequestHandler 对象或 Servlet 对象，而这个 Handler 具体是什么对象，也是与所使用的 HandlerMapping 实现类有关。如下图所示，可以看到 HandlerMapping 实现类有两个分支，分别继承自 AbstractHandlerMethodMapping（得到 HandlerMethod）和 AbstractUrlHandlerMapping（得到 HttpRequestHandler、Controller 或 Servlet），它们又统一继承于 AbstractHandlerMapping。
+另外上面说到的 Handler 有可能是一个 HandlerMethod（封装了 Controller 中的方法）对象，也有可能是一个 Controller 对象、 HttpRequestHandler 对象或 Servlet 对象，而这个 Handler 具体是什么对象，也是与所使用的 HandlerMapping 实现类有关。如下图所示，可以看到 HandlerMapping 实现类有两个分支，分别继承自 AbstractHandlerMethodMapping（得到 HandlerMethod）和 AbstractUrlHandlerMapping（得到 HttpRequestHandler、Controller 或 Servlet），它们又统一继承于 AbstractHandlerMapping。
 
 ![](/assets/import-handlerMapping-01.png)
 
-先来看一下 AbstractHandlerMapping，它实现了 HandlerMapping 接口中的 getHandler\(\) 方法，源码如下所示
+先来看一下 AbstractHandlerMapping，它实现了 HandlerMapping 接口中的 getHandler\(\) 方法，源码如下所示
 
 ```
 @Override
@@ -48,11 +48,11 @@ public final HandlerExecutionChain getHandler(HttpServletRequest request) throws
 }
 ```
 
-以看到在这个方法中又调用了 getHandlerInternal\(\) 方法获取到了 Handler 对象，而 Handler 对象具体内容是由它的子类去定义的。下面就来一看下 AbstractHandlerMapping 的两个分支子类
+以看到在这个方法中又调用了 getHandlerInternal\(\) 方法获取到了 Handler 对象，而 Handler 对象具体内容是由它的子类去定义的。下面就来一看下 AbstractHandlerMapping 的两个分支子类
 
 **1 AbstractUrlHandlerMapping**
 
-AbstractUrlHandlerMapping 这个分支获取的 Handler 的类型实际就是一个 Controller 类，所以一个 Controller 只能对应一个请求（或者像 Struts2 那样定位到方法，使同一个业务的方法放在同一个类里），源码如下所示
+AbstractUrlHandlerMapping 这个分支获取的 Handler 的类型实际就是一个 Controller 类，所以一个 Controller 只能对应一个请求（或者像 Struts2 那样定位到方法，使同一个业务的方法放在同一个类里），源码如下所示
 
 ```
 protected Object getHandlerInternal(HttpServletRequest request) throws Exception {
@@ -97,7 +97,7 @@ protected Object getHandlerInternal(HttpServletRequest request) throws Exception
 <bean class="com.controller.TestController" />
 ```
 
-* **ControllerBeanNameHandlerMapping：根据 Bean 名访问 Controller，与 BeanNameUrlHandlerMapping 类似，但是bean名称不用遵循URL公约**。
+* **ControllerBeanNameHandlerMapping：根据 Bean 名访问 Controller，与 BeanNameUrlHandlerMapping 类似，但是bean名称不用遵循URL公约**。
 
 ```
 <!-- 注册 HandlerMapping -->
@@ -107,6 +107,13 @@ protected Object getHandlerInternal(HttpServletRequest request) throws Exception
 ```
 
 * **BeanNameUrlHandlerMapping：利用 BeanName 来作为 URL 使用。**
+
+```
+<!-- 注册 HandlerMapping -->
+<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+<!-- 注册 Handler -->
+<bean id="/test.do" class="com.controller.TestController" />
+```
 
 
 
