@@ -77,4 +77,5 @@
     * [页面渲染机制](springyuan-ma-jie-du-pian/springmvcyuan-ma-jie-du/ye-mian-xuan-ran-ji-zhi.md)
   * [Spring新版本特性解读](springyuan-ma-jie-du-pian/springxin-ban-ben-te-xing-jie-du.md)
   * [Spring源码中的那些设计模式](springyuan-ma-jie-du-pian/springyuan-ma-zhong-de-na-xie-she-ji-mo-shi.md)
+  * [ContextLoader加载过程](springyuan-ma-jie-du-pian/contextloaderjia-zai-guo-cheng.md)
 
