@@ -1003,5 +1003,11 @@ public class GenericBeanDefinition extends AbstractBeanDefinition {
 }
 ```
 
+* **RootBeanDefinition**
 
+参考：[RootBeanDefinition源码解析](/springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/rootbeandefinitionyuan-ma-jie-xi.md) 
+
+* **AnnotatedBeanDefinition**
+
+参考：[AnnotatedBeanDefinition源码解析](/springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/annotatedbeandefinitionyuan-ma-jie-xi.md)
 
