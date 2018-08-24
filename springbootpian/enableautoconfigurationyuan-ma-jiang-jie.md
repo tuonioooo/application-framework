@@ -1,6 +1,6 @@
 # SpringBoot启动类源码分析以及@EnableAutoConfiguration和@SpringBootApplication讲解
 
-原文：https://blog.csdn.net/tuoni123/article/details/79985950
+原文：[https://blog.csdn.net/tuoni123/article/details/79985950](https://blog.csdn.net/tuoni123/article/details/79985950)
 
 对于任何一个Spring boot项目，都会用到下面的启动类：
 
@@ -76,22 +76,21 @@ public class Application {
 @EnableAutoConfiguration作为一个复合Annotation,其自身定义关键信息如下
 
 ```
-@Target(ElementType.TYPE)  
-@Retention(RetentionPolicy.RUNTIME)  
-@Documented  
-@Inherited  
-@Import({ EnableAutoConfigurationImportSelector.class,  
-        AutoConfigurationPackages.Registrar.class })  
-public @interface EnableAutoConfiguration {  
-  
-    /**  
-     * Exclude specific auto-configuration classes such that they will never be applied.  
-     * @return the classes to exclude  
-     */  
-    Class<?>[] exclude() default {};  
-  
-}
+@Target(ElementType.TYPE)  
+@Retention(RetentionPolicy.RUNTIME)  
+@Documented  
+@Inherited  
+@Import({ EnableAutoConfigurationImportSelector.class,  
+        AutoConfigurationPackages.Registrar.class })  
+public @interface EnableAutoConfiguration {  
 
+    /**  
+     * Exclude specific auto-configuration classes such that they will never be applied.  
+     * @return the classes to exclude  
+     */  
+    Class<?>[] exclude() default {};  
+
+}
 ```
 
 其中，最关键的要
@@ -102,6 +101,32 @@ public @interface EnableAutoConfiguration {  
 
 ![](/assets/import-springboot-01.png)
 
-  
+自动配置幕后英雄：SpringFactoriesLoader详解
 
+SpringFactoriesLoader属于Spring框架私有的一种扩展方案，其主要功能就是从指定的配置文件META-INF/spring.factories加载配置。
+
+```
+public abstract class SpringFactoriesLoader {
+    //...
+    public static <T> List<T> loadFactories(Class<T> factoryClass, ClassLoader classLoader) {
+        ...
+    }
+ 
+ 
+    public static List<String> loadFactoryNames(Class<?> factoryClass, ClassLoader classLoader) {
+        ....
+    }
+}
+
+```
+
+配合@EnableAutoConfiguration使用的话，它更多是提供一种配置查找的功能支持，即根据@EnableAutoConfiguration的完整类名org.springframework.boot.autoconfigure.EnableAutoConfiguration作为查找的Key,获取对应的一组@Configuration类
+
+![](/assets/import-springboot-02.png)
+
+上图就是从SpringBoot的autoconfigure依赖包中的META-INF/spring.factories配置文件中摘录的一段内容，可以很好地说明问题。所以，@EnableAutoConfiguration自动配置的魔法骑士就变成了： 从classpath中搜寻所有的META-INF/spring.factories配置文件，并将其中org.springframework.boot.autoconfigure.EnableutoConfiguration对应的配置项通过反射（Java Refletion）实例化为对应的标注了@Configuration的JavaConfig形式的IoC容器配置类，然后汇总为一个并加载到IoC容器。
+
+EnableAutoConfigurationImportSelector 是一个DeferredImportSelector，由 spring boot autoconfigure 从版本1.3开始,提供用来处理EnableAutoConfiguration自动配置。
+
+EnableAutoConfigurationImportSelector继承自AutoConfigurationImportSelector,从 pring boot 1.5 以后，EnableAutoConfigurationImportSelector已经不再被建议使用，而是推荐使用 AutoConfigurationImportSelector。
 
