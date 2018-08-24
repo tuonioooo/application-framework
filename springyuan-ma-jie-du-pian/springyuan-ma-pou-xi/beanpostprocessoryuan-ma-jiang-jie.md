@@ -25,14 +25,6 @@ public interface BeanPostProcessor {
 }
 ```
 
-由API可以看出:
-
-1：后置处理器的postProcessorBeforeInitailization方法是在bean实例化，依赖注入之后及自定义初始化方法\(例如：配置文件中bean标签添加init-method属性指定Java类中初始化方法、
-
-@PostConstruct注解指定初始化方法，Java类实现InitailztingBean接口\)之前调用
-
-2：后置处理器的postProcessorAfterInitailization方法是在bean实例化、依赖注入及自定义初始化方法之后调用
-
 ## **BeanPostProcessor接口作用：**
 
 如果我们想在Spring容器中完成bean实例化、配置以及其他初始化方法前后要添加一些自己逻辑处理。我们需要定义一个或多个BeanPostProcessor接口实现类，然后注册到Spring IoC容器中。
@@ -110,17 +102,246 @@ public class PostProcessor implements BeanPostProcessor {
 </beans>
 ```
 
+> 注意：
+>
+> 1.BeanFactory和ApplicationContext两个容器对待bean的后置处理器稍微有些不同。ApplicationContext容器会自动检测Spring配置文件中那些bean所对应的Java类实现了BeanPostProcessor
+>
+> 接口，并自动把它们注册为后置处理器。在创建bean过程中调用它们，所以部署一个后置处理器跟普通的bean没有什么太大区别。
+>
+> 2.BeanFactory容器注册bean后置处理器时必须通过代码显示的注册，在IoC容器继承体系中的ConfigurableBeanFactory接口中定义了注册方法
 
+##  Spring如何调用多个BeanPostProcessor实现类：
 
-注意：
+我们可以在Spring配置文件中添加多个BeanPostProcessor\(后置处理器\)接口实现类，在默认情况下Spring容器会根据后置处理器的定义顺序来依次调用。
 
-1.BeanFactory和ApplicationContext两个容器对待bean的后置处理器稍微有些不同。ApplicationContext容器会自动检测Spring配置文件中那些bean所对应的Java类实现了BeanPostProcessor
+**Spring配置文件：**
 
-接口，并自动把它们注册为后置处理器。在创建bean过程中调用它们，所以部署一个后置处理器跟普通的bean没有什么太大区别。
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- bean定义 -->    
+    <bean id="narCodeService" class="com.test.service.impl.NarCodeServiceImpl">
+    </bean>
+    <bean id="postProcessor" class="com.test.spring.PostProcessor"/>
+    <bean id="postProcessorB" class="com.test.spring.PostProcessorB"/>
+</beans>
+```
 
-2.BeanFactory容器注册bean后置处理器时必须通过代码显示的注册，在IoC容器继承体系中的ConfigurableBeanFactory接口中定义了注册方法
+**BeanPostProcessor实现类：**
 
-参考
+```
+package com.test.spring;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+/**
+ * bean后置处理器
+ * @author zss
+ *
+ */
+public class PostProcessor implements BeanPostProcessor {
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean,
+            String beanName) throws BeansException {
+        System.out.println("后置处理器处理bean=【"+beanName+"】开始");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean,
+            String beanName) throws BeansException {
+        System.out.println("后置处理器处理bean=【"+beanName+"】完毕!");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return bean;
+    }
+}
+----------------------------------------------------------------------------------------------------------------------------------------
+package com.test.spring;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+
+public class PostProcessorB implements BeanPostProcessor {
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean,
+            String beanName) throws BeansException {
+        System.out.println("后置处理器开始调用了");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean,
+            String beanName) throws BeansException {
+        System.out.println("后置处理器调用结束了");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return bean;
+    }
+}
+```
+
+**测试**
+
+```
+package com.test.spring;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class T {
+    AbstractApplicationContext applicationcontext=null;
+    @Before
+    public void before() {
+        System.out.println("》》》Spring ApplicationContext容器开始初始化了......");
+        applicationcontext= new ClassPathXmlApplicationContext(new String[]{"test1-service.xml"});
+        System.out.println("》》》Spring ApplicationContext容器初始化完毕了......");
+    }
+    @Test
+    public void  test() {
+        applicationcontext.registerShutdownHook();   
+    }
+}
+```
+
+**测试结果**
+
+```
+》》》Spring ApplicationContext容器开始初始化了......
+2017-03-19 10:50:29  INFO:ClassPathXmlApplicationContext-Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@18c92ff9: startup date [Sun Mar 19 10:50:29 CST 2017]; root of context hierarchy
+2017-03-19 10:50:29  INFO:XmlBeanDefinitionReader-Loading XML bean definitions from class path resource [test1-service.xml]
+后置处理器处理bean=【narCodeService】开始
+后置处理器开始调用了
+后置处理器处理bean=【narCodeService】完毕!
+后置处理器调用结束了
+》》》Spring ApplicationContext容器初始化完毕了......
+2017-03-19 10:50:34  INFO:ClassPathXmlApplicationContext-Closing org.springframework.context.support.ClassPathXmlApplicationContext@18c92ff9: startup date [Sun Mar 19 10:50:29 CST 2017]; root of context hierarchy
+```
+
+   在Spring机制中可以指定后置处理器调用顺序，通过让BeanPostProcessor接口实现类实现Ordered接口getOrder方法，该方法返回一整数，默认值为 0，优先级最高，值越大优先级越低
+
+例如：
+
+```
+package com.test.spring;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.Ordered;
+/**
+ * bean后置处理器
+ * @author zss
+ *
+ */
+public class PostProcessor implements BeanPostProcessor,Ordered{
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean,
+            String beanName) throws BeansException {
+        System.out.println("后置处理器处理bean=【"+beanName+"】开始");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean,
+            String beanName) throws BeansException {
+        System.out.println("后置处理器处理bean=【"+beanName+"】完毕!");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return bean;
+    }
+
+    @Override
+    public int getOrder() {
+        return 1;
+    }
+}
+----------------------------------------------------------------------------
+package com.test.spring;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.Ordered;
+
+public class PostProcessorB implements BeanPostProcessor,Ordered {
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean,
+            String beanName) throws BeansException {
+        System.out.println("后置处理器开始调用了");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean,
+            String beanName) throws BeansException {
+        System.out.println("后置处理器调用结束了");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return bean;
+    }
+
+    @Override
+    public int getOrder() {
+        return 0;
+    }
+}
+```
+
+```
+测试结果：
+
+》》》Spring ApplicationContext容器开始初始化了......
+2017-03-19 11:04:10  INFO:ClassPathXmlApplicationContext-Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@18c92ff9: startup date [Sun Mar 19 11:04:10 CST 2017]; root of context hierarchy
+2017-03-19 11:04:10  INFO:XmlBeanDefinitionReader-Loading XML bean definitions from class path resource [test1-service.xml]
+后置处理器开始调用了
+后置处理器处理bean=【narCodeService】开始
+后置处理器调用结束了
+后置处理器处理bean=【narCodeService】完毕!
+》》》Spring ApplicationContext容器初始化完毕了......
+2017-03-19 11:04:14  INFO:ClassPathXmlApplicationContext-Closing org.springframework.context.support.ClassPathXmlApplicationContext@18c92ff9: startup date [Sun Mar 19 11:04:10 CST 2017]; root of context hierarchy
+```
+
+## 参考
 
 [https://docs.spring.io/spring/docs/5.0.8.RELEASE/javadoc-api/](https://docs.spring.io/spring/docs/5.0.8.RELEASE/javadoc-api/)
 
