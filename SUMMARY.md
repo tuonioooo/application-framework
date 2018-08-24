@@ -45,6 +45,8 @@
     * [BeanPostProcessor源码讲解](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/beanpostprocessoryuan-ma-jiang-jie.md)
     * [BeanFactoryPostProcessor源码讲解](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/beanfactorypostprocessoryuan-ma-jiang-jie.md)
     * [BeanDefinition源码解析](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/beandefinitionyuan-ma-jie-xi.md)
+    * [RootBeanDefinition源码解析](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/rootbeandefinitionyuan-ma-jie-xi.md)
+    * AnnotatedBeanDefinition源码解析
     * [ApplicationContext源码讲解](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/applicationcontext.md)
     * [IoC容器的初始化？](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/iocrong-qi-de-chu-shi-hua-ff1f.md)
     * [@Configuration源码讲解](springbootpian/configurationyuan-ma-jiang-jie.md)
