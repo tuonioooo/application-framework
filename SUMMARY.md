@@ -42,6 +42,7 @@
   * [Spring核心结构及组件分析](springyuan-ma-jie-du-pian/springhe-xin-jie-gou-ji-zhu-jian-fen-xi.md)
   * [Spring源码剖析](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi.md)
     * [BeanFactory](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/beanfactoryyuan-ma-pou-xi.md)
+    * [BeanPostProcessor源码讲解](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/beanpostprocessoryuan-ma-jiang-jie.md)
     * [ApplicationContext源码讲解](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/applicationcontext.md)
     * [BeanDefinition源码解析](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/beandefinitionyuan-ma-jie-xi.md)
     * [IoC容器的初始化？](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/iocrong-qi-de-chu-shi-hua-ff1f.md)
