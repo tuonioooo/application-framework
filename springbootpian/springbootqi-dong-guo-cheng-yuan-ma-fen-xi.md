@@ -843,11 +843,7 @@ public interface CommandLineRunner {
 
 因此在下一篇文章中，将介绍如何对Spring Boot容器的启动过程进行扩展，实现对该过程的定制化。
 
-
-
 ## 参考
 
-https://blog.csdn.net/dm\_vincent/article/details/76735888
-
-
+[https://blog.csdn.net/dm\_vincent/article/details/76735888](https://blog.csdn.net/dm_vincent/article/details/76735888) 
 
