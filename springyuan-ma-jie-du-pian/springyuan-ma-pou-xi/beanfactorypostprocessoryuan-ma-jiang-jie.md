@@ -23,3 +23,10 @@ public interface BeanFactoryPostProcessor {
 
 接口只有一个方法postProcessBeanFactory。该方法的参数是ConfigurableListableBeanFactory类型，实际开发中，我们常使用它的getBeanDefinition\(\)方法获取某个bean的元数据定义，请参考 [BeanDefinition源码解析](/springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/beandefinitionyuan-ma-jie-xi.md)
 
+看个例子：
+
+  
+
+
+配置文件中定义了一个bean：
+
