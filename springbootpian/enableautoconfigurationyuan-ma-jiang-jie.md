@@ -1,6 +1,6 @@
 # SpringBoot启动类源码分析以及@EnableAutoConfiguration和@SpringBootApplication讲解
 
-原文：
+原文：https://blog.csdn.net/tuoni123/article/details/79985950
 
 对于任何一个Spring boot项目，都会用到下面的启动类：
 
@@ -55,7 +55,7 @@ public class Application {
 
 因此上面三个注解对等于@SpringBootConfiguration，所以直接写@SpringBootConfiguration方便点，下面分别介绍一下这三个Annotation
 
-**@Configuration** 
+**@Configuration**
 
 可以参考[@Configuration注解、@Bean注解以及配置自动扫描、bean作用域](https://blog.csdn.net/tuoni123/article/details/79977459)
 
@@ -76,8 +76,32 @@ public class Application {
 @EnableAutoConfiguration作为一个复合Annotation,其自身定义关键信息如下
 
 ```
+@Target(ElementType.TYPE)  
+@Retention(RetentionPolicy.RUNTIME)  
+@Documented  
+@Inherited  
+@Import({ EnableAutoConfigurationImportSelector.class,  
+        AutoConfigurationPackages.Registrar.class })  
+public @interface EnableAutoConfiguration {  
+  
+    /**  
+     * Exclude specific auto-configuration classes such that they will never be applied.  
+     * @return the classes to exclude  
+     */  
+    Class<?>[] exclude() default {};  
+  
+}
 
 ```
 
+其中，最关键的要
+
+@Import\(EnableAutoConfigurationImportSelector.class\)，借助EnableAutoConfigurationImportSelector
+
+@EnableAutoConfiguration可以帮助SpringBoot应用将所有符合条件的@Configuration配置都加载到当前SpringBoot创建并使用的IoC容器。就像一只“八爪鱼”一样，借助于Spring框架原有的一个工具类：SpringFactoriesLoader的支持，@EnableAutoConfiguration可以智能的自动配置功效才得以大功告成！
+
+![](/assets/import-springboot-01.png)
+
+  
 
 
