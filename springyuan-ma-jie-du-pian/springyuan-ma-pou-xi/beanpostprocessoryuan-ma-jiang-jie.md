@@ -102,47 +102,23 @@ public class PostProcessor implements BeanPostProcessor {
 </beans>
 ```
 
-```
 由API可以看出:
-```
-
-  
-
 
 1：后置处理器的postProcessorBeforeInitailization方法是在bean实例化，依赖注入之后及自定义初始化方法\(例如：配置文件中bean标签添加init-method属性指定Java类中初始化方法、
 
-  
-
-
 @PostConstruct注解指定初始化方法，Java类实现InitailztingBean接口\)之前调用
-
-  
-
 
 2：后置处理器的postProcessorAfterInitailization方法是在bean实例化、依赖注入及自定义初始化方法之后调用
 
-  
-
-
-  
-
-
 注意：
 
-  
-
-
-   1.BeanFactory和ApplicationContext两个容器对待bean的后置处理器稍微有些不同。ApplicationContext容器会自动检测Spring配置文件中那些bean所对应的Java类实现了BeanPostProcessor
-
-  
-
+1.BeanFactory和ApplicationContext两个容器对待bean的后置处理器稍微有些不同。ApplicationContext容器会自动检测Spring配置文件中那些bean所对应的Java类实现了BeanPostProcessor
 
 接口，并自动把它们注册为后置处理器。在创建bean过程中调用它们，所以部署一个后置处理器跟普通的bean没有什么太大区别。
 
-  
-
-
-      2.BeanFactory容器注册bean后置处理器时必须通过代码显示的注册，在IoC容器继承体系中的ConfigurableBeanFactory接口中定义了注册方法
+```
+  2.BeanFactory容器注册bean后置处理器时必须通过代码显示的注册，在IoC容器继承体系中的ConfigurableBeanFactory接口中定义了注册方法
+```
 
 参考
 
