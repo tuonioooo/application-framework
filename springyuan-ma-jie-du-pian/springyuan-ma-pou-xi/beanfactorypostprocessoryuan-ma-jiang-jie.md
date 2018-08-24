@@ -23,10 +23,55 @@ public interface BeanFactoryPostProcessor {
 
 接口只有一个方法postProcessBeanFactory。该方法的参数是ConfigurableListableBeanFactory类型，实际开发中，我们常使用它的getBeanDefinition\(\)方法获取某个bean的元数据定义，请参考 [BeanDefinition源码解析](/springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/beandefinitionyuan-ma-jie-xi.md)
 
-看个例子：
+## **示例**
 
-  
+**xml配置**
+
+```
+<bean id="messi" class="twm.spring.LifecycleTest.footballPlayer">
+    <property name="name" value="Messi"></property>
+    <property name="team" value="Barcelona"></property>
+</bean>
+```
+
+**创建类beanFactoryPostProcessorImpl，实现接口BeanFactoryPostProcessor：**
+
+```
+public class beanFactoryPostProcessorImpl implements BeanFactoryPostProcessor{
+
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        System.out.println("beanFactoryPostProcessorImpl");
+        BeanDefinition bdefine=beanFactory.getBeanDefinition("messi");
+        System.out.println(bdefine.getPropertyValues().toString());
+        MutablePropertyValues pv =  bdefine.getPropertyValues();  
+            if (pv.contains("team")) {
+                PropertyValue ppv= pv.getPropertyValue("name");
+                TypedStringValue obj=(TypedStringValue)ppv.getValue();
+                if(obj.getValue().equals("Messi")){
+                    pv.addPropertyValue("team", "阿根延");  
+                }
+        }  
+            bdefine.setScope(BeanDefinition.SCOPE_PROTOTYPE);
+    }
+}
+```
+
+**调用类：**
+
+```
+public static void main(String[] args) throws Exception {
+    ApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
+    footballPlayer obj = ctx.getBean("messi",footballPlayer.class);
+    System.out.println(obj.getTeam());
+}
+```
+
+输出：
+
+```
+PropertyValues: length=2; bean property ‘name’; bean property ‘team’ 
+阿根延
+```
 
 
-配置文件中定义了一个bean：
 
