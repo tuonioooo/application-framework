@@ -469,3 +469,176 @@ private <T> Collection<? extends T> getSpringFactoriesInstances(Class<T> type,
 
 比如在spring-boot包中的定义的spring.factories:
 
+```
+# Run Listeners
+org.springframework.boot.SpringApplicationRunListener=\
+org.springframework.boot.context.event.EventPublishingRunListener
+```
+
+我们来看看这个EventPublishingRunListener是干嘛的：
+
+```
+/**
+ * {@link SpringApplicationRunListener} to publish {@link SpringApplicationEvent}s.
+ * <p>
+ * Uses an internal {@link ApplicationEventMulticaster} for the events that are fired
+ * before the context is actually refreshed.
+ *
+ * @author Phillip Webb
+ * @author Stephane Nicoll
+ */
+public class EventPublishingRunListener implements SpringApplicationRunListener, Ordered {
+  // ...
+}
+```
+
+从类文档可以看出，它主要是负责发布SpringApplicationEvent事件的，它会利用一个内部的ApplicationEventMulticaster在上下文实际被刷新之前对事件进行处理。至于具体的应用场景，后面用到的时候再来分析。
+
+#### 2.2.2 第二步 - 根据SpringApplicationRunListeners以及参数来准备环境 {#222-第二步-根据springapplicationrunlisteners以及参数来准备环境}
+
+```
+private ConfigurableEnvironment prepareEnvironment(
+        SpringApplicationRunListeners listeners,
+        ApplicationArguments applicationArguments) {
+    // Create and configure the environment
+    ConfigurableEnvironment environment = getOrCreateEnvironment();
+    configureEnvironment(environment, applicationArguments.getSourceArgs());
+    listeners.environmentPrepared(environment);
+    if (!this.webEnvironment) {
+        environment = new EnvironmentConverter(getClassLoader())
+                .convertToStandardEnvironmentIfNecessary(environment);
+    }
+    return environment;
+}
+```
+
+配置环境的方法：
+
+```
+protected void configureEnvironment(ConfigurableEnvironment environment,
+        String[] args) {
+    configurePropertySources(environment, args);
+    configureProfiles(environment, args);
+}
+```
+
+所以这里实际上也包含了两个步骤：
+
+1. 配置Property Sources
+2. 配置Profiles
+
+具体实现这里就不展开了，代码也比较直观。
+
+对于Web应用而言，得到的environment变量是一个StandardServletEnvironment的实例。得到实例后，会调用前面RunListeners中的environmentPrepared方法：
+
+```
+@Override
+public void environmentPrepared(ConfigurableEnvironment environment) {
+    this.initialMulticaster.multicastEvent(new ApplicationEnvironmentPreparedEvent(
+            this.application, this.args, environment));
+}
+```
+
+在这里，定义的广播器就派上用场了，它会发布一个ApplicationEnvironmentPreparedEvent事件。
+
+那么有发布就有监听，在构建SpringApplication实例的时候不是初始化过一些ApplicationListeners嘛，其中的Listener就可能会监听ApplicationEnvironmentPreparedEvent事件，然后进行相应处理。
+
+所以这里SpringApplicationRunListeners的用途和目的也比较明显了，它实际上是一个事件中转器，它能够感知到Spring Boot启动过程中产生的事件，然后有选择性的将事件进行中转。为何是有选择性的，看看它的实现就知道了：
+
+```
+@Override
+public void contextPrepared(ConfigurableApplicationContext context) {
+
+}
+```
+
+它的contextPrepared方法实现为空，没有利用内部的initialMulticaster进行事件的派发。因此即便是外部有ApplicationListener对这个事件有兴趣，也是没有办法监听到的。
+
+那么既然有事件的转发，是谁在监听这些事件呢，在这个类的构造器中交待了：
+
+```
+public EventPublishingRunListener(SpringApplication application, String[] args) {
+    this.application = application;
+    this.args = args;
+    this.initialMulticaster = new SimpleApplicationEventMulticaster();
+    for (ApplicationListener<?> listener : application.getListeners()) {
+        this.initialMulticaster.addApplicationListener(listener);
+    }
+}
+```
+
+前面在构建SpringApplication实例过程中设置的监听器在这里被逐个添加到了initialMulticaster对应的ApplicationListener列表中。所以当initialMulticaster调用multicastEvent方法时，这些Listeners中定义的相应方法就会被触发了。
+
+#### 2.2.3 第三步 - 创建Spring上下文 {#223-第三步-创建spring上下文}
+
+```
+protected ConfigurableApplicationContext createApplicationContext() {
+    Class<?> contextClass = this.applicationContextClass;
+    if (contextClass == null) {
+        try {
+            contextClass = Class.forName(this.webEnvironment
+                    ? DEFAULT_WEB_CONTEXT_CLASS : DEFAULT_CONTEXT_CLASS);
+        }
+        catch (ClassNotFoundException ex) {
+            throw new IllegalStateException(
+                    "Unable create a default ApplicationContext, "
+                            + "please specify an ApplicationContextClass",
+                    ex);
+        }
+    }
+    return (ConfigurableApplicationContext) BeanUtils.instantiate(contextClass);
+}
+
+// WEB应用的上下文类型
+public static final String DEFAULT_WEB_CONTEXT_CLASS = "org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext";
+```
+
+这个上下文类型的类图如下所示：
+
+![](/assets/import-springbootapplication-01.png)这也是相当复杂的一个类图了，如果能把这张图中的各个类型的作用弄清楚，估计也是一个Spring大神了 :\)
+
+对于我们的Web应用，上下文类型就是DEFAULT\_WEB\_CONTEXT\_CLASS。
+
+#### 2.2.4 第四步 - Spring上下文前置处理 {#224-第四步-spring上下文前置处理}
+
+```
+private void prepareContext(ConfigurableApplicationContext context,
+        ConfigurableEnvironment environment, SpringApplicationRunListeners listeners,
+        ApplicationArguments applicationArguments, Banner printedBanner) {
+    // 将环境和上下文关联起来
+    context.setEnvironment(environment);
+
+    // 为上下文配置Bean生成器以及资源加载器(如果它们非空)
+    postProcessApplicationContext(context);
+
+    // 调用初始化器
+    applyInitializers(context);
+
+    // 触发Spring Boot启动过程的contextPrepared事件
+    listeners.contextPrepared(context);
+    if (this.logStartupInfo) {
+        logStartupInfo(context.getParent() == null);
+        logStartupProfileInfo(context);
+    }
+
+    // 添加两个Spring Boot中的特殊单例Beans - springApplicationArguments以及springBootBanner
+    context.getBeanFactory().registerSingleton("springApplicationArguments",
+            applicationArguments);
+    if (printedBanner != null) {
+        context.getBeanFactory().registerSingleton("springBootBanner", printedBanner);
+    }
+
+    // 加载sources - 对于DemoApplication而言，这里的sources集合只包含了它一个class对象
+    Set<Object> sources = getSources();
+    Assert.notEmpty(sources, "Sources must not be empty");
+
+    // 加载动作 - 构造BeanDefinitionLoader并完成Bean定义的加载
+    load(context, sources.toArray(new Object[sources.size()]));
+
+    // 触发Spring Boot启动过程的contextLoaded事件
+    listeners.contextLoaded(context);
+}
+```
+
+
+
