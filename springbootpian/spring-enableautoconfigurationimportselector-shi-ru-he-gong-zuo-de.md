@@ -1,5 +1,7 @@
 # EnableAutoConfigurationImportSelector 是如何工作的 ?
 
+原文：https://blog.csdn.net/andy\_zhang2007/article/details/78580980
+
 ### 功能 {#功能}
 
 EnableAutoConfigurationImportSelector 是一个DeferredImportSelector，由 spring boot autoconfigure 从版本1.3开始,提供用来处理EnableAutoConfiguration自动配置。
@@ -152,7 +154,7 @@ Springboot应用启动过程中使用ConfigurationClassParser分析配置类时�
     protected List<AutoConfigurationImportFilter> getAutoConfigurationImportFilters() {
         return SpringFactoriesLoader.loadFactories(AutoConfigurationImportFilter.class,
                 this.beanClassLoader);
-    }   
+    }
 ```
 
 

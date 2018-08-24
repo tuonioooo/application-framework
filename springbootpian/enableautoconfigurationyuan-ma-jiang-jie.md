@@ -131,7 +131,7 @@ EnableAutoConfigurationImportSelector继承自AutoConfigurationImportSelector,�
 
 [EnableAutoConfigurationImportSelector 是如何工作的 ?](/springbootpian/spring-enableautoconfigurationimportselector-shi-ru-he-gong-zuo-de.md)
 
-[Spring 工具类 ConfigurationClassParser 是如何工作的 ？](https://blog.csdn.net/andy_zhang2007/article/details/78549773)
+[ConfigurationClassParser 是如何工作的 ？ ](/springbootpian/configurationclassparser-shi-ru-he-gong-zuo-de.md)
 
 **深入探索SpringApplication执行流程**
 
