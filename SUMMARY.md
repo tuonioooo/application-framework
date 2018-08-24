@@ -50,6 +50,7 @@
     * [ApplicationContext源码讲解](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/applicationcontext.md)
     * [IoC容器的初始化？](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/iocrong-qi-de-chu-shi-hua-ff1f.md)
     * [@Configuration源码讲解](springbootpian/configurationyuan-ma-jiang-jie.md)
+    * [Bean的注解\(annotation\)](springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/beande-zhu-89e328-annotation.md)
   * [IOC机制从设计理念/实现原理到源码解读](springyuan-ma-jie-du-pian/iocji-zhi-cong-she-ji-li-nian-dao-yuan-ma-jie-du.md)
   * [AOP实现原理](springyuan-ma-jie-du-pian/aopshi-xian-yuan-li-ji-chang-jian-wu-qu.md)
     * [aop编程思想](springyuan-ma-jie-du-pian/aopshi-xian-yuan-li-ji-chang-jian-wu-qu/aopbian-cheng-si-xiang.md)
