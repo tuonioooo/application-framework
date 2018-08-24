@@ -1,0 +1,77 @@
+# SpringBoot启动类源码分析以及@EnableAutoConfiguration和@SpringBootApplication讲解
+
+对于任何一个Spring boot项目，都会用到下面的启动类：
+
+```
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+
+```
+
+从上面代码可以看出，@SpringBootApplication和类SpringApplication.run是我们分析的主要方法
+
+**@SpringBooApplication**源码如下：
+
+```
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan(excludeFilters = {
+        @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+        @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+public @interface SpringBootApplication {
+...
+}
+
+```
+
+虽然定义使用了多个Annotation进行了原信息标注，但实际上重要的只有三个Annotation：
+
+@Configuration（@SpringBootConfiguration点开查看发现里面还是应用了@Configuration）
+
+@EnableAutoConfiguration
+
+@ComponentScan
+
+所以，如果我们使用如下的SpringBoot启动类，整个SpringBoot应用依然可以与之前的启动类功能对等：
+
+```
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+
+```
+
+因此上面三个注解对等于@SpringBootConfiguration，所以直接写@SpringBootConfiguration方便点，下面分别介绍一下这三个Annotation
+
+**@Configuration** 可以参考[@Configuration注解、@Bean注解以及配置自动扫描、bean作用域](https://blog.csdn.net/tuoni123/article/details/79977459)
+
+**@ComponentScan**
+
+  
+
+
+@ComponentScan这个注解在Spring中很重要，它对应XML配置中的 元素，@ComponentScan的功能其实就是自动扫描并加载符合条件的组件（比如@Component和@Repository等）或者bean定义，最终将这些bean定义加载到IoC容器中。
+
+  
+
+
+我们可以通过basePackages等属性来细粒度的定制@ComponentScan自动扫描的范围，如果不指定，则默认Spring框架实现会从声明@ComponentScan所在类的package进行扫描。
+
+  
+
+
+注：所以SpringBoot的启动类最好是放在root package下，因为默认不指定basePackages
+
