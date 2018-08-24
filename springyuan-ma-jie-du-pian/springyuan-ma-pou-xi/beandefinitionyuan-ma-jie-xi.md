@@ -8,6 +8,26 @@ Bean 的解析过程非常复杂，功能被分的很细，因为这里需要被
 
 ![](/assets/import-beande-02.png)
 
+
+
+* **AttributeAccessor**
+
+```
+//元数据操作接口
+ public interface AttributeAccessor { 
+  //设置元数据 
+  void setAttribute(String name, Object value); 
+  //获取元数据 
+   Object getAttribute(String name); 
+  //删除元数据 
+   Object removeAttribute(String name); 
+   //是否含有元数据
+   boolean hasAttribute(String name);  
+   //获取元数据的name数组
+   String[] attributeNames();  
+}
+```
+
 * **BeanDefinition**
 
 ```
