@@ -956,5 +956,52 @@ public class ChildBeanDefinition extends AbstractBeanDefinition {
 }
 ```
 
+* **GenericBeanDefinition**
+
+GenericBeanDefinition是自2.5以后新加入的bean文件配置属性定义类，是一站式服务类，用于替代ChildBeanDefinition类
+
+```
+public class GenericBeanDefinition extends AbstractBeanDefinition {
+    //父bean名称
+    private String parentName;
+    //构造方法
+    public GenericBeanDefinition() {
+        super();
+    }
+    //构造方法
+    public GenericBeanDefinition(BeanDefinition original) {
+        super(original);
+    }
+    //设置parentName
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+    public String getParentName() {
+        return this.parentName;
+    }
+    //深度拷贝自身
+    @Override
+    public AbstractBeanDefinition cloneBeanDefinition() {
+        return new GenericBeanDefinition(this);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return (this == other || (other instanceof GenericBeanDefinition && super.equals(other)));
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Generic bean");
+        if (this.parentName != null) {
+            sb.append(" with parent '").append(this.parentName).append("'");
+        }
+        sb.append(": ").append(super.toString());
+        return sb.toString();
+    }
+
+}
+```
+
 
 
