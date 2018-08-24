@@ -640,5 +640,206 @@ private void prepareContext(ConfigurableApplicationContext context,
 }
 ```
 
+关键步骤：
 
+**配置Bean生成器以及资源加载器\(如果它们非空\):**
+
+```
+protected void postProcessApplicationContext(ConfigurableApplicationContext context) {
+    if (this.beanNameGenerator != null) {
+        context.getBeanFactory().registerSingleton(
+                AnnotationConfigUtils.CONFIGURATION_BEAN_NAME_GENERATOR,
+                this.beanNameGenerator);
+    }
+    if (this.resourceLoader != null) {
+        if (context instanceof GenericApplicationContext) {
+            ((GenericApplicationContext) context)
+                    .setResourceLoader(this.resourceLoader);
+        }
+        if (context instanceof DefaultResourceLoader) {
+            ((DefaultResourceLoader) context)
+                    .setClassLoader(this.resourceLoader.getClassLoader());
+        }
+    }
+}
+```
+
+**调用初始化器**
+
+```
+protected void applyInitializers(ConfigurableApplicationContext context) {
+    for (ApplicationContextInitializer initializer : getInitializers()) {
+        Class<?> requiredType = GenericTypeResolver.resolveTypeArgument(
+                initializer.getClass(), ApplicationContextInitializer.class);
+        Assert.isInstanceOf(requiredType, context, "Unable to call initializer.");
+        initializer.initialize(context);
+    }
+}
+```
+
+这里终于用到了在创建SpringApplication实例时设置的初始化器了，依次对它们进行遍历，并调用initialize方法。
+
+#### 2.2.5 第五步 - Spring上下文刷新 {#225-第五步-spring上下文刷新}
+
+```
+private void refreshContext(ConfigurableApplicationContext context) {
+  // 由于这里需要调用父类一系列的refresh操作，涉及到了很多核心操作，因此耗时会比较长，本文不做具体展开
+    refresh(context);
+
+    // 注册一个关闭容器时的钩子函数
+    if (this.registerShutdownHook) {
+        try {
+            context.registerShutdownHook();
+        }
+        catch (AccessControlException ex) {
+            // Not allowed in some environments.
+        }
+    }
+}
+
+// 调用父类的refresh方法完成容器刷新的基础操作
+protected void refresh(ApplicationContext applicationContext) {
+    Assert.isInstanceOf(AbstractApplicationContext.class, applicationContext);
+    ((AbstractApplicationContext)applicationContext).refresh();
+}
+```
+
+注册关闭容器时的钩子函数的默认实现是在AbstractApplicationContext类中：
+
+```
+public void registerShutdownHook() {
+  if(this.shutdownHook == null) {
+    this.shutdownHook = new Thread() {
+      public void run() {
+        synchronized(AbstractApplicationContext.this.startupShutdownMonitor) {
+          AbstractApplicationContext.this.doClose();
+        }
+      }
+    };
+    Runtime.getRuntime().addShutdownHook(this.shutdownHook);
+  }
+}
+```
+
+如果没有提供自定义的shutdownHook，那么会生成一个默认的，并添加到Runtime中。默认行为就是调用它的doClose方法，完成一些容器销毁时的清理工作。
+
+#### 2.2.6 第六步 - Spring上下文后置处理 {#226-第六步-spring上下文后置处理}
+
+```
+protected void afterRefresh(ConfigurableApplicationContext context,
+            ApplicationArguments args) {
+    callRunners(context, args);
+}
+
+private void callRunners(ApplicationContext context, ApplicationArguments args) {
+    List<Object> runners = new ArrayList<Object>();
+    runners.addAll(context.getBeansOfType(ApplicationRunner.class).values());
+    runners.addAll(context.getBeansOfType(CommandLineRunner.class).values());
+    AnnotationAwareOrderComparator.sort(runners);
+    for (Object runner : new LinkedHashSet<Object>(runners)) {
+        if (runner instanceof ApplicationRunner) {
+            callRunner((ApplicationRunner) runner, args);
+        }
+        if (runner instanceof CommandLineRunner) {
+            callRunner((CommandLineRunner) runner, args);
+        }
+    }
+}
+
+private void callRunner(ApplicationRunner runner, ApplicationArguments args) {
+    try {
+        (runner).run(args);
+    }
+    catch (Exception ex) {
+        throw new IllegalStateException("Failed to execute ApplicationRunner", ex);
+    }
+}
+
+private void callRunner(CommandLineRunner runner, ApplicationArguments args) {
+    try {
+        (runner).run(args.getSourceArgs());
+    }
+    catch (Exception ex) {
+        throw new IllegalStateException("Failed to execute CommandLineRunner", ex);
+    }
+}
+```
+
+所谓的后置操作，就是在容器完成刷新后，依次调用注册的Runners。Runners可以是两个接口的实现类：
+
+1. org.springframework.boot.ApplicationRunner
+2. org.springframework.boot.CommandLineRunner
+
+这两个接口有什么区别呢：
+
+```
+/**
+ * Interface used to indicate that a bean should <em>run</em> when it is contained within
+ * a {@link SpringApplication}. Multiple {@link ApplicationRunner} beans can be defined
+ * within the same application context and can be ordered using the {@link Ordered}
+ * interface or {@link Order @Order} annotation.
+ *
+ * @author Phillip Webb
+ * @since 1.3.0
+ * @see CommandLineRunner
+ */
+public interface ApplicationRunner {
+
+    /**
+     * Callback used to run the bean.
+     * @param args incoming application arguments
+     * @throws Exception on error
+     */
+    void run(ApplicationArguments args) throws Exception;
+
+}
+
+/**
+ * Interface used to indicate that a bean should <em>run</em> when it is contained within
+ * a {@link SpringApplication}. Multiple {@link CommandLineRunner} beans can be defined
+ * within the same application context and can be ordered using the {@link Ordered}
+ * interface or {@link Order @Order} annotation.
+ * <p>
+ * If you need access to {@link ApplicationArguments} instead of the raw String array
+ * consider using {@link ApplicationRunner}.
+ *
+ * @author Dave Syer
+ * @see ApplicationRunner
+ */
+public interface CommandLineRunner {
+
+    /**
+     * Callback used to run the bean.
+     * @param args incoming main method arguments
+     * @throws Exception on error
+     */
+    void run(String... args) throws Exception;
+
+}
+```
+
+其实没有什么不同之处，除了接口中的run方法接受的参数类型是不一样的以外。一个是封装好的ApplicationArguments类型，另一个是直接的String不定长数组类型。因此根据需要选择相应的接口实现即可。
+
+至此，SpringApplication的run方法就分析完毕了。
+
+## 3. 总结 {#3-总结}
+
+本文分析了Spring Boot启动时的关键步骤，主要包含以下两个方面：
+
+1. SpringApplication实例的构建过程
+
+   其中主要涉及到了初始化器\(Initializer\)以及监听器\(Listener\)这两大概念，它们都通过META-INF/spring.factories完成定义。
+
+2. SpringApplication实例run方法的执行过程
+
+   其中主要有一个SpringApplicationRunListeners的概念，它作为Spring Boot容器初始化时各阶段事件的中转器，将事件派发给感兴趣的Listeners\(在SpringApplication实例的构建过程中得到的\)。这些阶段性事件将容器的初始化过程给构造起来，提供了比较强大的可扩展性。
+
+如果从可扩展性的角度出发，应用开发者可以在Spring Boot容器的启动阶段，扩展哪些内容呢：
+
+1. 初始化器\(Initializer\)
+2. 监听器\(Listener\)
+3. 容器刷新后置Runners\(ApplicationRunner或者CommandLineRunner接口的实现类\)
+4. 启动期间在Console打印Banner的具体实现类
+
+因此在下一篇文章中，将介绍如何对Spring Boot容器的启动过程进行扩展，实现对该过程的定制化。
 
