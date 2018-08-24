@@ -49,8 +49,7 @@ public class PostProcessor implements BeanPostProcessor {
 }
 ```
 
-> 注  
-> 意:
+> 注意:
 >
 > 接口中两个方法不能返回null，如果返回null那么在后续初始化方法将报空指针异常或者通过getBean\(\)方法获取不到bena实例对象
 >
