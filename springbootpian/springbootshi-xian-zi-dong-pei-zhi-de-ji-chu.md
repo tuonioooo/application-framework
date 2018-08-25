@@ -205,6 +205,77 @@ spring.http.encoding.charset=GBK
 
 ![](/assets/import-condition-01.png)
 
+从这张图可以看出，Spring Conversion API中维护了一系列Converters，它实际上是一个从源类型到目标类型的Map对象。从String类型到Charset类型的Converter也被注册到了这个Map对象中。因此，当发现配置文件中的值类型和配置Java类中的字段类型不匹配时，就会去尝试从这个Map中找到相应的Converter，然后进行转换。
+
+### 自定义注解实现自动配置 {#自定义注解实现自动配置}
+
+下面我们尝试来创建一个自定义的注解，实现Bean的按需加载。假设我们要创建的注解名为@DatabaseType。
+
+具体的需求是：当启动参数中的dbType=MYSQL的时候，创建一个数据源为MySQL的UserDAO对象；当启动参数中的dbType=ORACLE的时候，创建一个数据源为Oracle的UserDAO对象。
+
+最终配置类的代码可以是这样的：
+
+```
+@Configuration
+public class DatabaseConfiguration
+{
+  @Bean
+  @DatabaseType("MYSQL")
+  public UserDAO mysqlUserDAO() {
+      return new MySQLUserDAO();
+  }
+
+  @Bean
+  @DatabaseType("ORACLE")
+  public UserDAO oracleUserDAO() {
+      return new OracleUserDAO();
+  }
+}
+```
+
+可以知道，@DatabaseType这个注解能够接受一个字符串作为参数。然后将该参数和启动参数中的dbType值进行比对，如果相等的话，就会进行对应Bean的注入工作。@DatabaseType的实现如下：
+
+```
+@Target({ ElementType.TYPE, ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@Conditional(DatabaseTypeCondition.class)
+public @interface DatabaseType {
+    String value();
+}
+```
+
+其中比较重要的是`@Conditional(DatabaseTypeCondition.class)`，表明它的觉得实际上也是委托给了DatabaseTypeCondition这个类：
+
+```
+public class DatabaseTypeCondition implements Condition {
+    // 这里也展示了AnnotatedTypeMetadata这个参数的用法
+    @Override
+    public boolean matches(ConditionContext conditionContext, AnnotatedTypeMetadata metadata) {
+        Map<String, Object> attributes = metadata.getAnnotationAttributes(DatabaseType.class.getName());
+        String type = (String) attributes.get("value");
+        String enabledDBType = System.getProperty("dbType", "MYSQL");
+        return (enabledDBType != null && type != null && enabledDBType.equalsIgnoreCase(type));
+    }
+}
+```
+
+通过matches方法的第二个参数AnnotatedTypeMetadata，可以得到指定注解类型的所有属性，本例中就是@DatabaseType这个注解。然后将注解中的value值和启动参数dbType\(不存在时使用MYSQL作为默认值\)进行比对，然后返回相应的值来决定是否需要注入Bean。
+
+所以，通过这个例子我们也可以发现。通常而言为了程序的可读性，可以将@Conditional和Condition接口的实现类给封装到一个业务含义更加明确的注解类型中，比如上面的@DatabaseType类型。它的意义就很明确，当类型是MySQL的该如何如何，当类型为Oracle的时候又当如何如何。
+
+在后面深究Spring Boot的自动配置机制时，可以发现它也在@Conditional和Condition接口的基础上，定义了很多相关类型，用于更好地定义自动配置行为。
+
+##  总结
+
+本文介绍了Spring中和自动配置相关的两个概念：
+
+1. @Profile
+2. @Conditional以及Condition接口
+
+然后列举了一个使用自定义注解来完成自动配置的例子。
+
+有了这些知识作为基础，在下一篇文章中，就可以开始深入Spring Boot实现自动配置的原理了。
+
 ## 参考
 
 [https://blog.csdn.net/dm\_vincent/article/details/77435515](https://blog.csdn.net/dm_vincent/article/details/77435515)
