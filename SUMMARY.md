@@ -21,7 +21,6 @@
   * [SpringBoot启动类源码分析以及@EnableAutoConfiguration和@SpringBootApplication讲解](springbootpian/enableautoconfigurationyuan-ma-jiang-jie.md)
   * [EnableAutoConfigurationImportSelector 是如何工作的 ?](springbootpian/spring-enableautoconfigurationimportselector-shi-ru-he-gong-zuo-de.md)
   * [ConfigurationClassParser 是如何工作的 ？ ](springbootpian/configurationclassparser-shi-ru-he-gong-zuo-de.md)
-  * [SpringBoot中ApplicationContextInitializer的源码分析](springbootpian/springbootzhong-applicationcontextinitializer-de-yuan-ma-fen-xi.md)
 * [Mybatis篇](mybatispian.md)
   * [Mybatis基础教程](mybatisji-chu-jiao-cheng.md)
   * [Mybatis-Spring基础教程](mybatis-springji-chu-jiao-cheng.md)
