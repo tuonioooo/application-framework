@@ -19,6 +19,7 @@
   * [SpringBoot启动过程源码分析](springbootpian/springbootqi-dong-guo-cheng-yuan-ma-fen-xi.md)
   * [SpringBoot启动过程定制化](springbootpian/springbootqi-dong-guo-cheng-ding-zhi-hua.md)
   * [SpringBoot实现自动配置的基础](springbootpian/springbootshi-xian-zi-dong-pei-zhi-de-ji-chu.md)
+  * [SpringBoot实现自动配置的原理](springbootpian/springbootshi-xian-zi-dong-pei-zhi-de-yuan-li.md)
   * [SpringBoot启动类源码分析以及@EnableAutoConfiguration和@SpringBootApplication讲解](springbootpian/enableautoconfigurationyuan-ma-jiang-jie.md)
   * [EnableAutoConfigurationImportSelector 是如何工作的 ?](springbootpian/spring-enableautoconfigurationimportselector-shi-ru-he-gong-zuo-de.md)
   * [ConfigurationClassParser 是如何工作的 ？ ](springbootpian/configurationclassparser-shi-ru-he-gong-zuo-de.md)
