@@ -25,6 +25,7 @@
   * [ConfigurationClassParser 是如何工作的 ？ ](springbootpian/configurationclassparser-shi-ru-he-gong-zuo-de.md)
   * [SpringBoot源码分析之Spring上下文refresh（重点）](springbootpian/springbootyuan-ma-fen-xi-zhi-spring-shang-xia-wen-refresh-ff08-zhong-dian-ff09.md)
   * [SpringBoot中的ApplicationContext - 执行ApplicationContextInitializer初始化器](springbootpian/springbootzhong-de-applicationcontext-zhi-xing-applicationcontextinitializer-chu-shi-hua-qi.md)
+  * [SpringBoot常用配置-Profile](springbootpian/springbootchang-yong-pei-7f6e-profile.md)
 * [Mybatis篇](mybatispian.md)
   * [Mybatis基础教程](mybatisji-chu-jiao-cheng.md)
   * [Mybatis-Spring基础教程](mybatis-springji-chu-jiao-cheng.md)
