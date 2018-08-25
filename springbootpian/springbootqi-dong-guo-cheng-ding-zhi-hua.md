@@ -59,7 +59,6 @@ public class CustomApplicationContextInitializer implements ApplicationContextIn
 
 ```
 org.springframework.context.ApplicationContextInitializer=com.example.demo.CustomApplicationContextInitializer
-
 ```
 
 执行入口类，可以看到打印完了Banner后，马上就会输出上面的日志内容。
@@ -308,4 +307,8 @@ private Banner printBanner(ConfigurableEnvironment environment) {
 4. 启动期间在Console打印Banner的具体实现类
 
 希望能够给大家带来一些帮助和启迪。
+
+## 参考
+
+https://blog.csdn.net/dm\_vincent/article/details/77151122
 
