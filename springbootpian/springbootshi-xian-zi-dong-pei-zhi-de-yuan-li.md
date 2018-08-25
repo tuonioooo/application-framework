@@ -79,7 +79,23 @@ static class Registrar implements ImportBeanDefinitionRegistrar, DeterminableImp
 
 这个注解实现的功能已经比较底层了，调试看看上面的register方法什么会被调用：
 
-![](/assets/import-register-01.png)
+![](/assets/import-register-01.png)调用参数中的packageNames数组中仅包含一个值：com.example.demo，也就是项目的root package名。
+
+从调用栈来看的话，调用register方法的时间在容器刷新期间：
+
+refresh -&gt; invokeBeanFactoryPostProcessors -&gt; invokeBeanDefinitionRegistryPostProcessors -&gt; postProcessBeanDefinitionRegistry -&gt; processConfigBeanDefinitions\(开始处理配置Bean的定义\) -&gt; loadBeanDefinitions -&gt; loadBeanDefinitionsForConfigurationClass\(读取配置Class中的Bean定义\) -&gt; loadBeanDefinitionsFromRegistrars\(这里开始准备进入上面的register方法\) -&gt; registerBeanDefinitions\(即上述方法\)
+
+这个过程已经比较复杂了，目前暂且不深入研究了。它的功能简单说就是将应用的root package给注册到Spring容器中，供后续使用。
+
+相比而言，下面要讨论的几个类型才是实现自动配置的关键。
+
+### @Import\(EnableAutoConfigurationImportSelector.class\) {#importenableautoconfigurationimportselectorclass}
+
+@EnableAutoConfiguration注解的另外一个作用就是引入了EnableAutoConfigurationImportSelector：
+
+它的类图如下所示：
+
+![](/assets/import-selector-01.png)
 
 ## 参考
 
