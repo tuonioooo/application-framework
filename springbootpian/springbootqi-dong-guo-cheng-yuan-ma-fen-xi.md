@@ -280,6 +280,60 @@ public interface ApplicationContextInitializer<C extends ConfigurableApplication
 
 在Spring上下文被刷新之前进行初始化的操作。典型地比如在Web应用中，注册Property Sources或者是激活Profiles。Property Sources比较好理解，就是配置文件。Profiles是Spring为了在不同环境下\(如DEV，TEST，PRODUCTION等\)，加载不同的配置项而抽象出来的一个实体。
 
+ApplicationContextInitializer是一个回调接口，它会在ConfigurableApplicationContext的refresh\(\)方法调用之前被调用,做一些容器的初始化工作。这一点我们也可以通过SpringApplication的实例run方法的实现代码得到验证，为了说明问题，再次贴一下这段代码,注意下标红的代码和注释就自然理解了。
+
+```
+public ConfigurableApplicationContext run(String... args) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        ConfigurableApplicationContext context = null;
+        FailureAnalyzers analyzers = null;
+        configureHeadlessProperty();
+        SpringApplicationRunListeners listeners = getRunListeners(args);
+        listeners.starting();
+        try {
+            ApplicationArguments applicationArguments = new DefaultApplicationArguments(
+                    args);
+            ConfigurableEnvironment environment = prepareEnvironment(listeners,
+                    applicationArguments);
+            Banner printedBanner = printBanner(environment);
+            context = createApplicationContext();
+            analyzers = new FailureAnalyzers(context);
+            prepareContext(context, environment, listeners, applicationArguments,
+                    printedBanner); // prepareContext方法中将会执行每个initializers的逻辑
+            refreshContext(context);  // 执行bean的创建和实例化
+            afterRefresh(context, applicationArguments);
+            listeners.finished(context, null);
+            stopWatch.stop();
+            if (this.logStartupInfo) {
+                new StartupInfoLogger(this.mainApplicationClass)
+                        .logStarted(getApplicationLog(), stopWatch);
+            }
+            return context;
+        }
+        catch (Throwable ex) {
+            handleRunFailure(context, listeners, analyzers, ex);
+            throw new IllegalStateException(ex);
+        }
+    }
+```
+
+SpringBoot默认情况下提供了6个initializer，分别由2个jar提供：
+
+　spring-boot-1.5.2.RELEASE.jar
+
+* 　　org.springframework.boot.context.ConfigurationWarningsApplicationContextInitializer,
+* 　　org.springframework.boot.context.ContextIdApplicationContextInitializer,
+* 　　org.springframework.boot.context.config.DelegatingApplicationContextInitializer,
+* 　　org.springframework.boot.context.embedded.ServerPortInfoApplicationContextInitializer
+
+
+
+   spring-boot-autoconfigure-1.5.2.RELEASE.jar
+
+* 　　org.springframework.boot.autoconfigure.SharedMetadataReaderFactoryContextInitializer,
+* 　　org.springframework.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer
+
 #### 2.1.3. 设置监听器\(Listener\) {#213-设置监听器listener}
 
 设置完了初始化器，下面开始设置监听器：
@@ -845,5 +899,5 @@ public interface CommandLineRunner {
 
 ## 参考
 
-[https://blog.csdn.net/dm\_vincent/article/details/76735888](https://blog.csdn.net/dm_vincent/article/details/76735888) 
+[https://blog.csdn.net/dm\_vincent/article/details/76735888](https://blog.csdn.net/dm_vincent/article/details/76735888)
 
