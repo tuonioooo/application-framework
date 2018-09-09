@@ -85,7 +85,7 @@
   * [Spring新版本特性解读](springyuan-ma-jie-du-pian/springxin-ban-ben-te-xing-jie-du.md)
   * [Spring源码中的那些设计模式](springyuan-ma-jie-du-pian/springyuan-ma-zhong-de-na-xie-she-ji-mo-shi.md)
 * [JPA篇](jpapian.md)
-  * [基础概念](jpapian/ji-chu-gai-nian.md)
+  * [基础教程](jpapian/ji-chu-gai-nian.md)
 * [Hibernate篇](hibernatepian.md)
   * [Hibernate基础教程](hibernatepian/hibernateji-chu-jiao-cheng.md)
   * [Hibernate的体系结构](hibernatepian/hibernatede-ti-xi-jie-gou.md)
