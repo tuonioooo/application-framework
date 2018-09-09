@@ -87,6 +87,6 @@
 * [JPA篇](jpapian.md)
   * [基础概念](jpapian/ji-chu-gai-nian.md)
 * [Hibernate篇](hibernatepian.md)
-  * [Hibernate的体系结构](hibernatepian/hibernatede-ti-xi-jie-gou.md)
   * [Hibernate基础教程](hibernatepian/hibernateji-chu-jiao-cheng.md)
+  * [Hibernate的体系结构](hibernatepian/hibernatede-ti-xi-jie-gou.md)
 
