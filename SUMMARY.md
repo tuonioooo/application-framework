@@ -91,4 +91,5 @@
   * [Hibernate的体系结构](hibernatepian/hibernatede-ti-xi-jie-gou.md)
   * [Hibernate面试题](hibernatepian/hibernatemian-shi-ti.md)
   * [自定义一个方言类——Hibernate Dialect](hibernatepian/zi-ding-yi-yi-ge-fang-yan-lei-2014-2014-hibernate-dialect.md)
+  * [Hibernate 不同数据库的连接及SQL方言](hibernatepian/hibernate-bu-tong-shu-ju-ku-de-lian-jie-ji-sql-fang-yan.md)
 
