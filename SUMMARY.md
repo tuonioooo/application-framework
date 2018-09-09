@@ -89,4 +89,5 @@
 * [Hibernate篇](hibernatepian.md)
   * [Hibernate基础教程](hibernatepian/hibernateji-chu-jiao-cheng.md)
   * [Hibernate的体系结构](hibernatepian/hibernatede-ti-xi-jie-gou.md)
+  * [Hibernate面试题](hibernatepian/hibernatemian-shi-ti.md)
 
