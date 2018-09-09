@@ -8,6 +8,8 @@
 * [SpringBoot篇](/springbootpian.md)
 * [Mybatis篇](/mybatispian.md)
 * [Spring源码解读篇](/springyuan-ma-jie-du-pian.md)
+* [JPA篇](/jpapian.md)
+* [Hibernate篇](/hibernatepian.md)
 
 
 
