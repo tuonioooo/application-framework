@@ -332,8 +332,130 @@ public class MicroForm {
 明细实体类——校验的bean
 
 ```
+/**
+ * Created by daizhao.
+ * User: tony
+ * Date: 2018-9-10
+ * Time: 16:43
+ * info: 显微检查点Form
+ */
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class MicroAppraisalForm {
+
+    /**
+     * 标点编号
+     */
+    @NotBlank(message = "标点编号不能为空")
+    @Length(max=30, message="标点编号字符长度不能超过30")
+    private String pointNo;
+    /**
+     * 标点名称
+     */
+    @Length(max=100, message="标点名称字符长度不能超过100")
+    private String pointName;
+    /**
+     * 标点图数据URL base64
+     */
+    @NotBlank(message = "标点图数据URL不能为空")
+    private String pointUrl;
+    /**
+     * 标点坐标(X)
+     */
+    @NotBlank(message = "标点坐标（X）不能为空")
+    @Length(max=10, message="标点坐标字符长度必须是10位")
+    private String pointCoordX;
+    /**
+     * 标点坐标(Y)
+     */
+    @NotBlank(message = "标点坐标（Y）不能为空")
+    @Length(max=10, message="标点坐标字符长度必须是10位")
+    private String pointCoordY;
+    /**
+     * 标点说明
+     */
+    @Length(max=100, message="标点说明字符长度不能超过100")
+    private String pointIntro;
+    /**
+     * 倍数
+     */
+    @DecimalMax(value="999999", message = "范围越界")
+    @DecimalMin(value = "1", message="必须是正整数")
+    private String multipe;
+    /**
+     * 指纹
+     */
+    @NotBlank(message = "指纹不能为空")
+    @Length(max=64, message="指纹字符长度不能超过64")
+    private String fingerprint;
+
+
+    public Map<String, String> getFieldErrors(BindingResult result) {
+        Map<String, String> map_field_errors = new HashMap<String, String>();
+        if (result.hasErrors()) {
+            if (result.hasFieldErrors("pointNo")) {
+                map_field_errors.put("pointNo", result.getFieldError("pointNo").getDefaultMessage());
+            }
+            if (result.hasFieldErrors("pointName")) {
+                map_field_errors.put("pointName", result.getFieldError("pointName").getDefaultMessage());
+            }
+            if (result.hasFieldErrors("pointUrl")) {
+                map_field_errors.put("pointUrl", result.getFieldError("pointUrl").getDefaultMessage());
+            }
+            if (result.hasFieldErrors("pointCoordX")) {
+                map_field_errors.put("pointCoordX", result.getFieldError("pointCoordX").getDefaultMessage());
+            }
+            if (result.hasFieldErrors("pointCoordY")) {
+                map_field_errors.put("pointCoordY", result.getFieldError("pointCoordY").getDefaultMessage());
+            }
+            if (result.hasFieldErrors("pointIntro")) {
+                map_field_errors.put("pointIntro", result.getFieldError("pointIntro").getDefaultMessage());
+            }
+            if (result.hasFieldErrors("multipe")) {
+                map_field_errors.put("multipe", result.getFieldError("multipe").getDefaultMessage());
+            }
+            if (result.hasFieldErrors("fingerprint")) {
+                map_field_errors.put("fingerprint", result.getFieldError("fingerprint").getDefaultMessage());
+            }
+        }
+
+        //判断指纹是否匹配
+        String sha256Code = SHA256Utils.getSHA256StrJava(BASE64Util.getDecodeBase64(this.pointUrl));
+        if(!this.fingerprint.equals(sha256Code)){
+            map_field_errors.put("fingerprint", "指纹不匹配");
+        }
+
+        return map_field_errors;
+    }
+```
+
+接口校验
 
 ```
+/**
+     * 创建/修改显微检测数据
+     * @param form
+     * @param result
+     * @return
+     */
+    @ResponseBody
+    @PostMapping(value = "/saveOrUpdate")
+    public String saveOrUpdate(@RequestBody @Valid MicroForm form, BindingResult result) {
+        Map<String, String> map_field_errors = form.getFieldErrors(result);
+        if(!map_field_errors.isEmpty()){
+            CCResponse ccResponse = new CCResponse("业务异常[MICRO数据校验失败]", RetCode.business_micro_exception.code, map_field_errors);
+            return ccResponse.toJson();
+        }
+        microPageService.saveOrUpdate(form);
+        return new STResponse().toJson();
+    }
+```
+
+> 说明：
+>
+> @Valid校验MicroForm，但是在MicroForm属性中microAppraisalForms ，也用到了@Valid，因此在校验主MicroForm的同时，还会查找当前实体类的属性中是否有@Valid注解，有的话，就会关联校验属性的实体类，也就是会关联校验List封装的实体MicroAppraisalForm
 
 
 
