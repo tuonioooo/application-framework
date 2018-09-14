@@ -12,11 +12,13 @@ JPA规范本质上就是一种ORM规范，注意不是ORM框架——因为JPA�
 
 ![](/assets/import-jpa-01.png)
 
-
-
 ## Hibernate与JPA关系
 
 JPA和Hibernate的关系就像JDBC和JDBC驱动的关系，JPA是规范，Hibernate除了作为ORM框架之外，它也是一种JPA实现。JPA怎么取代Hibernate呢？JDBC可以驱动JDBC驱动吗？
 
-具体请参考知乎解答：https://www.zhihu.com/question/30691648
+具体请参考知乎解答：[https://www.zhihu.com/question/30691648](https://www.zhihu.com/question/30691648)
+
+
+
+
 
