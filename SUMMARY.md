@@ -89,6 +89,7 @@
   * [基础教程](jpapian/ji-chu-gai-nian.md)
   * [SpringData Jpa、Hibernate、Jpa 三者之间的关系](jpapian/springdata-jpahibernatejpa-san-zhe-zhi-jian-de-guan-xi.md)
   * [Jpa 校验/验证注解](jpapian/jpa-xiao-9a8c-yan-zheng-zhu-jie.md)
+  * [Spring data jpa 全面解析](jpapian/spring-data-jpa-quan-mian-jie-xi.md)
 * [Hibernate篇](hibernatepian.md)
   * [Hibernate基础教程](hibernatepian/hibernateji-chu-jiao-cheng.md)
   * [Hibernate的体系结构](hibernatepian/hibernatede-ti-xi-jie-gou.md)
