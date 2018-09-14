@@ -34,5 +34,7 @@ Long story short, then, Spring Data JPA provides a definition to implement repos
 
 ![](/assets/import-jpa-02.png)
 
-                                       spring data jpa、jpa以及ORM框架之间的关系
+                                   spring data jpa、jpa以及ORM框架之间的关系
+
+
 
