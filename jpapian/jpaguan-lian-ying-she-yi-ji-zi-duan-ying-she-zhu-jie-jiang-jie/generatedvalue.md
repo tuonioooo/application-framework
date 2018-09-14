@@ -29,7 +29,7 @@ public class Defacement {
 >
 > @GeneratedValue\(strategy = GenerationType.IDENTITY\)，如果使用的是MYSQL，在表中设置自增属性，插入数据时，将会自动插入
 
-\(2\)借助一个表来实现主键自增, 通过一个表来实现主键id的自增，这种方式不依赖于具体的数据库，可以解决数据迁移的问题
+\(2\)借助一个表来实现主键自增, 通过一个表来实现主键id的自增，这种方式不依赖于具体的数据库，可以解决数据迁移的问题
 
 ```
 public class Users implements Serializable {
@@ -51,6 +51,16 @@ public class Users implements Serializable {
 @SequenceGenerator(name="seq_user")
 @Column(name = "user_id", nullable = false)
 private int userId;
+}
+```
+
+generator:表示主键生成器的名称,这个属性通常和ORM框架相关,例如,Hibernate可以指定uuid等主键生成方式.
+
+```
+@Id
+@GeneratedValues(strategy=StrategyType.SEQUENCE)
+        public int getPk() {
+        return pk;
 }
 ```
 
