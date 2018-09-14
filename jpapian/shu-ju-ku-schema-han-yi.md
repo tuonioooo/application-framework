@@ -7,9 +7,6 @@ create schema SCHEMA\_A;
 
 create table SCHEMA\_A.CUSTOMERS\(ID int not null,……\);
 
-
-
-
 create schema SCHEMA\_B;
 
 create table SCHEMA\_B.CUSTOMERS\(ID int not null,……\);
@@ -25,11 +22,11 @@ create table SCHEMA\_B.CUSTOMERS\(ID int not null,……\);
 
 如果我们想了解数据库中的User和Schema到底什么关系，那么让我们首先来了解一下数据库中User和Schema到底是什么概念。
 
-```
    在SQL Server2000中，由于架构的原因，User和Schema总有一层隐含的关系，让我们很少意识到其实User和Schema是两种完全不同的概念，不过在SQL Server2005中这种架构被打破了，User和Schema也被分开了。     
 
+
+
    首先我来做一个比喻，什么是Database，什么是Schema，什么是Table，什么是Column，什么是Row，什么是User？我们可以把Database看作是一个大仓库，仓库分了很多很多的房间，Schema就是其中的房间，一个Schema代表一个房间，Table可以看作是每个Schema中的床，Table（床）就被放入每个房间中，不能放置在房间之外，那岂不是晚上睡觉无家可归了J。，然后床上可以放置很多物品，就好比Table上可以放置很多列和行一样，数据库中存储数据的基本单元是Table，现实中每个仓库放置物品的基本单位就是床， User就是每个Schema的主人，【所以Schema包含的是Object，而不是User】，其实User是对应于数据库的（即User是每个对应数据库的主人），既然有操作数据库（仓库）的权利，就肯定有操作数据库中每个Schema（房间）的权利，就是说每个数据库映射的User有每个Schema（房间）的钥匙，换句话说，如果他是某个仓库的主人，那么这个仓库的使用权和仓库中的所有东西都是他的（包括房间），他有完全的操作权，可以扔掉不用的东西从每个房间，也可以放置一些有用的东西到某一个房间，当然也可以拆除一个房间（Remove Schema）。呵呵，和现实也太相似了吧。我（仓库的管理员）还可以给User分配具体的权限，也就是他到某一个房间能做些什么，是只能看（Read-Only），还是可以像主人一样有所有的控制权（R/W），这个就要看这个User所对应的角色Role了，至于分配权限的问题，我留在以后单独的blog中详述。比喻到这里，相信大家都清楚了吧。
-```
 
 OK，我们话题继续！
 
@@ -59,17 +56,7 @@ OK，我们话题继续！
 
 最后搜寻 dbo.mytable      （Dbo Schema）
 
-   执行的顺序大家既然清楚了，那么以后在查询数据库表中的数据时，最好指定特定的Schema前缀，这样子，数据库就不用去扫描Sys Schema了，当然可以提高查询的速度了。
+执行的顺序大家既然清楚了，那么以后在查询数据库表中的数据时，最好指定特定的Schema前缀，这样子，数据库就不用去扫描Sys Schema了，当然可以提高查询的速度了。
 
-
-
-
-
-
-
-
-
-   另外需要提示一下的是，每个数据库在创建后，有4个Schema是必须的（删都删不掉），这4个Schema为：dbo，guest，sys和INFORMATION\\_SCHEMA，其余的Schema都可以删除。
-
-
+另外需要提示一下的是，每个数据库在创建后，有4个Schema是必须的（删都删不掉），这4个Schema为：dbo，guest，sys和INFORMATION\\_SCHEMA，其余的Schema都可以删除。
 
