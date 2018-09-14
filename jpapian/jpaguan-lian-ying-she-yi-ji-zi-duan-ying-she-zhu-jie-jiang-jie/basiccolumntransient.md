@@ -15,7 +15,7 @@ optional:表示该属性是否允许为null,默认为true
 ```
 @Basic(optional=false)
 public String getAddress() {
-        return address;
+        return address;
 }
 ```
 
@@ -45,6 +45,24 @@ columnDefinition: 表示该字段在数据库中的实际类型.通常ORM框架�
 @Column(name="BIRTH", nullable="false", columnDefinition="DATE")
 public String getBithday() {
         return birthday;
+}
+```
+
+**@Transient**
+
+可选
+
+@Transient表示该属性并非一个到数据库表的字段的映射,ORM框架将忽略该属性.
+
+如果一个属性并非数据库表的字段映射,就务必将其标示为@Transient,否则,ORM框架默认其注解为@Basic
+
+示例:
+
+```
+//根据birth计算出age属性
+@Transient
+public int getAge() {
+   return getYear(new Date()) – getYear(birth);
 }
 ```
 
