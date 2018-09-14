@@ -49,17 +49,9 @@ OK，我们话题继续！
 
 如果在创建表A的时候指定了特定的Schema做前缀，则表A被创建在了指定的 Schema上（有权限吗？）
 
-   现在问题又出来了，在当前操作数据库的用户（用select current\\_user可以查看到，再次强调）没有默认Schema的前提下，当我们用Create table A语句时，A表会去寻找dbo Schema，并试图创建在dbo Schema上，但是如果创建A表的用户只有对dbo Schema的只读权限，而没有写的权限呢？这个时候A表既不是建立不成功，这个就是我以后会提及到的Login,User, Role和Schema四者之间的关系。在这里，为了避免混淆和提高操作数据库的速度（在少量数据范围内，对我们肉眼来说几乎看不到差异），我们最好每次在操作数据库对象的时候都显式地指定特定的Schema最为前缀。
+现在问题又出来了，在当前操作数据库的用户（用select current\\_user可以查看到，再次强调）没有默认Schema的前提下，当我们用Create table A语句时，A表会去寻找dbo Schema，并试图创建在dbo Schema上，但是如果创建A表的用户只有对dbo Schema的只读权限，而没有写的权限呢？这个时候A表既不是建立不成功，这个就是我以后会提及到的Login,User, Role和Schema四者之间的关系。在这里，为了避免混淆和提高操作数据库的速度（在少量数据范围内，对我们肉眼来说几乎看不到差异），我们最好每次在操作数据库对象的时候都显式地指定特定的Schema最为前缀。
 
-
-
-
-
-
-
-
-
-   现在如果登录的用户为Sue，该用户有一个默认Schema也为Sue，那么如果现在有一条查询语句为Select \\* from mytable, 那么搜寻每个房间（Schema）的顺序是怎样的呢？顺序如下：
+现在如果登录的用户为Sue，该用户有一个默认Schema也为Sue，那么如果现在有一条查询语句为Select \\* from mytable, 那么搜寻每个房间（Schema）的顺序是怎样的呢？顺序如下：
 
 首先搜寻 sys.mytable   （Sys Schema）
 
@@ -67,14 +59,17 @@ OK，我们话题继续！
 
 最后搜寻 dbo.mytable      （Dbo Schema）
 
-```
    执行的顺序大家既然清楚了，那么以后在查询数据库表中的数据时，最好指定特定的Schema前缀，这样子，数据库就不用去扫描Sys Schema了，当然可以提高查询的速度了。
 
 
 
 
-   另外需要提示一下的是，每个数据库在创建后，有4个Schema是必须的（删都删不掉），这4个Schema为：dbo，guest，sys和INFORMATION\_SCHEMA，其余的Schema都可以删除。
-```
+
+
+
+
+
+   另外需要提示一下的是，每个数据库在创建后，有4个Schema是必须的（删都删不掉），这4个Schema为：dbo，guest，sys和INFORMATION\\_SCHEMA，其余的Schema都可以删除。
 
 
 
