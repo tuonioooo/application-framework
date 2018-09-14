@@ -16,7 +16,7 @@
 | @Digits \(integer, fraction\) | 被注释的元素必须是一个数字，其值必须在可接受的范围内 |
 | @Past | 被注释的元素必须是一个过去的日期 |
 | @Future | 被注释的元素必须是一个将来的日期 |
-| @Pattern\(regex=,flag=\) | 被注释的元素必须符合指定的正则表达式 eg:@Pattern\(regexp="^1\[3,4,5,6,7,8,9\]\\d{9}$", message="手机号码格式不正确"\) |
+| @Pattern\(regex=,flag=\) | 被注释的元素必须符合指定的正则表达式 eg:@Pattern\(regexp="^1\[3,4,5,6,7,8,9\]\d{9}$", message="手机号码格式不正确"\) |
 | Hibernate Validator 附加的 constraint |  |
 | @NotBlank\(message =\) | 验证字符串非null，且长度必须大于0 |
 | @Email | 被注释的元素必须是电子邮箱地址 |
