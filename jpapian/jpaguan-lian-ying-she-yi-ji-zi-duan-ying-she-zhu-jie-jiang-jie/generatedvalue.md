@@ -64,5 +64,11 @@ generator:表示主键生成器的名称,这个属性通常和ORM框架相关,�
 }
 ```
 
+## 详细请参考：
 
+[https://blog.csdn.net/tianxiezuomaikong/article/details/64930151](https://blog.csdn.net/tianxiezuomaikong/article/details/64930151)
+
+[http://www.cnblogs.com/tobeprogramer/p/4162228.html](http://www.cnblogs.com/tobeprogramer/p/4162228.html)
+
+[http://www.cnblogs.com/ph123/p/5692194.html](http://www.cnblogs.com/ph123/p/5692194.html)
 
