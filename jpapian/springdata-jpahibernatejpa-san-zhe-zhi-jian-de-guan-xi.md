@@ -12,13 +12,11 @@ JPA规范本质上就是一种ORM规范，注意不是ORM框架——因为JPA�
 
 ![](/assets/import-jpa-01.png)
 
-## Hibernate与JPA关系
+### Hibernate与JPA关系
 
 JPA和Hibernate的关系就像JDBC和JDBC驱动的关系，JPA是规范，Hibernate除了作为ORM框架之外，它也是一种JPA实现。JPA怎么取代Hibernate呢？JDBC可以驱动JDBC驱动吗？
 
 具体请参考知乎解答：[https://www.zhihu.com/question/30691648](https://www.zhihu.com/question/30691648)
-
-
 
 ### 那么Spring Data JPA与JPA规范的关系是怎样的呢？
 
@@ -33,4 +31,8 @@ Long story short, then, Spring Data JPA provides a definition to implement repos
 长话短说，Spring Data JPA 是在JPA规范的基础下提供了Repository层的实现，但是使用那一款ORM需要你自己去决定。
 
 我的理解是：虽然ORM框架都实现了JPA规范，但是在不同ORM框架之间切换是需要编写的代码有一些差异，而通过使用Spring Data Jpa能够方便大家在不同的ORM框架中间进行切换而不要更改代码。并且Spring Data Jpa对Repository层封装的很好，可以省去不少的麻烦。
+
+![](/assets/import-jpa-02.png)
+
+                                       spring data jpa、jpa以及ORM框架之间的关系
 
