@@ -16,11 +16,15 @@ cascade:表示级联操作策略
 
 @OneToOne 定义：一对一关系。
 
-      生活中的一对一关系，举例：人（man） 和 宠物（pet）。前提（一人只养一个宠物）
+  生活中的一对一关系，举例：人（man） 和 宠物（pet）。前提（一人只养一个宠物）
 
-      为什么这个一对一关系是单向的？如果，人养了宠物，那么我们通过“人”就能得到他所拥有的“宠物”的实体。但是，是不是通过“宠物”就能得到“人”的实体呢？！恐怕未必吧～因为在实际生活中，有很多走失的宠物，我们无法通过它们找到它们的主人。
 
-     类似于上述这种情况，或者业务关系。实体间的关系是一对一，并且，我们只需要通过一个实体得到其对应的实体，而且并不需要反向执行这个操作的时候。我们就需要使用单向一对一关系。
+
+  为什么这个一对一关系是单向的？如果，人养了宠物，那么我们通过“人”就能得到他所拥有的“宠物”的实体。但是，是不是通过“宠物”就能得到“人”的实体呢？！恐怕未必吧～因为在实际生活中，有很多走失的宠物，我们无法通过它们找到它们的主人。
+
+
+
+ 类似于上述这种情况，或者业务关系。实体间的关系是一对一，并且，我们只需要通过一个实体得到其对应的实体，而且并不需要反向执行这个操作的时候。我们就需要使用单向一对一关系。
 
 例子：
 
@@ -28,7 +32,7 @@ cascade:表示级联操作策略
 @Entity
 @Table(name = "people")
 public class People (){
-     
+
      @Id  //JPA注释： 主键
      @GeneratedValue(strategy = GenerationType.AUTO)   //设置 id 为自增长
      private Long id;
@@ -49,7 +53,7 @@ public class People (){
 @Entity
 @Table(name = "pet")
 public class Pet (){
-     
+
      @Id  
      @GeneratedValue(strategy = GenerationType.AUTO)  
      private Long id;
@@ -64,9 +68,6 @@ public class Pet (){
 参考：http://blog.sina.com.cn/s/blog_625d79410101d8st.html
 ```
 
-  
-
-
 参考：
 
 [http://blog.sina.com.cn/s/blog\_625d79410101d8st.html](http://blog.sina.com.cn/s/blog_625d79410101d8st.html)
@@ -76,7 +77,6 @@ public class Pet (){
 * **主Pojo**
 
 ```
-
 @Entity
 @Table(name = "T_ONEA")
 public class OneA implements Serializable {
