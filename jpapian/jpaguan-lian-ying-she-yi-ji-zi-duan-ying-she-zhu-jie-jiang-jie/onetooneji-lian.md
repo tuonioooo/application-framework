@@ -118,5 +118,47 @@ oneB.setOneA(oneA);
 jpaRepository.save(oneA);//即可级联保存oneB
 ```
 
+## 源代码属性讲解
+
+```
+@Target({METHOD, FIELD})
+@Retention(RUNTIME)
+public @interface OneToOne {
+
+/**
+* (非强制/随意)关联的目标的实体类，默认是当前字段或者属性来存储
+*/
+Class targetEntity() default void.class;
+
+/**
+* (非强制/随意) 必须级联到关联目标的操作。默认是不级联的
+*/
+CascadeType[] cascade() default {};
+
+/**
+* (非强制/随意) 是否赖加载该级联，还是马上获取级联
+* 急切获取级联策略是持久性提供程序运行时上的一个要求，即必须急切地获取相关实体并加载到内存
+* 赖加载策略是持久性提供程序运行时上的一个要求并不马上加载到内存.
+*/
+FetchType fetch() default EAGER;
+
+/**
+* (非强制/随意) 级联是否可选. 如果将设置为false，则必须始终存在非空关系。
+*/
+boolean optional() default true;
+
+/** (非强制/随意) 关联关系的字段或者属性.
+*/
+String mappedBy() default "";
+
+
+/**
+* (非强制/随意)是否将删除操作应用于已将*从关系中删除的实体，并将删除操作级联到*这些实体.
+* @since Java Persistence 2.0
+*/
+boolean orphanRemoval() default false;
+}
+```
+
 
 
