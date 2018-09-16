@@ -1,4 +1,4 @@
-# @OneToOne级联
+# @OneToOne级联配置
 
 ## 注解讲解
 
