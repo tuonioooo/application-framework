@@ -96,6 +96,7 @@
     * [@Entity、@Table、@id](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/entity.md)
     * [@GeneratedValue](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/generatedvalue.md)
     * [@Basic、@Column、@Transient](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/basiccolumntransient.md)
+    * [@MappedSuperclass、@Embedded、@OrderBy、@Lob、@Data](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/mappedsuperclassembeddedorderbylobdata.md)
 * [Hibernate篇](hibernatepian.md)
   * [Hibernate基础教程](hibernatepian/hibernateji-chu-jiao-cheng.md)
   * [Hibernate的体系结构](hibernatepian/hibernatede-ti-xi-jie-gou.md)
