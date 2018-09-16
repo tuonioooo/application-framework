@@ -49,5 +49,7 @@ public class User {
 }
 ```
 
-详细示例：https://blog.csdn.net/lmy86263/article/details/52108130
+> 总结：单独使用`@Embedded`或者只使用`@Embeddable`都会产生作用，那么这两个都使用效果也一定是一样的
+
+详细示例：[https://blog.csdn.net/lmy86263/article/details/52108130](https://blog.csdn.net/lmy86263/article/details/52108130)
 
