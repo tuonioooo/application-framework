@@ -47,5 +47,19 @@ public User getUser() {
 }
 ```
 
+**@JoinColumn**
+
+可选
+
+@JoinColumn和@Column类似,介量描述的不是一个简单字段,而一一个关联字段,例如.描述一个@ManyToOne的字段.
+
+name:该字段的名称.由于@JoinColumn描述的是一个关联字段,如ManyToOne,则默认的名称由其关联的实体决定.
+
+例如,实体Order有一个user属性来关联实体User,则Order的user属性为一个外键,
+
+其默认的名称为实体User的名称+下划线+实体User的主键名称
+
+示例：见@ManyToOne
+
 
 
