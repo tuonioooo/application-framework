@@ -51,5 +51,37 @@ public class User {
 
 > 总结：单独使用`@Embedded`或者只使用`@Embeddable`都会产生作用，那么这两个都使用效果也一定是一样的
 
-详细示例：[https://blog.csdn.net/lmy86263/article/details/52108130](https://blog.csdn.net/lmy86263/article/details/52108130)
+详细示例：[https://blog.csdn.net/lmy86263/article/details/52108130](https://blog.csdn.net/lmy86263/article/details/52108130) 
+
+**@OrderBy**
+
+可选
+
+在加载数据的时候可以为其指定顺序
+
+示例：
+
+```
+@Table(name = "USERS")
+public class User {
+
+@OrderBy(name = "group_name ASC, name DESC")
+private List books = new ArrayList();
+
+}
+```
+
+**@Lob 大字段**
+
+@Lob //对应Blob字段类型
+
+@Column\(name = "PHOTO"\)
+
+private Serializable photo;
+
+@Lob //对应Blob字段类型
+
+@Column\(name = "DESCRIPTION"\)
+
+private String description;
 
