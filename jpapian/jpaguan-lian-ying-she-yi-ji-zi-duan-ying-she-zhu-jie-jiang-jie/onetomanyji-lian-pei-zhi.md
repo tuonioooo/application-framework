@@ -245,5 +245,130 @@ public class SpringbootJpaCascadeApplicationTests {
 
 **@OneToMany单向关联配置**
 
+相关的配置还是上面的实体类，下面做了如下的修改
+
+User实体类
+
+```
+package com.master.bean;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+/**
+ * @author tony
+ */
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class User {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private Integer age;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)//级联操作所有
+    @JoinColumn(name = "user_id")
+    private Set<Order> orders = new LinkedHashSet<>();
+
+}
+
+```
+
+Order实体类
+
+```
+package com.master.bean;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+/**
+ * Created by daizhao.
+ * User: tony
+ * Date: 2018-9-17
+ * Time: 9:48
+ * info:
+ */
+@Table(name="t_order")
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Order {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long orderId;
+
+    private String orderName;
+
+    @Column(name = "user_id")
+    private Integer userId;
+
+}
+
+```
+
+dao 参加上面
+
+测试类
+
+```
+/**
+	 * @OneToMany单向关联测试
+	 */
+	@Test
+	public void testOneToMany(){
+		Order order1 = new Order(1l, "上衣", 1);
+		Order order2 = new Order(2l, "裤子", 1);
+		Order order3 = new Order(3l, "胸罩", 1);
+
+		Set<Order> orders = new LinkedHashSet<>();
+		orders.add(order1);
+		orders.add(order2);
+		orders.add(order3);
+
+		User user = new User(1l, "Kobe", 20, orders);
+		//保存
+		userRepository.save(user);//级联保存，因为配置了CascadeType.ALL
+		//级联查询
+		//findAll方法默认是  FetchType.LAZY策略，需要修改FetchType.EAGER，可以抓取到子表
+		List<User> userList = userRepository.findAll();
+		userList.forEach(user1 -> {
+			System.out.println("user1.getName() = " + user1.getName());
+			user1.getOrders().forEach(order -> {
+				System.out.println("order.getOrderName() = " + order.getOrderName());
+			});
+		});
+
+	}
+```
+
+
+
+> 说明：
+>
+> 单向关联的一方，必须配置其JoinColumn，指定关联字段，注意延迟加载和立即抓取策略的使用方式，代码里已经注释，
+>
+> 注意其实体类名不能与Mysql关键字冲突等问题MySQL server version for the right syntax to use near，
+>
+> 注意级联保存的使用方式，CascadeType.ALL，注意抓取策略的实现方式FetchType.EAGER、FetchType.Lazy
+
 
 
