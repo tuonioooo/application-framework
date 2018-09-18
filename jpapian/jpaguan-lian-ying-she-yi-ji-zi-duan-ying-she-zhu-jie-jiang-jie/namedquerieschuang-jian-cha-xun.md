@@ -53,78 +53,333 @@ public class FindUserByNamedQueryRepositoryTest {
 
 ```
 public interface SimpleConditionQueryRepository extends JpaRepository<User, Integer> {
-	/**
-	 * 说明：按照Spring data 定义的规则，查询方法以find|read|get开头
+    /**
+     * 说明：按照Spring data 定义的规则，查询方法以find|read|get开头
      * 涉及条件查询时，条件的属性用条件关键字连接，要注意的是：条件属性首字母需大写
-	 */
-	
-	
+     */
+
+
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name = :name and u.email = :email
+     * 参数名大写，条件名首字母大写，并且接口名中参数出现的顺序必须和参数列表中的参数顺序一致
+     */
+    User findByNameAndEmail(String name, String email);
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name = ?1 or u.password = ?2
+     */
+    List<User> findByNameOrPassword(String name, String password);
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id between ?1 and ?2
+     */
+    List<User> findByIdBetween(Integer start, Integer end);
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id < ?1
+     */
+    List<User> findByIdLessThan(Integer end);
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id > ?1
+     */
+    List<User> findByIdGreaterThan(Integer start);
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name is null
+     */
+    List<User> findByNameIsNull();
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name is not null
+     */
+    List<User> findByNameIsNotNull();
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name like ?1
+     */
+    List<User> findByNameLike(String name);
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name not like ?1
+     */
+    List<User> findByNameNotLike(String name);
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.password = ?1 order by u.id desc
+     */
+    List<User> findByPasswordOrderByIdDesc(String password);
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name <> ?1
+     */
+    List<User> findByNameNot(String name);
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id in ?1
+     */
+    List<User> findByIdIn(List<Integer> ids);
+
+    /**
+     * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id not in ?1
+     */
+    List<User> findByIdNotIn(List<Integer> ids);
+}
+```
+
+测试类\(注释部分为实际发送的sql语句\)：
+
+```
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:applicationContext-config.xml" })
+@TransactionConfiguration(defaultRollback = false)
+@Transactional
+public class SimpleConditionQueryRepositoryTest {
+	@Autowired
+	private SimpleConditionQueryRepository dao;
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name = :name and u.email = :email
-	 * 参数名大写，条件名首字母大写，并且接口名中参数出现的顺序必须和参数列表中的参数顺序一致
+	 * select
+        user0_.id as id0_,
+        user0_.account as account0_,
+        user0_.email as email0_,
+        user0_.name as name0_,
+        user0_.password as password0_ 
+    from
+        USER user0_ 
+    where
+        user0_.name=? 
+        and user0_.email=? limit ?
 	 */
-	User findByNameAndEmail(String name, String email);
+	@Test
+	public void testFindUserByNameAndEmail(){
+		User user = dao.findByNameAndEmail("chhliu", "chhliu@.com");
+		System.out.println(JSON.toJSONString(user));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name = ?1 or u.password = ?2
+	 * select
+        user0_.id as id1_,
+        user0_.account as account1_,
+        user0_.email as email1_,
+        user0_.name as name1_,
+        user0_.password as password1_ 
+    from
+        USER user0_ 
+    where
+        user0_.name=? 
+        or user0_.password=?
 	 */
-	List<User> findByNameOrPassword(String name, String password);
+	@Test
+	public void testFindUserByNameOrPassword(){
+		List<User> users = dao.findByNameOrPassword("chhliu", "123456");
+		System.out.println(JSON.toJSONString(users));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id between ?1 and ?2
+	 * select
+        user0_.id as id1_,
+        user0_.account as account1_,
+        user0_.email as email1_,
+        user0_.name as name1_,
+        user0_.password as password1_ 
+    from
+        USER user0_ 
+    where
+        user0_.id between ? and ?
 	 */
-	List<User> findByIdBetween(Integer start, Integer end);
+	@Test
+	public void testFindByIdBetween(){
+		List<User> users = dao.findByIdBetween(5, 8);
+		System.out.println(JSON.toJSONString(users));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id < ?1
+	 * select
+        user0_.id as id1_,
+        user0_.account as account1_,
+        user0_.email as email1_,
+        user0_.name as name1_,
+        user0_.password as password1_ 
+    from
+        USER user0_ 
+    where
+        user0_.id<?
 	 */
-	List<User> findByIdLessThan(Integer end);
+	@Test
+	public void testFindByIdLessThan(){
+		List<User> users = dao.findByIdLessThan(4);
+		System.out.println(JSON.toJSONString(users));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id > ?1
+	 * select
+        user0_.id as id0_,
+        user0_.account as account0_,
+        user0_.email as email0_,
+        user0_.name as name0_,
+        user0_.password as password0_ 
+    from
+        USER user0_ 
+    where
+        user0_.id>?
 	 */
-	List<User> findByIdGreaterThan(Integer start);
+	@Test
+	public void testFindByIdGreaterThan(){
+		List<User> users = dao.findByIdGreaterThan(6);
+		System.out.println(JSON.toJSONString(users));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name is null
+	 * select
+        user0_.id as id0_,
+        user0_.account as account0_,
+        user0_.email as email0_,
+        user0_.name as name0_,
+        user0_.password as password0_ 
+    from
+        USER user0_ 
+    where
+        user0_.name is null
 	 */
-	List<User> findByNameIsNull();
+	@Test
+	public void testFindByNameIsNull(){
+		List<User> users = dao.findByNameIsNull();
+		System.out.println(JSON.toJSONString(users));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name is not null
+	 * select
+        user0_.id as id1_,
+        user0_.account as account1_,
+        user0_.email as email1_,
+        user0_.name as name1_,
+        user0_.password as password1_ 
+    from
+        USER user0_ 
+    where
+        user0_.name is not null
 	 */
-	List<User> findByNameIsNotNull();
+	@Test
+	public void testFindByNameIsNotNull(){
+		List<User> users = dao.findByNameIsNotNull();
+		System.out.println(JSON.toJSONString(users));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name like ?1
+	 * select
+        user0_.id as id1_,
+        user0_.account as account1_,
+        user0_.email as email1_,
+        user0_.name as name1_,
+        user0_.password as password1_ 
+    from
+        USER user0_ 
+    where
+        user0_.name like ?
 	 */
-	List<User> findByNameLike(String name);
+	@Test
+	public void testFindByNameLike(){
+		List<User> users = dao.findByNameLike("chhliu");
+		System.out.println(JSON.toJSONString(users));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name not like ?1
+	 * select
+        user0_.id as id0_,
+        user0_.account as account0_,
+        user0_.email as email0_,
+        user0_.name as name0_,
+        user0_.password as password0_ 
+    from
+        USER user0_ 
+    where
+        user0_.name not like ?
 	 */
-	List<User> findByNameNotLike(String name);
+	@Test
+	public void testFindByNameNotLike(){
+		List<User> users = dao.findByNameNotLike("chhliu");
+		System.out.println(JSON.toJSONString(users));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.password = ?1 order by u.id desc
+	 * select
+        user0_.id as id0_,
+        user0_.account as account0_,
+        user0_.email as email0_,
+        user0_.name as name0_,
+        user0_.password as password0_ 
+    from
+        USER user0_ 
+    where
+        user0_.password=? 
+    order by
+        user0_.id desc
 	 */
-	List<User> findByPasswordOrderByIdDesc(String password);
+	@Test
+	public void testFindByPasswordOrderByIdDesc(){
+		List<User> users = dao.findByPasswordOrderByIdDesc("123456");
+		System.out.println(JSON.toJSONString(users));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name <> ?1
+	 * select
+        user0_.id as id1_,
+        user0_.account as account1_,
+        user0_.email as email1_,
+        user0_.name as name1_,
+        user0_.password as password1_ 
+    from
+        USER user0_ 
+    where
+        user0_.name<>?
 	 */
-	List<User> findByNameNot(String name);
+	@Test
+	public void testFindByNameNot(){
+		List<User> users = dao.findByNameNot("chhliu");
+		System.out.println(JSON.toJSONString(users));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id in ?1
+	 * select
+        user0_.id as id1_,
+        user0_.account as account1_,
+        user0_.email as email1_,
+        user0_.name as name1_,
+        user0_.password as password1_ 
+    from
+        USER user0_ 
+    where
+        user0_.id in (
+            ? , ? , ? , ?
+        )
 	 */
-	List<User> findByIdIn(List<Integer> ids);
+	@Test
+	public void testFindByIdIn(){
+		List<User> users = dao.findByIdIn(new ArrayList<Integer>(Arrays.asList(3,4,6,8)));
+		System.out.println(JSON.toJSONString(users));
+	}
 	
 	/**
-	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id not in ?1
+	 * select
+        user0_.id as id0_,
+        user0_.account as account0_,
+        user0_.email as email0_,
+        user0_.name as name0_,
+        user0_.password as password0_ 
+    from
+        USER user0_ 
+    where
+        user0_.id not in  (
+            ? , ? , ? , ?
+        )
 	 */
-	List<User> findByIdNotIn(List<Integer> ids);
+	@Test
+	public void testFindByIdNotIn(){
+		List<User> users = dao.findByIdNotIn(new ArrayList<Integer>(Arrays.asList(3,4,6,8)));
+		System.out.println(JSON.toJSONString(users));
+	}
 }
 
 ```
