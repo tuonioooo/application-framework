@@ -175,6 +175,12 @@ predicates.add(cb.equal(workManage2Join.<Integer> get("status"), Integer.parseIn
 
 root.join\("workManage2"\) 连接的是当前对象的关联属性对象，创建一个Join对象，就可以通过该join对象，通过查询条件，关联查询数据，具体使用，参考上面的作品分页查询代码
 
+关联实体类查询，就是关联Id查询
+
+```
+predicates.add(cb.equal(root.<WorkManage2> get("workManage2"), workManage2));//这种是关联属性Id查询
+```
+
 * 实现sql条件“or”的用法、"like"的用法
 
 ```
@@ -245,10 +251,4 @@ Pageable pageable = new PageRequest(vo.getCurrentPage(), vo.getSize(), sort);
 ```
 
 具体实现参考招标分页查询实现、项目分页查询实现
-
-
-
-
-
-
 
