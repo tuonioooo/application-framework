@@ -1,9 +1,5 @@
 # Jpa关联映射以及字段映射注解讲解
 
-参考：[https://blog.csdn.net/dragonpeng2008/article/details/52297426](https://blog.csdn.net/dragonpeng2008/article/details/52297426)
-
-
-
 ## 目录
 
 * [@Entity、@Table、@id](/jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/entity.md)
@@ -14,4 +10,6 @@
 * [@OneToMany、@ManyToOne级联配置](/jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/onetomanyji-lian-pei-zhi.md)
 * [更新的同时删除多的一方的旧数据](/jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/geng-xin-de-tong-shi-shan-chu-duo-de-yi-fang-de-jiu-shu-ju.md)
 * [cascade级联属性讲解](/jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/cascadeji-lian-shu-xing-jiang-jie.md)
+
+
 
