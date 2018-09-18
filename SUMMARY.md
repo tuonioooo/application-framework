@@ -99,6 +99,7 @@
     * [@MappedSuperclass、@Embedded、@OrderBy、@Lob、@Data](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/mappedsuperclassembeddedorderbylobdata.md)
     * [@OneToOne级联配置](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/onetooneji-lian.md)
     * [@OneToMany、@ManyToOne级联配置](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/onetomanyji-lian-pei-zhi.md)
+    * [更新的同时删除多的一方的旧数据](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/geng-xin-de-tong-shi-shan-chu-duo-de-yi-fang-de-jiu-shu-ju.md)
 * [Hibernate篇](hibernatepian.md)
   * [Hibernate基础教程](hibernatepian/hibernateji-chu-jiao-cheng.md)
   * [Hibernate的体系结构](hibernatepian/hibernatede-ti-xi-jie-gou.md)

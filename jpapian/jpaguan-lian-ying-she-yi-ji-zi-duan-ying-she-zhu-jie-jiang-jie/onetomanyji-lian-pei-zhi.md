@@ -439,7 +439,26 @@ public class MicroAppraisal {
 >
 > orphanRemoval = true：级联更新时同时删除旧的数据，同时需要在ManyToOne一方配置@ManyToOne\(cascade=CascadeType.PERSIST\) 方可生效，否则不会删除
 
-级联清空关联关系操作如下：
+
+
+```
+public class ApplyObject {
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="applyObject",orphanRemoval = true)
+    private List<ApplyObjectList> applyObjectObject;//物品列表
+}
+```
+
+```
+public class ApplyObjectList {
+    @JoinColumn(name="aoo_ao_id",nullable=false)
+    @ManyToOne(cascade=CascadeType.PERSIST,fetch=FetchType.LAZY)
+    private ApplyObject applyObject;//物品申请表
+}
+```
+
+> 关键的就是在OneToMany的一方加上`orphanRemoval = true`，这样在更新的时候这个集合原来的旧数据才会被删除再重新添加新数据。
+
+**级联清空关联关系操作如下：**
 
 ```
 public void updateAttributes(MicroForm microForm){
