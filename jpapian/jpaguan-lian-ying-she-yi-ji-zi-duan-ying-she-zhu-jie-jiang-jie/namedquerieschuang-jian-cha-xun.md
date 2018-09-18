@@ -8,7 +8,25 @@
 
 ```
 public interface FindUserByNamedQueryRepository extends JpaRepository<User, Integer> {
-	User findUserWithName(@Param("name") String name);
+    User findUserWithName(@Param("name") String name);
+}
+```
+
+
+
+```
+@Entity
+@NamedQueries(value={
+		@NamedQuery(name="User.findUserWithName",query="select u from User u where u.name = :name")
+})
+// 注意：此处如果是多个方法，那么需要使用@NamedQueries，如果只有一个方法，则可以使用@NamedQuery，写法如下：@NamedQuery(name="User.findUserWithName",query="select u from User u where u.name = :name")
+public class FindUserByNamedQuery {
+	/**
+	 * 注意：此处必须要给这个实体类定义一个唯一标识，否则会报异常
+	 */
+	@Id
+	@GeneratedValue
+	private Integer id;
 }
 
 ```
