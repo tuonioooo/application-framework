@@ -103,7 +103,6 @@ public class Order {
     private User user;
 
 }
-
 ```
 
 User实体类
@@ -137,7 +136,6 @@ public class User {
     private Integer age;
 
 }
-
 ```
 
 dao
@@ -175,7 +173,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
 }
-
 ```
 
 测试
@@ -199,46 +196,45 @@ import java.util.Optional;
 @SpringBootTest
 public class SpringbootJpaCascadeApplicationTests {
 
-	@Autowired
-	private OrderRepository orderRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Test
-	public void contextLoads() {
-	}
+    @Test
+    public void contextLoads() {
+    }
 
-	/**
-	 * @ManyToOne 单向关联测试
-	 */
-	@Test
-	public void cascadeSingle(){
+    /**
+     * @ManyToOne 单向关联测试
+     */
+    @Test
+    public void cascadeSingle(){
 
-		User user = new User();
-		user.setId(1l);
-		user.setAge(20);
-		user.setName("ALLEN");
-		userRepository.save(user);
+        User user = new User();
+        user.setId(1l);
+        user.setAge(20);
+        user.setName("ALLEN");
+        userRepository.save(user);
 
-		Order order = new Order(null,"袜子", user);
-		Order order2 = new Order(null,"裤子", user);
-		//保存
-		orderRepository.save(order);
-		orderRepository.save(order2);
+        Order order = new Order(null,"袜子", user);
+        Order order2 = new Order(null,"裤子", user);
+        //保存
+        orderRepository.save(order);
+        orderRepository.save(order2);
 
-		//获取
+        //获取
 
-		//getOne仅仅是通过代理获取并且仅仅是延迟加载策略
-		//findById两种策略都支持
-		Order getOrder = orderRepository.findById(order.getOrderId()).get();
-		System.out.println("getOrder.getOrderName() = " + getOrder.getOrderName());
-		System.out.println("getOrder.getUser().getName() = " + getOrder.getUser().getName());
+        //getOne仅仅是通过代理获取并且仅仅是延迟加载策略
+        //findById两种策略都支持
+        Order getOrder = orderRepository.findById(order.getOrderId()).get();
+        System.out.println("getOrder.getOrderName() = " + getOrder.getOrderName());
+        System.out.println("getOrder.getUser().getName() = " + getOrder.getUser().getName());
 
-	}
+    }
 
 }
-
 ```
 
 > 说明：
@@ -246,6 +242,8 @@ public class SpringbootJpaCascadeApplicationTests {
 > 单向关联的一方，必须配置其JoinColumn，指定关联字段，注意延迟加载和立即抓取策略的使用方式，代码里已经注释，
 >
 > 注意其实体类名不能与Mysql关键字冲突等问题MySQL server version for the right syntax to use near
+
+**@OneToMany单向关联配置**
 
 
 
