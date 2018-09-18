@@ -12,5 +12,11 @@ public interface TaskPlanRepository extends JpaRepository<TaskPlan, String>, Jpa
 }
 ```
 
-官方接口API：https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaSpecificationExecutor.html
+官方接口API：[https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaSpecificationExecutor.html](https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaSpecificationExecutor.html)
+
+
+
+## 复杂查询场景
+
+
 
