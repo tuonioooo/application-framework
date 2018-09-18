@@ -366,5 +366,103 @@ dao 参加上面
 >
 > 注意级联保存的使用方式，CascadeType.ALL，注意抓取策略的实现方式FetchType.EAGER、FetchType.Lazy
 
+## @OneToMany和@ManyToOne双向关联配置
+
+**oneToMany配置方**
+
+```
+@Table(name = "micro_page")
+@Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Log
+public class MicroPage {
+
+    /**  */
+    @Id
+    @GeneratedValue(generator = "uuidGenerator")
+    @GenericGenerator(name = "uuidGenerator", strategy = "uuid")
+    @Column(name = "ID")
+    private String id;
+    /**
+     * 作品编号
+     */
+    @Column(name = "WORK_NO")
+    private String workNo;
+    /**
+     * 最后修改人
+     */
+    @Column(name = "LAST_MODIFIER")
+    private String lastModifier;
+
+    @OneToMany(mappedBy = "microPage", cascade = {CascadeType.ALL}, orphanRemoval = true)//"orphanRemoval"级联更新时同时删除旧的数据
+    private List<MicroAppraisal> details = new ArrayList<MicroAppraisal>();
+```
+
+**manyToOne配置方**
+
+```
+@Table(name = "micro_appraisal")
+@Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class MicroAppraisal {
+
+    /**  */
+    @Id
+    @GeneratedValue(generator = "uuidGenerator")
+    @GenericGenerator(name = "uuidGenerator", strategy = "uuid")
+    @Column(name = "ID")
+    private String id;
+    /**
+     * 标点编号
+     */
+    @Column(name = "POINT_NO")
+    private String pointNo;
+    /**
+     * 页面编号/关联显微检测页面，PAGE_ID做完关联外键字段
+     */
+    @ManyToOne(cascade=CascadeType.PERSIST)//级联更新时同时删除旧的数据
+    @JoinColumn(name="PAGE_ID")
+    private MicroPage microPage;
+
+}
+```
+
+> 说明：
+>
+> 双向配置关联：@OneToMany一方配置相对简单，不需要配置关联字段，@manyToOne一方配置除了基本配置外，需要配置关联字段映射。
+>
+> orphanRemoval = true：级联更新时同时删除旧的数据，同时需要在ManyToOne一方配置@ManyToOne\(cascade=CascadeType.PERSIST\) 方可生效，否则不会删除
+
+级联清空关联关系操作如下：
+
+```
+public void updateAttributes(MicroForm microForm){
+        BeanUtilsHelper.copyProperties(this, microForm);
+        microForm.getMicroAppraisalForms().stream().forEach(microAppraisalForm -> {
+            MicroAppraisal microAppraisal = new MicroAppraisal();
+            BeanUtilsHelper.copyProperties(microAppraisal, microAppraisalForm);
+            this.clearDetail();
+            this.details.add(microAppraisal);
+            microAppraisal.setMicroPage(this);
+        });
+        this.updateTime = new Date();
+    }
+```
+
+```
+private void clearDetail(){
+        this.details.stream().forEach(microAppraisal -> {
+            microAppraisal.setMicroPage(null);
+        });
+        this.details.clear();
+    }
+```
+
 
 
