@@ -1,8 +1,6 @@
 # cascade级联属性讲解
 
-
-
-cascade=CascadeType.PERSIST
+CascadeType.PERSIST
 
 级联保存操作，当前实体保存时，级联保存另一个实体
 
@@ -33,6 +31,4 @@ Cascade refresh operation，级联刷新操作。
 CascadeType.ALL
 
 Cascade all operations，清晰明确，拥有以上所有级联操作权限。
-
-
 
