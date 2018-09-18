@@ -217,12 +217,30 @@ root.join\("workManage2"\) 连接的是当前对象的关联属性对象，创�
 
 ```
 if (StringUtils.isNotBlank(inviteBidManage.getCondition())) {
-                    Predicate projectNamePredicate = cb.like(root.<String> get("projectName"), "%" + inviteBidManage.getCondition() + "%");
-                    Predicate projectCodePredicate = cb.like(root.<String> get("projectCode"), "%" + inviteBidManage.getCondition() + "%");
-                    predicates.add(cb.or(projectNamePredicate, projectCodePredicate));
-                }
+       Predicate projectNamePredicate = cb.like(root.<String> get("projectName"), "%" + inviteBidManage.getCondition() + "%");
+       Predicate projectCodePredicate = cb.like(root.<String> get("projectCode"), "%" + inviteBidManage.getCondition() + "%");
+       predicates.add(cb.or(projectNamePredicate, projectCodePredicate));
+}
+```
+
+具体实现参考招标分页查询实现
+
+* 排序用法
 
 ```
+query.orderBy(cb.desc(root.<String> get("createdAt")));
+```
+
+上面的是通过CriteriaBuilder实现排序，也可以通过Pageable的方式实现
+
+```
+Sort sort = new Sort(Sort.Direction.DESC, "createTime").and(new Sort(Sort.Direction.DESC, "code"));
+Pageable pageable = new PageRequest(vo.getCurrentPage(), vo.getSize(), sort);
+```
+
+具体实现参考招标分页查询实现、项目分页查询实现
+
+
 
 
 
