@@ -12,13 +12,26 @@ public interface TaskPlanRepository extends JpaRepository<TaskPlan, String>, Jpa
 }
 ```
 
-官方接口API：[https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaSpecificationExecutor.html](https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaSpecificationExecutor.html) 
-
-
+官方接口API：[https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaSpecificationExecutor.html](https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaSpecificationExecutor.html)
 
 ## 简单查询场景
 
+```
+/**
+	 * 描述：根据name来查询用户
+	 */
+	public User findUserByName(final String name){
+		return dao.findOne(new Specification<User>() {
+			
+			@Override
+			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query,
+					CriteriaBuilder cb) {
+				Predicate predicate = cb.equal(root.get("name"), name);
+				return predicate;
+			}
+		});
 
+```
 
 ## 复杂查询场景
 
@@ -257,10 +270,4 @@ Pageable pageable = new PageRequest(vo.getCurrentPage(), vo.getSize(), sort);
 ```
 
 具体实现参考招标分页查询实现、项目分页查询实现
-
-
-
-
-
-
 
