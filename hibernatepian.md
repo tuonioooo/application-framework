@@ -3,6 +3,7 @@
 ## 目录
 
 * [Hibernate基础教程](/hibernatepian/hibernateji-chu-jiao-cheng.md)
+* [Hibernate主键生成策略](/hibernatepian/hibernatezhu-jian-sheng-cheng-ce-lve.md)
 * [Hibernate的体系结构](/hibernatepian/hibernatede-ti-xi-jie-gou.md)
 * [Hibernate面试题](/hibernatepian/hibernatemian-shi-ti.md)
 * [自定义一个方言类——Hibernate Dialect](/hibernatepian/zi-ding-yi-yi-ge-fang-yan-lei-2014-2014-hibernate-dialect.md)
