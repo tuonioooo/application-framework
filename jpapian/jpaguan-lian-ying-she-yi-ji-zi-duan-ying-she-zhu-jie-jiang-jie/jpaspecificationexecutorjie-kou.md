@@ -19,7 +19,6 @@ public interface TaskPlanRepository extends JpaRepository<TaskPlan, String>, Jpa
 * **分页查询**
 
 ```
-
 /***
 * 项目分页查询
 */
@@ -158,7 +157,7 @@ where (
             workmanage0_.TYPE in (
                 1 , 2
             )
-        ) 
+        )
 ```
 
 * 关联查询的用法
@@ -171,6 +170,48 @@ predicates.add(cb.equal(workManage2Join.<Integer> get("status"), Integer.parseIn
 root.join\("workManage2"\) 连接的是当前对象的关联属性对象，创建一个Join对象，就可以通过该join对象，通过查询条件，关联查询数据，具体使用，参考上面的作品分页查询代码
 
 * 实现sql条件“or”的用法
+
+```
+/**
+	 * 分页查询招标管理信息(用于后台)
+	 * @param pageable
+	 * @return
+	 */
+	public Page<InviteBidManage> listForPage(final InviteBidManage inviteBidManage, Pageable pageable) {
+		return inviteBidManageDao.findAll(new Specification<InviteBidManage>() {
+
+			@Override
+			public Predicate toPredicate(Root<InviteBidManage> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				List<Predicate> predicates = new ArrayList<Predicate>();
+				if (inviteBidManage == null) {
+					return cb.conjunction();
+				}
+				if (StringUtils.isNotBlank(inviteBidManage.getCondition())) {
+					Predicate projectNamePredicate = cb.like(root.<String> get("projectName"), "%" + inviteBidManage.getCondition() + "%");
+					Predicate projectCodePredicate = cb.like(root.<String> get("projectCode"), "%" + inviteBidManage.getCondition() + "%");
+					predicates.add(cb.or(projectNamePredicate, projectCodePredicate));
+				}
+				if (StringUtils.isNotBlank(inviteBidManage.getProperty())) {
+					predicates.add(cb.equal(root.<String> get("property"), inviteBidManage.getProperty()));
+				}
+				if (StringUtils.isNotBlank(inviteBidManage.getSource())) {
+					predicates.add(cb.equal(root.<String> get("source"), inviteBidManage.getSource()));
+				}
+				if (inviteBidManage.getState() != null && inviteBidManage.getState() != -1) {
+					predicates.add(cb.equal(root.<Integer> get("state"), inviteBidManage.getState()));
+				}
+
+				query.orderBy(cb.desc(root.<String> get("createdAt")));
+
+				if (!predicates.isEmpty()) {
+					return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+				} else {
+					return cb.conjunction();
+				}
+			}
+		}, pageable);
+	}
+```
 
 
 
