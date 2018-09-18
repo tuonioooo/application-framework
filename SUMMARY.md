@@ -103,6 +103,7 @@
     * [cascade级联属性讲解](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/cascadeji-lian-shu-xing-jiang-jie.md)
     * [JpaSpecificationExecutor接口](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/jpaspecificationexecutorjie-kou.md)
     * [@Query 创建查询](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/query-chuang-jian-cha-xun.md)
+    * [@NamedQueries创建查询](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/namedquerieschuang-jian-cha-xun.md)
 * [Hibernate篇](hibernatepian.md)
   * [Hibernate基础教程](hibernatepian/hibernateji-chu-jiao-cheng.md)
   * [Hibernate主键生成策略](hibernatepian/hibernatezhu-jian-sheng-cheng-ce-lve.md)
