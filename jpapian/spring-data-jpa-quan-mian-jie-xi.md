@@ -14,7 +14,7 @@
 
 JPA \(Java Persistence API\)
 
- 是 Sun 官方提出的 Java 持久化规范。它为 Java 开发人员提供了一种对象/关联映射工具来管理 Java 应用中的关系数据。他的出现主要是为了简化现有的持久化开发工作和整合 ORM 技术，结束现在 Hibernate，TopLink，JDO 等 ORM 框架各自为营的局面。值得注意的是，JPA 是在充分吸收了现有 Hibernate，TopLink，JDO 等ORM框架的基础上发展而来的，具有易于使用，伸缩性强等优点。从目前的开发社区的反应上看，JPA 受到了极大的支持和赞扬，其中就包括了 Spring 与 EJB3.0 的开发团队。
+是 Sun 官方提出的 Java 持久化规范。它为 Java 开发人员提供了一种对象/关联映射工具来管理 Java 应用中的关系数据。他的出现主要是为了简化现有的持久化开发工作和整合 ORM 技术，结束现在 Hibernate，TopLink，JDO 等 ORM 框架各自为营的局面。值得注意的是，JPA 是在充分吸收了现有 Hibernate，TopLink，JDO 等ORM框架的基础上发展而来的，具有易于使用，伸缩性强等优点。从目前的开发社区的反应上看，JPA 受到了极大的支持和赞扬，其中就包括了 Spring 与 EJB3.0 的开发团队。
 
 > 注意:JPA 是一套规范，不是一套产品，那么像 Hibernate，TopLink，JDO 他们是一套产品，如果说这些产品实现了这个 JPA 规范，那么我们就可以叫他们为 JPA 的实现产品。
 
@@ -22,7 +22,7 @@ JPA \(Java Persistence API\)
 
 Spring Data JPA
 
- 是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套 JPA 应用框架，底层使用了 Hibernate 的 JPA 技术实现，可使开发者用极简的代码即可实现对数据的访问和操作。它提供了包括增删改查等在内的常用功能，且易于扩展！学习并使用 Spring Data JPA 可以极大提高开发效率！
+是 Spring 基于 ORM 框架、JPA 规范的基础上封装的一套 JPA 应用框架，底层使用了 Hibernate 的 JPA 技术实现，可使开发者用极简的代码即可实现对数据的访问和操作。它提供了包括增删改查等在内的常用功能，且易于扩展！学习并使用 Spring Data JPA 可以极大提高开发效率！
 
 > spring data jpa 让我们解脱了 DAO 层的操作，基本上所有 CRUD 都可以依赖于它来实现
 
@@ -156,31 +156,31 @@ return new SingleEntityExecution();
 
 如上述代码所示，根据method变量实例化时的查询设置方式，实例化不同的JpaQueryExecution子类实例去运行。我们的
 
-findByUserName最终落入了SingleEntityExecution —— 返回单个实例的 Execution。继续跟踪execute方法，发现底层使用了 hibernate 的 CriteriaQueryImpl 完成了sql的拼装，这里就不做赘述了。
+findByUserName最终落入了SingleEntityExecution —— 返回单个实例的 Execution。继续跟踪execute方法，发现底层使用了 hibernate 的 CriteriaQueryImpl 完成了sql的拼装，这里就不做赘述了。
 
 再来看看这类的method。在 spring-data-jpa 中，JpaQueryMethod就是Repository接口中带有@Query注解方法的全部信息，包括注解，类名，实参等的存储类，所以Repository接口有多少个@Query注解方法，就会包含多少个JpaQueryMethod实例被加入监听序列。实际运行时，一个RepositoryQuery实例持有一个JpaQueryMethod实例，JpaQueryMethod又持有一个Method实例。
 
 再来看看RepositoryQuery，在QueryExecutorMethodInterceptor中维护了一个Map&lt;Method, RepositoryQuery&gt; queries。RepositoryQuery的直接抽象子类是AbstractJpaQuery，可以看到，一个RepositoryQuery实例持有一个JpaQueryMethod实例，JpaQueryMethod又持有一个Method实例，所以RepositoryQuery实例的用途很明显，一个RepositoryQuery代表了Repository接口中的一个方法，根据方法头上注解不同的形态，将每个Repository接口中的方法分别映射成相对应的RepositoryQuery实例。
 
-下面我们就来看看spring-data-jpa对RepositoryQuery实例的具体分类： 
+下面我们就来看看spring-data-jpa对RepositoryQuery实例的具体分类：
 
-1.SimpleJpaQuery 
+1.SimpleJpaQuery
 
 方法头上@Query注解的nativeQuery属性缺省值为false，也就是使用JPQL，此时会创建SimpleJpaQuery实例，并通过两个StringQuery类实例分别持有query jpql语句和根据query jpql计算拼接出来的countQuery jpql语句；
 
-2.NativeJpaQuery 
+2.NativeJpaQuery
 
 方法头上@Query注解的nativeQuery属性如果显式的设置为nativeQuery=true，也就是使用原生SQL，此时就会创建NativeJpaQuery实例；
 
-3.PartTreeJpaQuery 
+3.PartTreeJpaQuery
 
 方法头上未进行@Query注解，将使用spring-data-jpa独创的方法名识别的方式进行sql语句拼接，此时在spring-data-jpa内部就会创建一个PartTreeJpaQuery实例；
 
-4.NamedQuery 
+4.NamedQuery
 
 使用javax.persistence.NamedQuery注解访问数据库的形式，此时在spring-data-jpa内部就会根据此注解选择创建一个NamedQuery实例；
 
-5.StoredProcedureJpaQuery 
+5.StoredProcedureJpaQuery
 
 顾名思义，在Repository接口的方法头上使用org.springframework.data.jpa.repository.query.Procedure注解，也就是调用存储过程的方式访问数据库，此时在spring-data-jpa内部就会根据@Procedure注解而选择创建一个StoredProcedureJpaQuery实例。
 
@@ -194,9 +194,9 @@ org.springframework.data.repository.Repositor
 
 的接口，然后遍历这些接口，针对每个接口依次创建如下几个实例:
 
-1. SimpleJpaRespositry —— 用来进行默认的 DAO 操作，是所有 Repository 的默认实现
-2. JpaRepositoryFactoryBean —— 装配 bean，装载了动态代理 Proxy，会以对应的 DAO 的 beanName 为 key 注册到DefaultListableBeanFactory中，在需要被注入的时候从这个 bean 中取出对应的动态代理 Proxy 注入给 DAO
-3. JdkDynamicAopProxy —— 动态代理对应的InvocationHandler，负责拦截 DAO 接口的所有的方法调用，然后做相应处理，比如findByUsername被调用的时候会先经过这个类的 invoke 方法
+1. SimpleJpaRespositry —— 用来进行默认的 DAO 操作，是所有 Repository 的默认实现
+2. JpaRepositoryFactoryBean —— 装配 bean，装载了动态代理 Proxy，会以对应的 DAO 的 beanName 为 key 注册到DefaultListableBeanFactory中，在需要被注入的时候从这个 bean 中取出对应的动态代理 Proxy 注入给 DAO
+3. JdkDynamicAopProxy —— 动态代理对应的InvocationHandler，负责拦截 DAO 接口的所有的方法调用，然后做相应处理，比如findByUsername被调用的时候会先经过这个类的 invoke 方法
 
 在JpaRepositoryFactoryBean.getRepository\(\)方法被调用的过程中，还是在实例化QueryExecutorMethodInterceptor这个拦截器的时候，spring 会去为我们的方法创建一个PartTreeJpaQuery，在它的构造方法中同时会实例化一个PartTree对象。PartTree定义了一系列的正则表达式，全部用于截取方法名，通过方法名来分解查询的条件，排序方式，查询结果等等，这个分解的步骤是在进程启动时加载 Bean 的过程中进行的，当执行查询的时候直接取方法对应的PartTree用来进行 sql 的拼装，然后进行 DB 的查询，返回结果。
 
