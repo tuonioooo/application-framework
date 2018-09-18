@@ -36,19 +36,98 @@ public class FindUserByNamedQuery {
 @TransactionConfiguration(defaultRollback = false)
 @Transactional
 public class FindUserByNamedQueryRepositoryTest {
-	@Autowired
-	private FindUserByNamedQueryRepository dao;
+    @Autowired
+    private FindUserByNamedQueryRepository dao;
+
+    @Test
+    public void testFindUserByName(){
+        User user = dao.findUserWithName("caican");
+        System.out.println(JSON.toJSONString(user));
+    }
+}
+```
+
+通过解析方法名创建查询。顾名思义，就是根据方法的名字，就能创建查询，也许初听起来，感觉很不可思议，等测试后才发现，原来一切皆有可能。
+
+接口实现
+
+```
+public interface SimpleConditionQueryRepository extends JpaRepository<User, Integer> {
+	/**
+	 * 说明：按照Spring data 定义的规则，查询方法以find|read|get开头
+     * 涉及条件查询时，条件的属性用条件关键字连接，要注意的是：条件属性首字母需大写
+	 */
 	
-	@Test
-	public void testFindUserByName(){
-		User user = dao.findUserWithName("caican");
-		System.out.println(JSON.toJSONString(user));
-	}
+	
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name = :name and u.email = :email
+	 * 参数名大写，条件名首字母大写，并且接口名中参数出现的顺序必须和参数列表中的参数顺序一致
+	 */
+	User findByNameAndEmail(String name, String email);
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name = ?1 or u.password = ?2
+	 */
+	List<User> findByNameOrPassword(String name, String password);
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id between ?1 and ?2
+	 */
+	List<User> findByIdBetween(Integer start, Integer end);
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id < ?1
+	 */
+	List<User> findByIdLessThan(Integer end);
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id > ?1
+	 */
+	List<User> findByIdGreaterThan(Integer start);
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name is null
+	 */
+	List<User> findByNameIsNull();
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name is not null
+	 */
+	List<User> findByNameIsNotNull();
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name like ?1
+	 */
+	List<User> findByNameLike(String name);
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name not like ?1
+	 */
+	List<User> findByNameNotLike(String name);
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.password = ?1 order by u.id desc
+	 */
+	List<User> findByPasswordOrderByIdDesc(String password);
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.name <> ?1
+	 */
+	List<User> findByNameNot(String name);
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id in ?1
+	 */
+	List<User> findByIdIn(List<Integer> ids);
+	
+	/**
+	 * 注：此处这个接口相当于发送了一条SQL:select u from User u where u.id not in ?1
+	 */
+	List<User> findByIdNotIn(List<Integer> ids);
 }
 
 ```
 
-通过解析方法名创建查询
 
-顾名思义，就是根据方法的名字，就能创建查询，也许初听起来，感觉很不可思议，等测试后才发现，原来一切皆有可能。
 
