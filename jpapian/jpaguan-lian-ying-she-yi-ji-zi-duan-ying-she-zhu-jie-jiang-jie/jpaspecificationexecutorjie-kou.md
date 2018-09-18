@@ -79,6 +79,12 @@ Predicate predicate = cb.equal(root.<String> get("state"), TaskPlan.STATE_TP.sta
 
 equal的用法，详细参考上面的项目分页代码
 
+同样的不要忘记notEqual方法
+
+```
+predicates.add(cb.notEqual(root.<String> get("status"), ProcurementInformationEnum.INIT.value));
+```
+
 * 实现sql条件“in”的用法
 
 ```
@@ -239,6 +245,8 @@ Pageable pageable = new PageRequest(vo.getCurrentPage(), vo.getSize(), sort);
 ```
 
 具体实现参考招标分页查询实现、项目分页查询实现
+
+
 
 
 
