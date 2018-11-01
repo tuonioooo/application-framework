@@ -13,5 +13,17 @@
 | [Integration](https://docs.spring.io/spring/docs/5.1.2.RELEASE/spring-framework-reference/integration.html#spring-integration)（集成） | Remoting, JMS, JCA, JMX, Email, Tasks, Scheduling, Cache. |
 | [Languages](https://docs.spring.io/spring/docs/5.1.2.RELEASE/spring-framework-reference/languages.html#languages)（语言） | Kotlin, Groovy, Dynamic languages. |
 
+结构细化如下：
+
+| spring-aop | aop 原理及源码剖析 |
+| :--- | :--- |
+| spring-aspects |  |
+| spring-beans | cores的核心bean组件 |
+| spring-context-indexer | cores的核心context组件 |
+| spring-context-support | cores的核心context组件 |
+| spring-context | cores的核心context组件 |
+| spring-core | cores的核心组件 |
+|  |  |
+
 
 
