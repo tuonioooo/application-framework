@@ -32,6 +32,7 @@
 | spring-messaging | data access的消息组件 |
 | spring-orm | data access对象关系映射组件 |
 | spring-oxm | data access对象与xml关系映射组件 |
+| spring-test | 测试类组件 |
 
 
 
