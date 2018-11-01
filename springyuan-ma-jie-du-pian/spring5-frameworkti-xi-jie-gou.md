@@ -29,6 +29,8 @@
 | spring-jcl | 日志框架组件 |
 | spring-jdbc | data access的数据持久层组件 |
 | spring-jms | data access的消息服务组件 |
+| spring-messaging |  |
+| spring-orm | data access对象关系映射组件 |
 
 
 
