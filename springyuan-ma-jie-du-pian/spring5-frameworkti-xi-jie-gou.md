@@ -24,7 +24,7 @@
 | spring-context | cores的核心context组件 |
 | spring-core | cores的核心组件 |
 | spring-expression | cores的核心表达式组件 |
-| spring-framework-bom |  |
+| spring-framework-bom | 解决项目jar版本冲突的问题，最核心的三个是：spring-framework-bom、spring-boot-dependencies、platform-bom |
 | spring-instrument | Springframework结构设计组件 |
 | spring-jcl | 日志框架组件 |
 | spring-jdbc | data access的数据持久层组件 |
