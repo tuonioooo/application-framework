@@ -31,7 +31,7 @@
 | spring-jms | data access的消息服务组件 |
 | spring-messaging | data access的消息组件 |
 | spring-orm | data access对象关系映射组件 |
-|  |  |
+| spring-oxm | data access对象与xml关系映射组件 |
 
 
 
