@@ -27,8 +27,8 @@
 | spring-framework-bom |  |
 | spring-instrument | Springframework结构设计组件 |
 | spring-jcl | 日志框架组件 |
-| spring-jdbc | data access的组件 |
-| spring-jms |  |
+| spring-jdbc | data access的数据持久层组件 |
+| spring-jms | data access的消息服务组件 |
 
 
 
