@@ -17,7 +17,7 @@
 
 | spring-aop | aop 原理及源码剖析 |
 | :--- | :--- |
-| spring-aspects |  |
+| spring-aspects | aop 切面编程的依赖包 |
 | spring-beans | cores的核心bean组件 |
 | spring-context-indexer | cores的核心context组件 |
 | spring-context-support | cores的核心context组件 |
