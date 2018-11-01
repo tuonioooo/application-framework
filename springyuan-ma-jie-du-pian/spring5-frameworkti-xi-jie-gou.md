@@ -37,6 +37,7 @@
 | spring-web | WEB 组件 |
 | spring-webflux | WEB webflux组件 |
 | spring-webmvc | WEB springmvc组件 |
+| spring-websocket | WEB socket组件 |
 
 
 
