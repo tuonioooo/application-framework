@@ -84,7 +84,6 @@
     * [web.xml 中的listener、 filter、servlet 加载顺序及其详解](springyuan-ma-jie-du-pian/webxml-zhong-de-listener-filter-servlet-jia-zai-shun-xu-ji-qi-xiang-jie.md)
     * [Spring中WebApplicationContext、DispatcherServlet与web容器的ServletContext关系梳理](springyuan-ma-jie-du-pian/springzhong-webapplicationcontext-dispatcherservlet-yu-web-rong-qi-de-servletcontext-guan-xi-shu-li.md)
   * [Spring新版本特性解读](springyuan-ma-jie-du-pian/springxin-ban-ben-te-xing-jie-du.md)
-  * [Spring5 Framework体系结构](springyuan-ma-jie-du-pian/spring5-frameworkti-xi-jie-gou.md)
 * [JPA篇](jpapian.md)
   * [简单叙述](jpapian/gai-shu.md)
   * [基础教程](jpapian/ji-chu-gai-nian.md)
