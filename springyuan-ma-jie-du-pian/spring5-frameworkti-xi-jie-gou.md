@@ -26,7 +26,9 @@
 | spring-expression | cores的核心表达式组件 |
 | spring-framework-bom |  |
 | spring-instrument | Springframework结构设计组件 |
-|  |  |
+| spring-jcl | 日志框架组件 |
+| spring-jdbc | data access的组件 |
+| spring-jms |  |
 
 
 
