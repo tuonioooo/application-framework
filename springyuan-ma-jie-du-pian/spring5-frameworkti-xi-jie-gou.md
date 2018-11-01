@@ -36,6 +36,7 @@
 | spring-tx | data access的事务处理组件 |
 | spring-web | WEB 组件 |
 | spring-webflux | WEB webflux组件 |
+| spring-webmvc | WEB webmvc组件 |
 
 
 
