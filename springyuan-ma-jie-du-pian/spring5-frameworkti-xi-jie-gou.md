@@ -33,7 +33,9 @@
 | spring-orm | data access对象关系映射组件 |
 | spring-oxm | data access对象与xml关系映射组件 |
 | spring-test | 测试类组件 |
-| spring-tx | 事务处理组件 |
+| spring-tx | data access的事务处理组件 |
+| spring-web | WEB 组件 |
+| spring-webflux | WEB webflux组件 |
 
 
 
