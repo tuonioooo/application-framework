@@ -65,19 +65,27 @@
 
 找工作的时候有些人会被问道Spring中Bean的生命周期，其实也就是考察一下对Spring是否熟悉，工作中很少用到其中的内容，那我们简单看一下。
 
-```
 在说明前可以思考一下Servlet的生命周期：实例化，初始init，接收请求service，销毁destroy；
+
+
 
 Spring上下文中的Bean也类似，如下
 
+
+
 1、实例化一个Bean－－也就是我们常说的new；
+
+
 
 2、按照Spring上下文对实例化的Bean进行配置－－也就是IOC注入；
 
-3、如果这个Bean已经实现了BeanNameAware接口，会调用它实现的setBeanName\(String\)方法，此处传递的就是Spring配置文件中Bean的id值
 
-4、如果这个Bean已经实现了BeanFactoryAware接口，会调用它实现的setBeanFactory\(setBeanFactory\(BeanFactory\)传递的是Spring工厂自身（可以用这个方式来获取其它Bean，只需在Spring配置文件中配置一个普通的Bean就可以）；
-```
+
+3、如果这个Bean已经实现了BeanNameAware接口，会调用它实现的setBeanName\\(String\\)方法，此处传递的就是Spring配置文件中Bean的id值
+
+
+
+4、如果这个Bean已经实现了BeanFactoryAware接口，会调用它实现的setBeanFactory\\(setBeanFactory\\(BeanFactory\\)传递的是Spring工厂自身（可以用这个方式来获取其它Bean，只需在Spring配置文件中配置一个普通的Bean就可以）；
 
 5、如果这个Bean已经实现了ApplicationContextAware接口，会调用setApplicationContext\(ApplicationContext\)方法，传入Spring上下文（同样这个方式也可以实现步骤4的内容，但比4更好，因为ApplicationContext是BeanFactory的子接口，有更多的实现方法）；
 
