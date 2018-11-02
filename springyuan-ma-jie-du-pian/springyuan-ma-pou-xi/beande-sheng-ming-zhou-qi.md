@@ -81,25 +81,81 @@ Spring上下文中的Bean也类似，如下
 
 6、如果这个Bean关联了BeanPostProcessor接口，将会调用postProcessBeforeInitialization\\(Object obj, String s\\)方法，BeanPostProcessor经常被用作是Bean内容的更改，并且由于这个是在Bean初始化结束时调用那个的方法，也可以被应用于内存或缓存技术；
 
-
-
 7、如果Bean在Spring配置文件中配置了init-method属性会自动调用其配置的初始化方法。
-
-
 
 8、如果这个Bean关联了BeanPostProcessor接口，将会调用postProcessAfterInitialization\\(Object obj, String s\\)方法、；
 
-
-
 注：以上工作完成以后就可以应用这个Bean了，那这个Bean是一个Singleton的，所以一般情况下我们调用同一个id的Bean会是在内容地址相同的实例，当然在Spring配置文件中也可以配置非Singleton，这里我们不做赘述。
-
-
 
 9、当Bean不再需要时，会经过清理阶段，如果Bean实现了DisposableBean这个接口，会调用那个其实现的destroy\\(\\)方法；
 
-
-
 10、最后，如果这个Bean的Spring配置中配置了destroy-method属性，会自动调用其配置的销毁方法。
+
+---
+
+
+
+这Spring框架中，一旦把一个bean纳入到Spring IoC容器之中，这个bean的生命周期就会交由容器进行管理，一般担当管理者角色的是BeanFactory或ApplicationContext。认识一下Bean的生命周期活动，对更好的利用它有很大的帮助。
+
+    下面以BeanFactory为例，说明一个Bean的生命周期活动：
+
+* **Bean的建立**
+
+由BeanFactory读取Bean定义文件，并生成各个实例。
+
+* **Setter注入**
+
+执行Bean的属性依赖注入。
+
+* **BeanNameAware的setBeanName\(\)**
+
+      如果Bean类实现了org.springframework.beans.factory.BeanNameAware接口，则执行其setBeanName\(\)方法。
+
+* **BeanFactoryAware的setBeanFactory\(\)**
+
+      如果Bean类实现了org.springframework.beans.factory.BeanFactoryAware接口，则执行其setBeanFactory\(\)方法。
+
+* **BeanPostProcessors的processBeforeInitialization\(\)**
+
+      容器中如果有实现org.springframework.beans.factory.BeanPostProcessors接口的实例，则任何Bean在初始化之前都会执行这个实例的processBeforeInitialization\(\)方法。
+
+* **InitializingBean的afterPropertiesSet\(\)**
+
+      如果Bean类实现了org.springframework.beans.factory.InitializingBean接口，则执行其afterPropertiesSet\(\)方法。
+
+* Bean定义文件中定义init-method
+
+在Bean定义文件中使用“init-method”属性设定方法名称，如下：
+
+| &lt;bean id="demoBean" class="com.yangsq.bean.DemoBean" init-method="initMethod"&gt;   ....... &lt;/bean&gt; |
+| :--- |
+
+
+      这时会执行initMethod\(\)方法，注意，这个方法是不带参数的。
+
+* **BeanPostProcessors的processAfterInitialization\(\)**
+
+      容器中如果有实现org.springframework.beans.factory.BeanPostProcessors接口的实例，则任何Bean在初始化之前都会执行这个实例的processAfterInitialization\(\)方法。
+
+* **DisposableBean的destroy\(\)**
+
+      在容器关闭时，如果Bean类实现了org.springframework.beans.factory.DisposableBean接口，则执行它的destroy\(\)方法。
+
+* **Bean定义文件中定义destroy-method**
+
+在容器关闭时，可以在Bean定义文件中使用“destory-method”定义的方法
+
+| &lt;bean id="demoBean" class="com.yangsq.bean.DemoBean" destory-method="destroyMethod"&gt;   ....... &lt;/bean&gt; |
+| :--- |
+
+
+       这时会执行destroyMethod\(\)方法，注意，这个方法是不带参数的。
+
+   以上就是BeanFactory维护的一个Bean的生命周期。下面这个图可能更直观一些：
+
+![](https://images0.cnblogs.com/blog2015/685971/201507/161744300481894.jpg)
+
+   如果使用ApplicationContext来维护一个Bean的生命周期，则基本上与上边的流程相同，只不过在执行BeanNameAware的setBeanName\(\)后，若有Bean类实现了org.springframework.context.ApplicationContextAware接口，则执行其setApplicationContext\(\)方法，然后再进行BeanPostProcessors的processBeforeInitialization\(\)
 
 
 
