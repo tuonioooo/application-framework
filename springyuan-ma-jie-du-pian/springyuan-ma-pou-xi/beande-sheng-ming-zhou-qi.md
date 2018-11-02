@@ -1,6 +1,8 @@
 # Bean的生命周期
 
-### **图1**![](/assets/import-springbean-01.png)**图2与上图类似，bean的生命周期流程图**：
+### **图1**![](/assets/import-springbean-01.png)
+
+### **图2与上图类似，bean的生命周期流程图**：
 
 ![](/assets/import-springbean-02.png)
 
