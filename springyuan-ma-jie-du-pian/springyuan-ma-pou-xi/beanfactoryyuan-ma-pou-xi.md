@@ -634,11 +634,16 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
     Object resolveDependency(DependencyDescriptor descriptor, String requestingBeanName,
             Set<String> autowiredBeanNames, TypeConverter typeConverter) throws BeansException;
 }
---------------------- 
-作者：不要败给了时间 
-来源：CSDN 
-原文：https://blog.csdn.net/weixin_39165515/article/details/77096774 
-版权声明：本文为博主原创文章，转载请附上博文链接！
+```
+
+**SimpleJndiBeanFactory**
+
+SimpleJndiBeanFactory是spring beanFactory接口的基于jndi的简单实现。不支持枚举bean定义，故不需要实现ListableBeanFactory接口。这个bean工厂可以解析制定名称的jndi名称，在J2EE应用中，jndi名称的命名空间为"java:/comp/env/".
+
+这个bean工厂主要和spring的CommonAnnotationBeanPostProcessor 联合使用。
+
+```
+The main intent of this factory is usage in combination with Spring's CommonAnnotationBeanPostProcessor, configured as "resourceFactory" for resolving @Resource annotations as JNDI objects without intermediate bean definitions. It may be used for similar lookup scenarios as well, of course, in particular if BeanFactory-style type checking is required.
 ```
 
 
