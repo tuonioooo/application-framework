@@ -13,6 +13,7 @@
 * [@Configuration源码讲解](/springbootpian/configurationyuan-ma-jiang-jie.md)
 * [Bean的注解\(annotation\)](/springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/beande-zhu-89e328-annotation.md)
 * [@ImportSelector、@Import、ImportResource工作原理分析](/springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/importselectorimportimportresourcegong-zuo-yuan-li-fen-xi.md)
+* [Bean的生命周期](/springyuan-ma-jie-du-pian/springyuan-ma-pou-xi/beande-sheng-ming-zhou-qi.md)
 
 
 
