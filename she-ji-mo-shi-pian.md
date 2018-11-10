@@ -8,6 +8,7 @@
 * [策略模式](/she-ji-mo-shi-pian/ce-lve-mo-shi.md)
 * [等等..设计模式](/she-ji-mo-shi-pian/qi-ta-xian-guan-de-she-ji-mo-shi.md)
 * [常用设计模式在开源软件的应用](/she-ji-mo-shi-pian/chang-yong-she-ji-mo-shi-zai-kai-yuan-ruan-jian-de-ying-yong.md)
+* [Template设计模式介绍](/she-ji-mo-shi-pian/templateshe-ji-mo-shi-jie-shao.md)
 
 ## 参考文档：
 
