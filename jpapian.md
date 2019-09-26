@@ -10,6 +10,7 @@
 * [数据库schema含义](/jpapian/shu-ju-ku-schema-han-yi.md)
 * [数据库schema与catalog简介](/jpapian/shu-ju-ku-schema-yu-catalog-jian-jie.md)
 * [Jpa关联映射以及字段映射注解讲解](/jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie.md)
+* [Jpa 使用@Query查询时 （参数可能为空）语句](/jpapian/jpa-shi-7528-query-cha-xun-shi-ff08-can-shu-ke-neng-wei-kong-ff09-yu-ju.md)
 
 
 
