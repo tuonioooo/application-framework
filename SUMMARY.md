@@ -107,7 +107,7 @@
     * [JpaSpecificationExecutor接口](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/jpaspecificationexecutorjie-kou.md)
     * [@Query 创建查询](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/query-chuang-jian-cha-xun.md)
     * [@NamedQueries创建查询](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/namedquerieschuang-jian-cha-xun.md)
-    * [@CreateDate @LastModifiedDate @EntityListeners\(AuditingEntityListener.class\)](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/createdate-lastmodifieddate-entitylistenersauditingentitylistenerclass.md)
+    * [@CreateDate @LastModifiedDate @EntityListeners、@SQLDelete、@Where](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/createdate-lastmodifieddate-entitylistenersauditingentitylistenerclass.md)
     * [注解关联时报错总结](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/zhu-jie-guan-lian-shi-bao-cuo-zong-jie.md)
 * [Hibernate篇](hibernatepian.md)
   * [Hibernate基础教程](hibernatepian/hibernateji-chu-jiao-cheng.md)
