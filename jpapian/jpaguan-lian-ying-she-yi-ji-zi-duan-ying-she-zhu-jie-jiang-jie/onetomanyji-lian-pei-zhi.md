@@ -464,5 +464,48 @@ private void clearDetail(){
     }
 ```
 
+**@OneToMany、@ManyToOne做双向关联时，如何避免产生中间表自动生成**
+
+使用JPA的时候，如果A B两个实体间是一对多，多对一的关系双向配置时，**如果不在**@OneToMany里加入mappedBy属性会导致自动生成一个多余的中间表，上面的双向关联配置是最佳配置
+
+> 在进行双向一对多的关联关系时，建议使用多的一方来维护关联关系，而1的一方不维护关联关系，这样会有效的减少sql语句
+>
+> 注意：若在一的一端@oneToMany 中使用mapperBy属性，则@oneToMany端就不能在使用@JoinColumn\(name="CUSTOMER\_ID"\)属性进行级联保存如下示例：
+>
+> ```
+> @Test
+>     public void testOneToManyPersist(){
+>         Customer customer=new Customer();
+>         customer.setAge(16);
+>         customer.setBirth(new Date());
+>         customer.setCreatedTime(new Date());
+>         customer.setEmail("CC@163.com");
+>         customer.setLastName("AA");
+>         
+>         Order order1=new Order();
+>         order1.setOrderName("o-CC-1");
+>         
+>         Order order2=new Order();
+>         order2.setOrderName("o-CC-2");
+>         
+>         //建立关联关系
+>         customer.getOrders().add(order1);
+>         customer.getOrders().add(order2);
+>         //执行保存操作
+>         entityManager.persist(customer);
+>         entityManager.persist(order1);
+>         entityManager.persist(order2);    
+>         
+>     }
+> ```
+
+
+
+
+
+
+
+
+
 
 
