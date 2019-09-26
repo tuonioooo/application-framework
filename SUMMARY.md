@@ -109,6 +109,7 @@
     * [@NamedQueries创建查询](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/namedquerieschuang-jian-cha-xun.md)
     * [@CreateDate @LastModifiedDate @EntityListeners、@SQLDelete、@Where](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/createdate-lastmodifieddate-entitylistenersauditingentitylistenerclass.md)
     * [注解关联时报错总结](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/zhu-jie-guan-lian-shi-bao-cuo-zong-jie.md)
+  * [Jpa 使用@Query查询时 （参数可能为空）语句](jpapian/jpa-shi-7528-query-cha-xun-shi-ff08-can-shu-ke-neng-wei-kong-ff09-yu-ju.md)
 * [Hibernate篇](hibernatepian.md)
   * [Hibernate基础教程](hibernatepian/hibernateji-chu-jiao-cheng.md)
   * [Hibernate主键生成策略](hibernatepian/hibernatezhu-jian-sheng-cheng-ce-lve.md)
