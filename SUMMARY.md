@@ -108,6 +108,7 @@
     * [@NamedQueries创建查询](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/namedquerieschuang-jian-cha-xun.md)
     * [@CreateDate @LastModifiedDate @EntityListeners、@SQLDelete、@Where](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/createdate-lastmodifieddate-entitylistenersauditingentitylistenerclass.md)
     * [注解关联时报错总结](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/zhu-jie-guan-lian-shi-bao-cuo-zong-jie.md)
+    * [JPA 多对多关联  中间表带有属性 两个外键作为中间表的联合主键时 直接操作中间表查询修改的方法](jpapian/jpaguan-lian-ying-she-yi-ji-zi-duan-ying-she-zhu-jie-jiang-jie/jpa-duo-dui-duo-guan-lian-zhong-jian-biao-dai-you-shu-xing-liang-ge-wai-jian-zuo-wei-zhong-jian-biao-de-lian-he-zhu-jian-shi-zhi-jie-cao-zuo-zhong-jian-biao-cha-xun-xiu-gai-de-fang-fa.md)
   * [Jpa 使用@Query查询时 （参数可能为空）语句](jpapian/jpa-shi-7528-query-cha-xun-shi-ff08-can-shu-ke-neng-wei-kong-ff09-yu-ju.md)
   * [Jpa校验/验证注解](jpapian/jpaxiao-9a8c-yan-zheng-zhu-jie-1.md)
     * [Jpa的list校验方式](jpapian/jpade-list-xiao-yan-fang-shi.md)
